@@ -1,5 +1,7 @@
 # backend
 
+express를 사용함.
+
 # 📚 friend-framework
 
 프로젝트 진행 시 Framework를 설정하는 시간을 단축하기 하고,
@@ -7,6 +9,8 @@
 Node.js 프로그램을 작성할 때 mybatis mapper 를 사용하여 효율적으로
 
 개발 할 수 있도록 공통 기능이 제공되는 framework 제작을 목적으로 합니다.
+
+
 
 # 📚 Overview
 
