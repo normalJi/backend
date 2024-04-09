@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="investMapper">
+
+  <!-- 창업자금 투자 CNT -->
+  <select id="getInvestConsultCnt"> 
+    SELECT
+      COUNT(*) AS TOTAL_CNT
+    FROM ( 
+      SELECT 
+        ic.* 
+      FROM INVESTMENT_CONSULT ic 
+        LEFT JOIN V_SOGUL_USER_INFO vsui
+          ON ic.SOGUL_USER_INFO_SEQ = vsui.SOGUL_USER_INFO_SEQ
+      WHERE 1 = 1
+        AND vsui.MANAGE_CD = ${MANAGE_CD}
+      <if test=" SEARCH_BRAND_NM != null and SEARCH_BRAND_NM != '' ">
+        AND ic.BRAND_NM LIKE CONCAT('%', #{SEARCH_BRAND_NM}, '%')
+      </if>
+      <if test=" SEARCH_REGION != null and SEARCH_REGION != '' ">
+        AND ic.REGION LIKE CONCAT('%', #{SEARCH_REGION}, '%')
+      </if>
+      <if test=" SEARCH_USER_NM != null and SEARCH_USER_NM != '' ">
+        AND ic.USER_NM LIKE CONCAT('%', #{SEARCH_USER_NM}, '%')
+      </if>
+      <if test=" SEARCH_NO_HP != null and SEARCH_NO_HP != '' ">
+        AND ic.NO_HP LIKE CONCAT('%', #{SEARCH_NO_HP}, '%')
+      </if>
+      <if test=" SEARCH_STARTUP_TYPE != null and SEARCH_STARTUP_TYPE != '' ">        
+        AND ic.STARTUP_TYPE = #{SEARCH_STARTUP_TYPE}
+      </if>
+      <if test=" SEARCH_INVEST_TYPE != null and SEARCH_INVEST_TYPE != '' ">
+        AND ic.INVEST_TYPE = #{SEARCH_INVEST_TYPE}
+      </if>
+      <if test=" SEARCH_REASON != null and SEARCH_REASON != '' ">
+        <if test=" SEARCH_REASON == 'Y' ">
+          AND ic.REASON IS NOT NULL
+        </if>
+        <if test=" SEARCH_REASON == 'N' ">
+          AND ic.REASON IS NULL
+        </if>
+      </if>
+      GROUP BY ic.INVEST_CONSULT_SEQ
+    ) A
+  </select>
+
+  <!-- 창업자금 투자 조회 LIMIT {PAGE_NO} , {PAGE_SIZE} -->
+  <select id="getInvestConsultList">
+    SELECT 
+        @NO_RNUM := @NO_RNUM - 1 AS NO_RNUM
+      , A.INVEST_CONSULT_SEQ
+      , A.SOGUL_USER_INFO_SEQ
+      , A.BRAND_NM
+      , A.REGION
+      , A.USER_NM
+      , A.NO_HP
+      , A.STARTUP_TYPE
+      , A.STARTUP_COST
+      , A.INVEST_EXPECT_COST
+      , A.INVEST_TYPE
+      , A.INVEST_TYPE_NM
+      , A.REASON
+      , A.REASON_YN
+      , A.DT_REG
+      , A.ID_REG_USER
+      , A.DT_MOD
+      , A.ID_MOD_USER
+    FROM (
+      SELECT      
+          ic.INVEST_CONSULT_SEQ
+        , ic.SOGUL_USER_INFO_SEQ
+        , ic.BRAND_NM
+        , ic.REGION
+        , ic.USER_NM
+        , ic.NO_HP
+        , ic.STARTUP_TYPE
+        , ic.STARTUP_COST
+        , ic.INVEST_EXPECT_COST
+        , ic.INVEST_TYPE
+        , ccd.DETAIL_NM AS INVEST_TYPE_NM
+        , ic.REASON
+        , CASE WHEN IFNULL(ic.REASON,'') = '' THEN '미등록' ELSE '등록' END AS REASON_YN
+        , ic.DT_REG
+        , ic.ID_REG_USER
+        , ic.DT_MOD
+        , ic.ID_MOD_USER 
+      FROM INVESTMENT_CONSULT ic 
+        INNER JOIN V_SOGUL_USER_INFO vsui
+          ON ic.SOGUL_USER_INFO_SEQ = vsui.SOGUL_USER_INFO_SEQ
+        LEFT JOIN COMM_CODE_DETAIL ccd 
+      	  ON ccd.DETAIL_KEY = 'INVEST_TYPE'
+      		  AND ccd.DETAIL_VAL = ic.INVEST_TYPE
+      WHERE 1 = 1
+        AND vsui.MANAGE_CD = ${MANAGE_CD}
+      <if test=" SEARCH_BRAND_NM != null and SEARCH_BRAND_NM != '' ">
+        AND ic.BRAND_NM LIKE CONCAT('%', #{SEARCH_BRAND_NM}, '%')
+      </if>
+      <if test=" SEARCH_REGION != null and SEARCH_REGION != '' ">
+        AND ic.REGION LIKE CONCAT('%', #{SEARCH_REGION}, '%')
+      </if>
+      <if test=" SEARCH_USER_NM != null and SEARCH_USER_NM != '' ">
+        AND ic.USER_NM LIKE CONCAT('%', #{SEARCH_USER_NM}, '%')
+      </if>
+      <if test=" SEARCH_NO_HP != null and SEARCH_NO_HP != '' ">
+        AND ic.NO_HP LIKE CONCAT('%', #{SEARCH_NO_HP}, '%')
+      </if>
+      <if test=" SEARCH_STARTUP_TYPE != null and SEARCH_STARTUP_TYPE != '' ">        
+        AND ic.STARTUP_TYPE = #{SEARCH_STARTUP_TYPE}
+      </if>
+      <if test=" SEARCH_INVEST_TYPE != null and SEARCH_INVEST_TYPE != '' ">
+        AND ic.INVEST_TYPE = #{SEARCH_INVEST_TYPE}
+      </if>
+      <if test=" SEARCH_REASON != null and SEARCH_REASON != '' ">
+        <if test=" SEARCH_REASON == 'Y' ">
+          AND ic.REASON IS NOT NULL
+        </if>
+        <if test=" SEARCH_REASON == 'N' ">
+          AND ic.REASON IS NULL
+        </if>
+      </if>   
+      GROUP BY ic.INVEST_CONSULT_SEQ   
+    ) A
+    , ( SELECT @NO_RNUM := (${TOTAL_CNT} - ${PAGE_NO} + 1) ) R
+  </select>
+
+  <!-- 창업투자 상세 조회 -->
+  <select id="getInvestConsultDetail">
+    SELECT 
+        INVEST_CONSULT_SEQ
+      , STARTUP_COST
+      , INVEST_EXPECT_COST
+      , INVEST_TYPE
+      , REASON 
+    FROM INVESTMENT_CONSULT
+    WHERE INVEST_CONSULT_SEQ = #{INVEST_CONSULT_SEQ}
+  </select>
+
+  <update id="updInvestConsult">
+    UPDATE INVESTMENT_CONSULT 
+    SET INVEST_TYPE        = #{INVEST_TYPE}
+      <if test=" STARTUP_COST != null and STARTUP_COST != '' ">
+      , STARTUP_COST       = FUNC_CONV_NULL_TO_ZERO(#{STARTUP_COST})
+      </if>
+      <if test=" INVEST_EXPECT_COST != null and INVEST_EXPECT_COST != '' ">
+      , INVEST_EXPECT_COST = FUNC_CONV_NULL_TO_ZERO(#{INVEST_EXPECT_COST})
+      </if>
+      <if test=" REASON != null and REASON != '' ">
+      , REASON             = #{REASON}
+      </if>
+      , DT_MOD             = NOW()
+      , ID_MOD_USER        = #{ID_MOD_USER}
+    WHERE INVEST_CONSULT_SEQ = ${INVEST_CONSULT_SEQ};
+  </update>
+
+  <update id="updateInvestReason">
+    UPDATE INVESTMENT_CONSULT 
+    SET REASON      = #{REASON}
+      , DT_MOD      = now()
+      , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE INVEST_CONSULT_SEQ = ${INVEST_CONSULT_SEQ};
+  </update>
+
+
+</mapper>

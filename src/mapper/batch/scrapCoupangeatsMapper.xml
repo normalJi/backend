@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scrapCoupangeatsMapper">
+
+  <!-- 쿠팡이츠 주문내역, 메뉴 삭제 -->
+  <delete id="delCoupangeatsOrder">
+    DELETE sco, scoi
+    FROM SCRP_COUPANG_ORDER sco
+      INNER JOIN SCRP_COUPANG_ORDER_ITEM scoi
+        ON sco.AD_STORE_INFO_SEQ = scoi.AD_STORE_INFO_SEQ
+          AND sco.SCRP_USER_ACCOUNT_SEQ = scoi.SCRP_USER_ACCOUNT_SEQ
+          AND sco.NO_SHOP = scoi.NO_SHOP
+          AND sco.SEQ_ORDER = scoi.SEQ_ORDER
+    WHERE 1=1
+      AND sco.AD_STORE_INFO_SEQ = ${AD_STORE_INFO_SEQ}
+      AND sco.SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      AND sco.DT_TRAN BETWEEN #{DT_STR} AND #{DT_END}
+  </delete>
+
+  <!-- 쿠팡이츠 주문내역 생성 -->
+  <insert id="instCoupangeatsOrder">
+    INSERT INTO SCRP_COUPANG_ORDER (
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, NO_SHOP, SEQ_ORDER, NO_ORDER
+      , DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY_CUSTOM, AM_DELIVERY, AM_TOTAL
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{NO_SHOP}, #{SEQ_ORDER}, #{NO_ORDER}
+      , #{DT_TRAN}, #{TM_TRAN}, #{TP_RECEIVE}, #{TP_PAY_CUSTOM}, ${AM_DELIVERY}, ${AM_TOTAL}
+    );
+  </insert>
+
+  <!-- 쿠팡이츠 주문내역 메뉴 생성 -->
+  <insert id="instCoupangeatsOrderItem">
+    INSERT INTO SCRP_COUPANG_ORDER_ITEM (
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, NO_SHOP, SEQ_ORDER
+      , NO_ORD, NM_ITEM, NO_QTY, AM_TOTAL, JSON_ITEM_OPTIONS
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{NO_SHOP}, #{SEQ_ORDER}
+      , ${NO_ORD}, #{NM_ITEM}, ${NO_QTY}, ${AM_TOTAL}, #{JSON_ITEM_OPTIONS}
+    );
+  </insert>
+
+  <!-- 쿠팡이츠 정산내역 삭제 -->
+  <delete id="delCoupangeatsSettle">
+    DELETE 
+    FROM SCRP_COUPANG_SETTLE
+    WHERE 1=1
+      AND AD_STORE_INFO_SEQ = ${AD_STORE_INFO_SEQ}
+      AND SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      AND DT_DEPOSIT BETWEEN #{DT_STR} AND #{DT_END}
+  </delete>
+
+  <!-- 배민 정산내역 생성 -->
+  <insert id="instCoupangeatsSettle">
+    INSERT INTO SCRP_COUPANG_SETTLE (
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, DT_DEPOSIT, AM_TOTAL
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{DT_DEPOSIT}, ${AM_TOTAL}
+    );
+  </insert>
+
+</mapper>

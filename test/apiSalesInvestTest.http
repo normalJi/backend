@@ -1,0 +1,310 @@
+
+// 매출정보 API 테스트
+### (공통) 로그인
+POST http://127.0.0.1:9101/api/v1/login HTTP/1.1
+Content-Type: application/json
+  
+{
+  "USER_ID": "hrji", "USER_PASS": "hrji"
+}
+
+### 매출정보 조회
+POST http://127.0.0.1:4000/api/v1/sales/info/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA5MDEyOTY5LCJleHAiOjE3MDkwNDE3NjksImlzcyI6ImZyaWVuZCJ9.FqCCl0oRdxVvTuPnm-j4VVPq34-TokeDX3uZJCKo5Uk
+
+{"AD_STORE_INFO_SEQ": "11"}
+
+### 매출정보 등록
+POST http://127.0.0.1:4000/api/v1/sales/info/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA5MDEyOTY5LCJleHAiOjE3MDkwNDE3NjksImlzcyI6ImZyaWVuZCJ9.FqCCl0oRdxVvTuPnm-j4VVPq34-TokeDX3uZJCKo5Uk
+
+{
+  "invest": {
+    "AD_STORE_INFO_SEQ": "11",
+    "TOTAL_COST": 0,
+    "RENT_DEPOSIT": 0,
+    "PREMIUM": 0,
+    "BROKER_FEE": 0,
+    "COMP_PAYMENT": 0,
+    "INIT_ARTICLE": 0,
+    "SALES_EQUIP": 0,
+    "MANAGE_COST": 0,
+    "INTERIOR_COST": 0
+  },
+  "list": [{
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "1",
+    "ITEM_NM": "日 평균 매출액",
+    "ITEM_SUB_NM": "日 평균 매출액",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "1",
+    "ITEM_NM": "총 매출액(月)",
+    "ITEM_SUB_NM": "총 매출액(月)",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "1",
+    "ITEM_NM": "순 매출액(月)",
+    "ITEM_SUB_NM": "순 매출액(月)",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": 0
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "1",
+    "ITEM_NM": "매출 총이익(月)",
+    "ITEM_SUB_NM": "매출 총이익(月)",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "1",
+    "ITEM_NM": "총계",
+    "ITEM_SUB_NM": "총계",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "2",
+    "ITEM_NM": "일반관리비",
+    "ITEM_SUB_NM": "인건비",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "2",
+    "ITEM_NM": "일반관리비",
+    "ITEM_SUB_NM": "소모품비",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "2",
+    "ITEM_NM": "일반관리비",
+    "ITEM_SUB_NM": "수도광열비+전력비",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": "" 
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "3",
+    "ITEM_NM": "EBIDA",
+    "ITEM_SUB_NM": "현금성 이익",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": "" 
+  }, {
+    "AD_STORE_INFO_SEQ": "11",
+    "ITEM_CD": "3",
+    "ITEM_NM": "EBIDA",
+    "ITEM_SUB_NM": "年 R.O.I",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": "" 
+  }],
+  "STATUS": "I"
+}
+
+
+### 매출정보 수정
+POST http://127.0.0.1:4000/api/v1/sales/info/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA5MDEyOTY5LCJleHAiOjE3MDkwNDE3NjksImlzcyI6ImZyaWVuZCJ9.FqCCl0oRdxVvTuPnm-j4VVPq34-TokeDX3uZJCKo5Uk
+
+{
+  "invest": {
+    "AD_STORE_INFO_SEQ": "11",
+    "TOTAL_COST": 1,
+    "RENT_DEPOSIT": 1,
+    "PREMIUM": 1,
+    "BROKER_FEE": 1,
+    "COMP_PAYMENT": 1,
+    "INIT_ARTICLE": 1,
+    "SALES_EQUIP": 1,
+    "MANAGE_COST": 1,
+    "INTERIOR_COST": 1
+  },
+  "list": [{
+    "AD_STD_INCOME_SEQ": "1",
+    "ITEM_CD": "1",
+    "ITEM_NM": "日 평균 매출액",
+    "ITEM_SUB_NM": "日 평균 매출액",
+    "EBITDA": 1,
+    "ORDINARY_PROFIT": 1,
+    "MIN_COST": 1,
+    "MAX_COST": 1,
+    "AVERAGE_COST": 1,
+    "MENO": "수정1"
+  }, {
+    "AD_STD_INCOME_SEQ": "2",
+    "ITEM_CD": "1",
+    "ITEM_NM": "총 매출액(月)",
+    "ITEM_SUB_NM": "총 매출액(月)",
+    "EBITDA": 2,
+    "ORDINARY_PROFIT": 2,
+    "MIN_COST": 2,
+    "MAX_COST": 2,
+    "AVERAGE_COST": 2,
+    "MENO": "수정2"
+  }, {
+    "AD_STD_INCOME_SEQ": "3",
+    "ITEM_CD": "1",
+    "ITEM_NM": "순 매출액(月)",
+    "ITEM_SUB_NM": "순 매출액(月)",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": 0
+  }, {
+    "AD_STD_INCOME_SEQ": "4",
+    "ITEM_CD": "1",
+    "ITEM_NM": "매출 총이익(月)",
+    "ITEM_SUB_NM": "매출 총이익(月)",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STD_INCOME_SEQ": "5",
+    "ITEM_CD": "1",
+    "ITEM_NM": "총계",
+    "ITEM_SUB_NM": "총계",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STD_INCOME_SEQ": "6",
+    "ITEM_CD": "2",
+    "ITEM_NM": "일반관리비",
+    "ITEM_SUB_NM": "인건비",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STD_INCOME_SEQ": "7",
+    "ITEM_CD": "2",
+    "ITEM_NM": "일반관리비",
+    "ITEM_SUB_NM": "소모품비",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": ""
+  }, {
+    "AD_STD_INCOME_SEQ": "8",
+    "ITEM_CD": "2",
+    "ITEM_NM": "일반관리비",
+    "ITEM_SUB_NM": "수도광열비+전력비",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": "" 
+  }, {
+    "AD_STD_INCOME_SEQ": "9",
+    "ITEM_CD": "3",
+    "ITEM_NM": "EBIDA",
+    "ITEM_SUB_NM": "현금성 이익",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": "" 
+  }, {
+    "AD_STD_INCOME_SEQ": "10",
+    "ITEM_CD": "3",
+    "ITEM_NM": "EBIDA",
+    "ITEM_SUB_NM": "年 R.O.I",
+    "EBITDA": 0,
+    "ORDINARY_PROFIT": 0,
+    "MIN_COST": 0,
+    "MAX_COST": 0,
+    "AVERAGE_COST": 0,
+    "MENO": "" 
+  }],
+  "STATUS": "U"
+
+}
+
+### 매출정보 - 일자별 매출
+POST http://127.0.0.1:9101/api/v1/sales/date/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA5MDEyOTY5LCJleHAiOjE3MDkwNDE3NjksImlzcyI6ImZyaWVuZCJ9.FqCCl0oRdxVvTuPnm-j4VVPq34-TokeDX3uZJCKo5Uk
+  
+{
+  "AD_STORE_INFO_SEQ": "55", "DT_TRAN": "202402"
+}
+
+### 매출정보 - 매출분석
+POST http://127.0.0.1:9101/api/v1/sales/analy/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA5MDEyOTY5LCJleHAiOjE3MDkwNDE3NjksImlzcyI6ImZyaWVuZCJ9.FqCCl0oRdxVvTuPnm-j4VVPq34-TokeDX3uZJCKo5Uk
+  
+{
+  "AD_STORE_INFO_SEQ": "55", "DT_TRAN": "202402"
+}
+
+### 매출정보 - 매출현황
+POST http://127.0.0.1:9101/api/v1/sales/status/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA5MDEyOTY5LCJleHAiOjE3MDkwNDE3NjksImlzcyI6ImZyaWVuZCJ9.FqCCl0oRdxVvTuPnm-j4VVPq34-TokeDX3uZJCKo5Uk
+  
+{
+  "AD_STORE_INFO_SEQ": "55", "DT_TRAN": "202402"
+}
+

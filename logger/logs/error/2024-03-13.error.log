@@ -1,0 +1,14 @@
+2024-03-13 18:30:36:3036 error: transExec 에러 Parameter #{SCHEDULE_GB} is not converted. 
+ Error Stack: Error: Parameter #{SCHEDULE_GB} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setScheduleMng (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:248:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-13 18:31:29:3129 error: transExec 에러 Parameter #{SCHEDULE_GB} is not converted. 
+ Error Stack: Error: Parameter #{SCHEDULE_GB} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setScheduleMng (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:248:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

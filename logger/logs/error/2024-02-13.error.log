@@ -1,0 +1,5 @@
+2024-02-13 17:10:12:1012 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous
+2024-02-13 17:10:55:1055 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous
+2024-02-13 17:12:08:128 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous
+2024-02-13 17:28:32:2832 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous
+2024-02-13 17:28:37:2837 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous

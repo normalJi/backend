@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scrapHistoryHandlerMapper">
+
+  <!-- 성공 결과 저장 -->
+  <update id="udpSuccessScrapUser">
+    UPDATE SCRP_USER_ACTION
+    SET CD_RES = '200'
+      , DC_RES = #{message}
+      , DT_RES = NOW()
+    WHERE SCRP_USER_ACTION_SEQ IN (${SCRP_USER_ACTION_SEQ})
+  </update>
+
+  <!-- 실패 결과 저장 -->
+  <update id="udpFailScrapUser">
+    UPDATE SCRP_USER_ACTION
+    SET CD_RES = #{code}
+      , DC_RES = #{message}
+      , DT_RES = NOW()
+    WHERE CD_RES IS NULL
+      <if if test=" BATCH_HISTORY_SEQ != null and BATCH_HISTORY_SEQ != '' ">
+        AND BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+      </if>
+      <if test=" SCRP_USER_ACCOUNT_SEQ != null and SCRP_USER_ACCOUNT_SEQ != '' ">
+        AND SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      </if>
+      <if test=" CD_TRAN != '' and CD_TRAN != null ">
+        AND CD_TRAN IN (#{CD_TRAN})
+      </if>
+      <if test=" SCRP_USER_ACTION_SEQ != null and SCRP_USER_ACTION_SEQ != '' ">
+        AND SCRP_USER_ACTION_SEQ = ${SCRP_USER_ACTION_SEQ}
+      </if>
+  </update>
+
+  <!-- 전체 실패 결과 저장 -->
+  <update id="udpFailAllScrap">
+    UPDATE SCRP_USER_ACTION
+    SET CD_RES = #{code}
+      , DC_RES = #{message}
+      , DT_RES = NOW()
+    WHERE CD_RES IS NULL
+      AND BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+  </update>
+
+  <!-- 현재 진행중인 스크래핑 확인 -->
+  <select id="getRunningScrap">
+    SELECT 
+      COUNT(0) AS RUN_COUNT
+    FROM BATCH_HISTORY bh
+      INNER JOIN (
+        SELECT 
+          DC_PATH
+        FROM BATCH_HISTORY
+        WHERE BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+      ) bh2
+        ON bh.DC_PATH = bh2.DC_PATH
+    WHERE bh.BATCH_HISTORY_SEQ <![CDATA[<]]> ${BATCH_HISTORY_SEQ}
+      AND bh.DT_RESULT IS NULL
+      AND DATE_ADD(bh.DT_RUNNING, INTERVAL + 10 SECOND) <![CDATA[>=]]> NOW()
+  </select>
+
+  <!-- 계정오류 시퀀스 가져오기 -->
+  <select id="getAccountErrorSequnes">
+    SELECT 
+      suae.SCRP_USER_ACCOUNT_ERROR_SEQ
+    FROM SCRP_USER_ACCOUNT_ERROR suae
+    WHERE 1=1
+      AND suae.CD_ERROR = #{code}
+      AND suae.SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+  </select>
+
+  <!-- 계정오류 업데이트 -->
+  <update id="updAccountError">
+    UPDATE SCRP_USER_ACCOUNT_ERROR
+    SET YN_ERROR = 'Y'
+      , DT_ERROR = NOW()
+      , DC_ERROR = #{message}
+    WHERE 1=1
+      AND SCRP_USER_ACCOUNT_ERROR_SEQ = ${SCRP_USER_ACCOUNT_ERROR_SEQ}
+      AND YN_ERROR = 'N'
+      AND CD_ERROR = #{code}
+  </update>
+
+  <!-- 계정오류 업데이트 -->
+  <update id="updAccountError">
+    INSERT INTO SCRP_USER_ACCOUNT_ERROR (
+      SCRP_USER_ACCOUNT_SEQ, CD_ERROR, DC_ERROR
+    ) VALUES(
+      ${SCRP_USER_ACCOUNT_SEQ}, #{code}, #{message}
+    )
+  </update>
+
+</mapper>

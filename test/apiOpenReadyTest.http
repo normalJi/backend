@@ -1,0 +1,103 @@
+
+// 오픈준비 API 테스트
+### 로그인
+POST http://127.0.0.1:4000/api/v1/login HTTP/1.1
+Content-Type: application/json
+  
+{
+  "USER_ID": "hrji", "USER_PASS": "hrji"
+}
+
+### 개설프로세스 리스트 조회
+POST http://127.0.0.1:4000/api/v1/open/process/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ "AD_STORE_INFO_SEQ" : "11" }
+
+### 개설프로세스 상세 조회
+POST http://127.0.0.1:4000/api/v1/open/process/details HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ "AD_OPEN_PROCESS_SEQ": "1"}
+
+### 개설프로세스 등록
+POST http://127.0.0.1:4000/api/v1/open/process/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_STORE_INFO_SEQ": "11",  
+  "STATUS": "I"
+}
+
+### 개설프로세스 수정
+POST http://127.0.0.1:4000/api/v1/open/process/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{   
+  "AD_OPEN_PROCESS_SEQ": "1",
+  "OPEN_CD": "1",
+  "JOB_GB": "N",
+  "START_DT": "20231210",
+  "END_DT": "20231212",
+  "RENT_NM": "홍길동1",
+  "LEASE_NM": "임꺽정1",
+  "DEPOSIT": "50000000",
+  "CONTENTS": "이제 그만",
+  "STATUS": "U"
+}
+
+
+
+
+### 일정관리 리스트 조회
+POST http://127.0.0.1:4000/api/v1/open/schedule/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{
+  "AD_STORE_INFO_SEQ": "11",
+  "SEARCH_DT": "202312"
+}
+
+### 일정관리 상세 조회
+POST http://127.0.0.1:4000/api/v1/open/schedule/details HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{
+  "AD_SCHEDULE_MNG_SEQ": "1"
+}
+
+### 일정관리 등록
+POST http://127.0.0.1:4000/api/v1/open/schedule/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{
+  "AD_STORE_INFO_SEQ": "11",
+  "SCHEDULE_DT": "20231011",
+  "MARK_GB": "Y",
+  "SCHEDULE_NM": "매장방문",
+  "CONTENTS": "내용",
+  "SCHEDULE_COLOR": "#C8C8C8",
+  "STATUS": "I"
+}
+
+### 일정관리 수정
+POST http://127.0.0.1:4000/api/v1/open/schedule/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{
+  "AD_SCHEDULE_MNG_SEQ": "1",
+  "SCHEDULE_DT": "20231011",
+  "MARK_GB": "Y",
+  "SCHEDULE_NM": "매장방문1",
+  "CONTENTS": "내용1",
+  "SCHEDULE_COLOR": "#C8C8C8",
+  "STATUS": "U"
+}

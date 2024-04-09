@@ -1,0 +1,103 @@
+2024-02-27 12:27:58:2758 error: app exec error(/api/v1/store/comm/save) res.send is not a function 
+ Error Stack: TypeError: res.send is not a function
+    at setDelDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:78:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 12:29:19:2919 error: app exec error(/api/v1/store/comm/save) res.send is not a function 
+ Error Stack: TypeError: res.send is not a function
+    at setDelDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:78:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 12:32:43:3243 error: app exec error(/api/v1/store/comm/save) res.send is not a function 
+ Error Stack: TypeError: res.send is not a function
+    at setDelDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:78:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 12:39:22:3922 error: app exec error(/api/v1/store/comm/save) res.send is not a function 
+ Error Stack: TypeError: res.send is not a function
+    at setDelDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:78:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 12:51:26:5126 error: transExec 에러 Parameter #{DYNAMIC_DIVISION} is not converted. 
+ Error Stack: Error: Parameter #{DYNAMIC_DIVISION} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:117:19)
+    at setDelDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:61:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 14:27:05:275 error: transExec 에러 Parameter #{AD_ACCOUNT_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_ACCOUNT_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:102:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 14:29:06:296 error: transExec 에러 Parameter #{AD_ACCOUNT_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_ACCOUNT_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:102:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 14:48:37:4837 error: transExec 에러 Parameter ${TOTAL_COST} is not converted. 
+ Error Stack: Error: Parameter ${TOTAL_COST} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at getSalesInfoList (D:\02.project\dev_workspace\sogul_admin_backend\src\store\salesInfo.js:40:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 15:34:31:3431 error: transExec 에러 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',
+    ITEM_ID,
+    ITEM_NM,
+    ITEM_CONTENTS,
+    ID_REG_USER,
+    ID_MOD_USER
+' at line 4 
+ Error Stack: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',
+    ITEM_ID,
+    ITEM_NM,
+    ITEM_CONTENTS,
+    ID_REG_USER,
+    ID_MOD_USER
+' at line 4
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:120:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 15:40:44:4044 error: transExec 에러 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',
+    ITEM_ID,
+    ITEM_NM,
+    ITEM_CONTENTS,
+    ID_REG_USER,
+    ID_MOD_USER
+' at line 4 
+ Error Stack: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',
+    ITEM_ID,
+    ITEM_NM,
+    ITEM_CONTENTS,
+    ID_REG_USER,
+    ID_MOD_USER
+' at line 4
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:120:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 15:48:27:4827 error: transExec 에러 Data too long for column 'DYNAMIC_DIVISION' at row 1 
+ Error Stack: Error: Data too long for column 'DYNAMIC_DIVISION' at row 1
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:105:25)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:116:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-27 16:12:02:122 error: transExec 에러 Parameter #{AD_DYNAMIC_DETAIL_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_DYNAMIC_DETAIL_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:117:19)
+    at setDelDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:61:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

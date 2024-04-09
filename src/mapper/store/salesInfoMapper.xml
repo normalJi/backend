@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="salesInfoMapper">
+
+  <!-- 매출정보 표준손익계산서 갯수 -->
+  <select id="getSalesInvestCnt">
+    SELECT COUNT(*) AS TOTAL_CNT FROM AD_SALES_INVEST_HISTORY adi WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 매출정보 투자내역 조회 -->
+  <select id="getSalesInvest">
+    SELECT 
+        AD_SALES_INVEST_HISTORY_SEQ
+      , AD_STORE_INFO_SEQ
+      , TOTAL_COST
+      , RENT_DEPOSIT
+      , PREMIUM
+      , BROKER_FEE
+      , COMP_PAYMENT
+      , INIT_ARTICLE
+      , SALES_EQUIP
+      , MANAGE_COST
+      , INTERIOR_COST 
+    FROM AD_SALES_INVEST_HISTORY
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 매출정보 표준손익계산서 조회 -->
+  <select id="getSalesIncome">
+    SELECT 
+        ac.AD_CATEGORY_SEQ	  
+      , asi.AD_STD_INCOME_SEQ
+      , asi.AD_STORE_INFO_SEQ
+      , ac.CATE_NM 
+      , ac.CATE_SUB_NM
+      , asi.EBITDA
+      , asi.ORDINARY_PROFIT
+      , asi.MIN_COST
+      , asi.MAX_COST
+      , asi.AVERAGE_COST
+      , asi.MENO
+    FROM AD_CATEGORY ac 
+      INNER JOIN AD_SALES_INCOME asi
+        ON ac.AD_CATEGORY_SEQ = asi.AD_CATEGORY_SEQ
+          AND asi.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+    WHERE ac.CATE_GB = 'SALES'	
+    ORDER BY ac.SORT_ORD
+  </select> 
+
+  <!-- 매출정보 투자내역 등록 -->
+  <insert id="instSalesInvest">
+    INSERT INTO AD_SALES_INVEST_HISTORY 
+    (
+        AD_STORE_INFO_SEQ
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_STORE_INFO_SEQ}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 매출정보 투자내역 수정 -->
+  <update id="updSalesInvest">
+    UPDATE AD_SALES_INVEST_HISTORY 
+    SET TOTAL_COST     = ${TOTAL_COST}
+      , RENT_DEPOSIT  = ${RENT_DEPOSIT}
+      , PREMIUM       = ${PREMIUM}
+      , BROKER_FEE    = ${BROKER_FEE}
+      , COMP_PAYMENT  = ${COMP_PAYMENT}
+      , INIT_ARTICLE  = ${INIT_ARTICLE}
+      , SALES_EQUIP   = ${SALES_EQUIP}
+      , MANAGE_COST   = ${MANAGE_COST}
+      , INTERIOR_COST = ${INTERIOR_COST}
+      , DT_MOD        = SYSDATE() 
+      , ID_MOD_USER   = #{ID_MOD_USER}
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </update>
+
+  <!-- 매출정보 표준손익계산서 갯수 -->
+  <select id="getSalesIncomeCnt">
+    SELECT COUNT(*) AS TOTAL_CNT FROM AD_SALES_INCOME adi WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 매출정보 표준손익계산서 등록 -->
+  <insert id="instSalesIncome">
+    INSERT INTO AD_SALES_INCOME (AD_STORE_INFO_SEQ, AD_CATEGORY_SEQ, ID_REG_USER, ID_MOD_USER) 
+    SELECT     
+        #{AD_STORE_INFO_SEQ} AS AD_STORE_INFO_SEQ
+      , aoc.AD_CATEGORY_SEQ
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    FROM AD_CATEGORY aoc 
+    WHERE aoc.CATE_GB = 'SALES'
+    ORDER BY aoc.SORT_ORD ASC  
+    <!-- INSERT INTO AD_SALES_INCOME (
+        AD_STORE_INFO_SEQ
+      , ITEM_CD
+      , ITEM_NM
+      , ITEM_SUB_NM
+      , EBITDA
+      , ORDINARY_PROFIT
+      , MIN_COST
+      , MAX_COST
+      , AVERAGE_COST
+      , MENO      
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_STORE_INFO_SEQ}
+      , #{ITEM_CD}
+      , #{ITEM_NM}
+      , #{ITEM_SUB_NM}
+      , ${EBITDA}
+      , ${ORDINARY_PROFIT}
+      , ${MIN_COST}
+      , ${MAX_COST}
+      , ${AVERAGE_COST}
+      , #{MENO}	
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    ) -->
+  </insert>
+
+  <!-- 매출정보 표준손익계산서 수정 -->
+  <update id="updSalesIncome">
+    UPDATE AD_SALES_INCOME 
+    SET EBITDA          = ${EBITDA}
+      , ORDINARY_PROFIT = ${ORDINARY_PROFIT}
+      , MIN_COST        = ${MIN_COST}
+      , MAX_COST        = ${MAX_COST}
+      , AVERAGE_COST    = ${AVERAGE_COST}
+      , MENO            = #{MENO}		
+      , DT_MOD          = SYSDATE() 
+      , ID_MOD_USER     = #{ID_MOD_USER} 
+    WHERE AD_STD_INCOME_SEQ = #{AD_STD_INCOME_SEQ}
+  </update>
+  
+  <!-- 일자별 매출 - 배달 총갯수 -->
+  <select id="getSalesDeliveryTotCnt">
+    SELECT 
+      COUNT(*) AS TOTAL_CNT
+    FROM (
+      SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '배달의민족' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+      FROM SCRP_BAEMIN_ORDER	
+      UNION ALL
+      SELECT 
+        AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '요기요' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+      FROM SCRP_YOGIYO_ORDER	
+      UNION ALL
+      SELECT 
+        AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '쿠팡이츠' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_RECEIVE AS TP_PAY, AM_DELIVERY, AM_TOTAL
+      FROM SCRP_COUPANG_ORDER
+    ) A
+    WHERE A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      AND LEFT(DT_TRAN, 6) = #{DT_TRAN}
+  </select>
+
+  <!-- 일자별 매출 - 배달 리스트 -->
+  <select id="getSalesDeliveryList">
+    SELECT 
+      @NO_RNUM := @NO_RNUM - 1 AS NO_RNUM
+      , TBL.AD_STORE_INFO_SEQ
+      , TBL.SCRP_USER_ACCOUNT_SEQ
+      , TBL.SITE_GB     -- 배달사 구분
+      , TBL.NO_ORDER    -- 주분번호
+      , TBL.DT_TRAN     -- 주문일자
+      , TBL.TM_TRAN     -- 주문시간
+      , TBL.TP_RECEIVE  -- 수령방법
+      , TBL.TP_PAY      -- 결제타입
+      , TBL.AM_DELIVERY -- 배달비
+      , TBL.AM_TOTAL    -- 결제금액
+    FROM (
+      SELECT 
+          AD_STORE_INFO_SEQ
+        , SCRP_USER_ACCOUNT_SEQ
+        , SITE_GB
+        , NO_ORDER
+        , DATE_FORMAT(STR_TO_DATE(DT_TRAN, '%Y%m%d'), '%Y-%m-%d') AS DT_TRAN
+        , DATE_FORMAT(STR_TO_DATE(TM_TRAN, '%H%i%s'), '%H:%i:%s') AS TM_TRAN
+        , TP_RECEIVE
+        , TP_PAY
+        , AM_DELIVERY
+        , AM_TOTAL
+      FROM (
+        SELECT 
+            AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '배달의민족' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_BAEMIN_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '요기요' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_YOGIYO_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '쿠팡이츠' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_RECEIVE AS TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_COUPANG_ORDER
+      ) A
+      WHERE A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+        AND LEFT(DT_TRAN, 6) = #{DT_TRAN}
+    ) TBL
+    , ( SELECT @NO_RNUM := ( ${D_TOTAL_CNT} - ${PAGE_NO} + 1) ) R
+  </select>
+
+  <!-- 일자별 매출 - 품목 총갯수 -->
+  <select id="getSalesItemTotCnt">
+    SELECT 
+      COUNT(*) AS TOTAL_CNT
+    FROM (
+      SELECT 
+        syoi.AD_STORE_INFO_SEQ, syoi.SCRP_USER_ACCOUNT_SEQ, syoi.NO_ORDER, syoi.NO_ORD, syoi.NM_ITEM, syoi.AM_TOTAL, syoi.NO_QTY, syo.DT_TRAN, syo.TM_TRAN, '요기요' AS SITE_GB
+      FROM SCRP_YOGIYO_ORDER syo
+        INNER JOIN SCRP_YOGIYO_ORDER_ITEM syoi
+          ON syo.AD_STORE_INFO_SEQ = syoi.AD_STORE_INFO_SEQ 
+            AND syo.NO_ORDER = syoi.NO_ORDER 
+            AND syoi.NO_ORD = 1	
+      UNION ALL
+      SELECT 
+        sboi.AD_STORE_INFO_SEQ, sboi.SCRP_USER_ACCOUNT_SEQ, sboi.NO_ORDER, sboi.NO_ORD, sboi.NM_ITEM, sboi.AM_TOTAL, sboi.NO_QTY, sbo.DT_TRAN, sbo.TM_TRAN, '배달의민족' AS SITE_GB
+      FROM SCRP_BAEMIN_ORDER sbo
+        INNER JOIN SCRP_BAEMIN_ORDER_ITEM sboi
+          ON sbo.AD_STORE_INFO_SEQ = sboi.AD_STORE_INFO_SEQ 
+            AND sbo.NO_ORDER = sboi.NO_ORDER 
+            AND sboi.NO_ORD = 1
+      UNION ALL
+      SELECT 
+        scoi.AD_STORE_INFO_SEQ, scoi.SCRP_USER_ACCOUNT_SEQ, scoi.SEQ_ORDER, scoi.NO_ORD, scoi.NM_ITEM, scoi.AM_TOTAL, scoi.NO_QTY, sco.DT_TRAN, sco.TM_TRAN, '쿠팡이츠' AS SITE_GB 
+      FROM SCRP_COUPANG_ORDER sco
+        INNER JOIN SCRP_COUPANG_ORDER_ITEM scoi 
+          ON sco.AD_STORE_INFO_SEQ = scoi.AD_STORE_INFO_SEQ 
+            AND sco.SEQ_ORDER = scoi.SEQ_ORDER 
+            AND scoi.NO_ORD = 1
+    ) A 
+    WHERE A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      AND LEFT(A.DT_TRAN, 6) = #{DT_TRAN}
+  </select>
+
+  <!-- 일자별 매출 - 품목 리스트 -->
+  <select id="getSalesItemList">
+    SELECT 
+        @NO_RNUM := @NO_RNUM - 1 AS NO_RNUM
+      , TBL.AD_STORE_INFO_SEQ
+      , TBL.SCRP_USER_ACCOUNT_SEQ
+      , TBL.NO_ORDER -- 주문번호
+      , TBL.NO_ORD   -- 순서
+      , TBL.NM_ITEM  -- 품목
+      , TBL.AM_TOTAL   -- 주문가격
+      , TBL.NO_QTY   -- 주문수량
+      , TBL.DT_TRAN  -- 주문일자
+      , TBL.TM_TRAN  -- 주문시간
+      , TBL.SITE_GB  -- 사이트 구분
+    FROM (
+      SELECT 
+          A.AD_STORE_INFO_SEQ
+        , A.SCRP_USER_ACCOUNT_SEQ
+        , A.NO_ORDER
+        , A.NO_ORD
+        , A.NM_ITEM
+        , A.AM_TOTAL
+        , A.NO_QTY
+        , DATE_FORMAT(STR_TO_DATE(A.DT_TRAN, '%Y%m%d'), '%Y-%m-%d') AS DT_TRAN
+        , DATE_FORMAT(STR_TO_DATE(A.TM_TRAN, '%H%i%s'), '%H:%i:%s') AS TM_TRAN
+        , A.SITE_GB
+      FROM (
+        SELECT 
+          syoi.AD_STORE_INFO_SEQ, syoi.SCRP_USER_ACCOUNT_SEQ, syoi.NO_ORDER, syoi.NO_ORD, syoi.NM_ITEM, syoi.AM_TOTAL, syoi.NO_QTY, syo.DT_TRAN, syo.TM_TRAN, '요기요' AS SITE_GB
+        FROM SCRP_YOGIYO_ORDER syo
+          INNER JOIN SCRP_YOGIYO_ORDER_ITEM syoi
+            ON syo.AD_STORE_INFO_SEQ = syoi.AD_STORE_INFO_SEQ 
+              AND syo.NO_ORDER = syoi.NO_ORDER 
+              AND syoi.NO_ORD = 1	
+        UNION ALL
+        SELECT 
+          sboi.AD_STORE_INFO_SEQ, sboi.SCRP_USER_ACCOUNT_SEQ, sboi.NO_ORDER, sboi.NO_ORD, sboi.NM_ITEM, sboi.AM_TOTAL, sboi.NO_QTY, sbo.DT_TRAN, sbo.TM_TRAN, '배달의민족' AS SITE_GB
+        FROM SCRP_BAEMIN_ORDER sbo
+          INNER JOIN SCRP_BAEMIN_ORDER_ITEM sboi
+            ON sbo.AD_STORE_INFO_SEQ = sboi.AD_STORE_INFO_SEQ 
+              AND sbo.NO_ORDER = sboi.NO_ORDER 
+              AND sboi.NO_ORD = 1
+        UNION ALL
+        SELECT 
+          scoi.AD_STORE_INFO_SEQ, scoi.SCRP_USER_ACCOUNT_SEQ, scoi.SEQ_ORDER, scoi.NO_ORD, scoi.NM_ITEM, scoi.AM_TOTAL, scoi.NO_QTY, sco.DT_TRAN, sco.TM_TRAN, '쿠팡이츠' AS SITE_GB 
+        FROM SCRP_COUPANG_ORDER sco
+          INNER JOIN SCRP_COUPANG_ORDER_ITEM scoi 
+            ON sco.AD_STORE_INFO_SEQ = scoi.AD_STORE_INFO_SEQ 
+              AND sco.SEQ_ORDER = scoi.SEQ_ORDER 
+              AND scoi.NO_ORD = 1
+      ) A 
+      WHERE A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+        AND LEFT(A.DT_TRAN, 6) = #{DT_TRAN}
+    ) TBL  
+    , ( SELECT @NO_RNUM := ( ${I_TOTAL_CNT} - ${PAGE_NO} + 1) ) R
+  </select>
+
+  <!-- 매출분석 - 요일별 매출 -->
+  <select id="getSalesWeekAnalyList">
+    SELECT
+      wk.DAYWEEK, wk.DAYWEEK_NM, IFNULL(deli.AM_DELIVERY,0) AS AM_DELIVERY, IFNULL(deli.AM_TOTAL, 0) AS AM_TOTAL
+    FROM (
+      SELECT 1 AS DAYWEEK, '일요일' AS DAYWEEK_NM, 7 AS DAY_SORT
+      UNION ALL
+      SELECT 2 AS DAYWEEK, '월요일' AS DAYWEEK_NM, 1 AS DAY_SORT
+      UNION ALL
+      SELECT 3 AS DAYWEEK, '화요일' AS DAYWEEK_NM, 2 AS DAY_SORT
+      UNION ALL
+      SELECT 4 AS DAYWEEK, '수요일' AS DAYWEEK_NM, 3 AS DAY_SORT
+      UNION ALL
+      SELECT 5 AS DAYWEEK, '목요일' AS DAYWEEK_NM, 4 AS DAY_SORT
+      UNION ALL
+      SELECT 6 AS DAYWEEK, '금요일' AS DAYWEEK_NM, 5 AS DAY_SORT
+      UNION ALL
+      SELECT 7 AS DAYWEEK, '토요일' AS DAYWEEK_NM, 6 AS DAY_SORT
+    ) wk
+    LEFT JOIN (
+      SELECT 
+          DAYOFWEEK(DATE_FORMAT(STR_TO_DATE(A.DT_TRAN, '%Y%m%d'), '%Y-%m-%d')) AS DT_TRAN
+        , SUM(A.AM_DELIVERY) AS AM_DELIVERY -- 배달비
+        , SUM(A.AM_TOTAL) AS AM_TOTAL    -- 결제금액
+      FROM (
+        SELECT 
+            AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '배달의민족' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_BAEMIN_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '요기요' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_YOGIYO_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '쿠팡이츠' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_RECEIVE AS TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_COUPANG_ORDER
+      ) A
+      WHERE A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+        AND LEFT(DT_TRAN, 6) = #{DT_TRAN}
+      GROUP BY DAYOFWEEK(DATE_FORMAT(STR_TO_DATE(A.DT_TRAN, '%Y%m%d'), '%Y-%m-%d'))
+    ) deli
+    ON wk.DAYWEEK = deli.DT_TRAN
+    ORDER BY wk.DAY_SORT
+  </select>
+  
+  <!-- 매출분석 - 시간대별 매출 -->
+  <select id="getSalesTimeAnalyList">
+    WITH RECURSIVE CTE AS (
+      SELECT 0 AS H_HOUR
+      UNION ALL
+      SELECT H_HOUR + 1 FROM CTE
+      WHERE 1 = 1 
+        AND <![CDATA[ H_HOUR < 23 ]]>  
+    )
+    SELECT 
+      H_HOUR, IFNULL(deli.AM_DELIVERY,0) AS AM_DELIVERY, IFNULL(deli.AM_TOTAL,0) AS AM_TOTAL
+    FROM CTE
+    LEFT JOIN (
+      SELECT 
+        HOUR(TM_TRAN) AS TM_TRAN, SUM(A.AM_DELIVERY) AS AM_DELIVERY, SUM(A.AM_TOTAL) AS AM_TOTAL
+      FROM (
+        SELECT 
+            AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '배달의민족' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_BAEMIN_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '요기요' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_YOGIYO_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '쿠팡이츠' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_RECEIVE AS TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_COUPANG_ORDER
+      ) A
+      WHERE  DATE_FORMAT(STR_TO_DATE(CONCAT(A.DT_TRAN, ' ', A.TM_TRAN), '%Y%m%d %H%i%s'), '%Y-%m-%d %H:%i:%s') 
+        BETWEEN  DATE_FORMAT(STR_TO_DATE(CONCAT(#{DT_TRAN},'01 000000'), '%Y%m%d %H%i%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(CONCAT(#{DT_TRAN},(SELECT RIGHT(LAST_DAY(CONCAT(#{DT_TRAN},'01')),2)),' 235959'), '%Y%m%d %H%i%s'), '%Y-%m-%d %H:%i:%s')
+        AND A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      GROUP BY HOUR(TM_TRAN)
+    ) deli
+    ON CTE.H_HOUR = deli.TM_TRAN
+  </select>
+
+  <!-- 매출분석 - 결제수단 매출 -->
+  <select id="getSalesPayAnalyList">
+    SELECT 
+      tpc.TP_PAY_CUSTOM
+      , CASE WHEN tpc.TP_PAY_CUSTOM = 'OFFLINE_CARD' THEN '신용' WHEN tpc.TP_PAY_CUSTOM = 'ONLINE' THEN '페이' WHEN tpc.TP_PAY_CUSTOM = 'OFFLINE_CASH' THEN '현금' END AS TP_PAY_CUSTOM_NM 
+      , IFNULL(deli.AM_DELIVERY,0) AS AM_DELIVERY
+      , IFNULL(deli.AM_TOTAL,0) AS AM_TOTAL
+    FROM (
+      SELECT 'OFFLINE_CARD' AS TP_PAY_CUSTOM, 1 AS ORDER_SORT
+      UNION ALL
+      SELECT 'OFFLINE_CASH' AS TP_PAY_CUSTOM, 2 AS ORDER_SORT
+      UNION ALL
+      SELECT 'ONLINE' AS TP_PAY_CUSTOM, 3 AS ORDER_SORT
+    ) tpc
+    LEFT JOIN (
+      SELECT 
+        A.TP_PAY_CUSTOM		
+        , IFNULL(SUM(A.AM_DELIVERY),0) AS AM_DELIVERY
+        , IFNULL(SUM(A.AM_TOTAL),0) AS AM_TOTAL
+      FROM (
+        SELECT 
+            AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '배달의민족' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, TP_PAY_CUSTOM, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_BAEMIN_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '요기요' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, TP_PAY_CUSTOM, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_YOGIYO_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '쿠팡이츠' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_RECEIVE AS TP_PAY, TP_PAY_CUSTOM, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_COUPANG_ORDER
+      ) A 
+      WHERE A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      GROUP BY A.TP_PAY_CUSTOM
+    ) deli
+    ON tpc.TP_PAY_CUSTOM = deli.TP_PAY_CUSTOM
+    ORDER BY tpc.ORDER_SORT
+  </select>
+  
+  <!-- 매출분석 - 품목별 매출 -->
+  <select id="getSalesItemAnalyList">
+    SELECT 	
+        A.NM_ITEM
+      , IFNULL(SUM(A.AM_TOTAL),0) AS AM_TOTAL
+    FROM (
+      SELECT 
+        syoi.AD_STORE_INFO_SEQ, syoi.SCRP_USER_ACCOUNT_SEQ, syoi.NO_ORDER, syoi.NO_ORD, syoi.NM_ITEM, syoi.AM_TOTAL, syoi.NO_QTY, syo.DT_TRAN, syo.TM_TRAN, '요기요' AS SITE_GB
+      FROM SCRP_YOGIYO_ORDER syo
+        INNER JOIN SCRP_YOGIYO_ORDER_ITEM syoi
+          ON syo.AD_STORE_INFO_SEQ = syoi.AD_STORE_INFO_SEQ 
+            AND syo.NO_ORDER = syoi.NO_ORDER 
+            AND syoi.NO_ORD = 1	
+      UNION ALL
+      SELECT 
+        sboi.AD_STORE_INFO_SEQ, sboi.SCRP_USER_ACCOUNT_SEQ, sboi.NO_ORDER, sboi.NO_ORD, sboi.NM_ITEM, sboi.AM_TOTAL, sboi.NO_QTY, sbo.DT_TRAN, sbo.TM_TRAN, '배달의민족' AS SITE_GB
+      FROM SCRP_BAEMIN_ORDER sbo
+        INNER JOIN SCRP_BAEMIN_ORDER_ITEM sboi
+          ON sbo.AD_STORE_INFO_SEQ = sboi.AD_STORE_INFO_SEQ 
+            AND sbo.NO_ORDER = sboi.NO_ORDER 
+            AND sboi.NO_ORD = 1
+      UNION ALL
+      SELECT 
+        scoi.AD_STORE_INFO_SEQ, scoi.SCRP_USER_ACCOUNT_SEQ, scoi.SEQ_ORDER, scoi.NO_ORD, scoi.NM_ITEM, scoi.AM_TOTAL, scoi.NO_QTY, sco.DT_TRAN, sco.TM_TRAN, '쿠팡이츠' AS SITE_GB 
+      FROM SCRP_COUPANG_ORDER sco
+        INNER JOIN SCRP_COUPANG_ORDER_ITEM scoi 
+          ON sco.AD_STORE_INFO_SEQ = scoi.AD_STORE_INFO_SEQ 
+            AND sco.SEQ_ORDER = scoi.SEQ_ORDER 
+            AND scoi.NO_ORD = 1
+    ) A 
+    WHERE A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      AND LEFT(A.DT_TRAN, 6) = #{DT_TRAN}
+    GROUP BY A.NM_ITEM
+    ORDER BY AM_TOTAL DESC
+    LIMIT 5;
+  </select>
+
+  <!-- 매출분석 - 배달 매출 -->    
+  <select id="getSalesDeliveryAnalyList">
+    SELECT 
+      sg.SITE_GB, IFNULL(deli.AM_DELIVERY,0) AS AM_DELIVERY, IFNULL(deli.AM_TOTAL,0) AS AM_TOTAL
+    FROM (
+      SELECT '배달의민족' AS SITE_GB, 2 AS SITE_SORT
+      UNION ALL
+      SELECT '요기요' AS SITE_GB, 1 AS SITE_SORT
+      UNION ALL
+      SELECT '쿠팡이츠' AS SITE_GB, 3 AS SITE_SORT
+    ) sg
+    LEFT JOIN (
+      SELECT 
+          A.SITE_GB
+        , SUM(A.AM_DELIVERY) AS AM_DELIVERY -- 배달비
+        , SUM(A.AM_TOTAL) AS AM_TOTAL    -- 결제금액
+      FROM (
+        SELECT 
+            AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '배달의민족' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_BAEMIN_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '요기요' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_YOGIYO_ORDER	
+        UNION ALL
+        SELECT 
+          AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, '쿠팡이츠' AS SITE_GB, NO_ORDER, DT_TRAN, TM_TRAN, TP_RECEIVE, TP_RECEIVE AS TP_PAY, AM_DELIVERY, AM_TOTAL
+        FROM SCRP_COUPANG_ORDER
+      ) A
+      WHERE A.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+        AND LEFT(A.DT_TRAN, 6) = #{DT_TRAN}
+      GROUP BY A.SITE_GB
+    ) deli
+    ON sg.SITE_GB = deli.SITE_GB
+    ORDER BY sg.SITE_SORT
+  </select>
+    
+  <!-- 매출현황 - 월 매출 합계 -->
+  <select id="getSalesMonthSum">
+    SELECT 
+      @O_TOTAL_CNT_SUM AS TOTAL_CNT
+      , @O_AM_CARD_SUM AS AM_CARD
+      , @O_AM_DELIVERY_SUM AS AM_DELIVERYm
+      , @O_AM_TOTAL_SUM AS AM_TOTAL
+  </select>
+
+  <!-- 매출현황 - 일자별 매출 합계 -->
+  <select id="getSalesDaySumList">
+    CALL PROC_STORE_SALES_BY_DAY_SUM_IN_MONTH(${AD_STORE_INFO_SEQ}, #{DT_TRAN}, @O_TOTAL_CNT_SUM, @O_AM_CARD_SUM, @O_AM_DELIVERY_SUM, @O_AM_TOTAL_SUM);
+  </select>
+
+  <!-- 매출현황 - 월 정산 합계 -->
+  <select id="getSalesCalcMonthSum">
+    SELECT 
+        COUNT(0) AS TOTAL_CNT
+      , SUM(IF(SITE_GB = '여신', AM_TOTAL, 0)) AS AM_CARD
+      , SUM(IF(SITE_GB != '여신', AM_TOTAL, 0)) AS AM_DELIVERY
+      , IFNULL(SUM(vbds.AM_TOTAL),0) AS AM_TOTAL
+    FROM V_BAYOCOU_DELIVERY_SETTLE vbds
+    WHERE 1 = 1
+      AND vbds.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      AND LEFT(vbds.DT_DEPOSIT, 6) = #{DT_TRAN}
+    GROUP BY LEFT(vbds.DT_DEPOSIT, 6) 
+  </select>
+
+  <!-- 매출현황 - 일자별 정산 합계 -->
+  <select id="getSalesCalcDaySumList">
+    SELECT 
+        vbds.DT_DEPOSIT
+      , SUM(vbds.AM_TOTAL) AS AM_TOTAL 
+      , COUNT(*) AS TOTAL_CNT
+    FROM V_BAYOCOU_DELIVERY_SETTLE vbds
+    WHERE 1 = 1
+      AND vbds.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      AND LEFT(vbds.DT_DEPOSIT, 6) = #{DT_TRAN}
+    GROUP BY vbds.DT_DEPOSIT
+  </select>
+
+
+  <!-- 매출현황 - 월 지출 합계 -->
+  <select id="getSalesExpenMonthSum">
+    SELECT 
+      LEFT(aeh.EXPEN_DT,6) AS DT_TRAN, SUM(aeh.EXPEN_AMT) AS AM_TOTAL
+      , COUNT(*) AS TOTAL_CNT
+    FROM AD_EXPENSE_HISTORY aeh
+    WHERE LEFT(aeh.EXPEN_DT,6) = #{DT_TRAN}
+      AND aeh.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+    GROUP BY LEFT(aeh.EXPEN_DT, 6)
+  </select>
+
+  <!-- 매출현황 - 일자별 지출 합계 -->
+  <select id="getSalesExpenDaySumList">
+    SELECT 
+      aeh.EXPEN_DT AS DT_TRAN, SUM(aeh.EXPEN_AMT) AS AM_TOTAL
+      , COUNT(*) AS TOTAL_CNT
+    FROM AD_EXPENSE_HISTORY aeh
+    WHERE LEFT(aeh.EXPEN_DT, 6) = #{DT_TRAN}
+      AND aeh.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+    GROUP BY aeh.EXPEN_DT
+    ORDER BY DT_TRAN
+  </select>
+
+  <!-- 매출정보 지출내역 등록 -->
+  <insert id="instSpendInvest">
+    INSERT INTO AD_EXPENSE_HISTORY 
+    (
+        AD_STORE_INFO_SEQ
+      , EXPEN_GB 
+      , EXPEN_DT
+      , EXPEN_NM
+      , EXPEN_AMT
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_STORE_INFO_SEQ}
+      , #{EXPEN_GB}
+      , #{EXPEN_DT}
+      , #{EXPEN_NM}
+      , #{EXPEN_AMT}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+  <!-- 매출정보 지출내역 조회 -->
+  <select id="getSpendList">
+    SELECT
+        EXPEN_NM,
+        EXPEN_AMT,
+        EXPEN_GB
+    FROM
+        AD_EXPENSE_HISTORY
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      AND EXPEN_DT = #{EXPEN_DT}
+  </select>
+</mapper>

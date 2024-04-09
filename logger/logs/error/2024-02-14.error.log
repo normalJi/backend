@@ -1,0 +1,26 @@
+2024-02-14 10:32:55:3255 error: transExec 에러 Parameter ${PRT_MENU_SEQ} is not converted. 
+ Error Stack: Error: Parameter ${PRT_MENU_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setMenu (D:\02.project\dev_workspace\sogul_admin_backend\src\system\menu.js:95:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-14 10:35:10:3510 error: transExec 에러 Parameter #{MENU_SORT} is not converted. 
+ Error Stack: Error: Parameter #{MENU_SORT} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setMenu (D:\02.project\dev_workspace\sogul_admin_backend\src\system\menu.js:97:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-14 10:35:49:3549 error: transExec 에러 Parameter ${MANAGE_CD} is not converted. 
+ Error Stack: Error: Parameter ${MANAGE_CD} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setMenu (D:\02.project\dev_workspace\sogul_admin_backend\src\system\menu.js:97:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-14 10:47:10:4710 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous
+2024-02-14 11:16:39:1639 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous
+2024-02-14 11:20:05:205 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous
+2024-02-14 11:22:53:2253 error: /api/v1/user/menu/getUserMenuList == ERROR == Column 'USE_YN' in where clause is ambiguous
+2024-02-14 12:27:13:2713 error: /api/v1/system/authority/getAuthorityList == ERROR == Parameter ${manage_cd} is not converted.

@@ -1,0 +1,17 @@
+
+// 매장관리 사용자 API 테스트
+### (공통) 로그인
+POST http://127.0.0.1:4000/api/v1/login HTTP/1.1
+Content-Type: application/json
+  
+{
+  "USER_ID": "hrji", "USER_PASS": "hrji"
+}
+
+### 사용자정보 조회
+POST http://127.0.0.1:4000/api/v1/store/user/details HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MzU1MjMxLCJleHAiOjE3MDQzODQwMzEsImlzcyI6ImZyaWVuZCJ9.962yIDYtKhPBaWbWUuOU3DhPyIvtx5fuKcZ54B_ykkg
+
+{"AD_STORE_INFO_SEQ": "11"}
+

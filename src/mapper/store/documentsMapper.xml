@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="documentsMapper">
+
+  <!-- 서류 등록 갯수 확인 -->
+  <select id="getDocumentsCnt">
+    SELECT 
+      COUNT(*) AS TOTAL_CNT FROM AD_DOCUMENTS 
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ} 
+      AND DOC_GB = #{DOC_GB}
+  </select>
+
+  <!-- 최초 서류 등록 (직접 입력은 제외) -->
+  <insert id="instInitDocuments">
+    INSERT INTO AD_DOCUMENTS ( AD_STORE_INFO_SEQ, AD_CATEGORY_SEQ, DOC_GB, ID_REG_USER, ID_MOD_USER )
+    SELECT     
+      #{AD_STORE_INFO_SEQ} AS AD_STORE_INFO_SEQ
+      , aoc.AD_CATEGORY_SEQ
+      , #{DOC_GB}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    FROM AD_CATEGORY aoc 
+    WHERE aoc.CATE_GB = #{DOC_GB}
+      AND CATE_NM != '직접입력'
+    ORDER BY aoc.SORT_ORD ASC 
+  </insert>
+
+  <!-- 점주서류 조회 -->
+  <select id="getDocumentsList">
+    SELECT 
+        ac.AD_CATEGORY_SEQ	  
+      , ad.AD_DOCUMENTS_SEQ  	
+      , ad.AD_STORE_INFO_SEQ 
+      , ac.CATE_NM
+      , ad.DOC_GB
+      , ad.JOB_GB
+      , ad.START_DT
+      , ad.END_DT
+      , ad.PERIOD_ETC
+      , ad.CONTENTS
+      , DATE_FORMAT(ad.DT_REG, '%Y-%m-%d') AS DT_REG
+      , CASE WHEN DATE_FORMAT(ad.DT_MOD, '%Y-%m-%d') = '0000-00-00' THEN '' ELSE DATE_FORMAT(ad.DT_MOD, '%Y-%m-%d') END AS DT_MOD
+    FROM AD_CATEGORY ac 
+      INNER JOIN AD_DOCUMENTS ad
+        ON ac.AD_CATEGORY_SEQ = ad.AD_CATEGORY_SEQ
+          AND ac.CATE_GB = ad.DOC_GB
+    WHERE ac.CATE_GB = #{DOC_GB}
+      AND ad.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+    ORDER BY ac.SORT_ORD ASC
+  </select>
+
+  <!-- 메인리스트에 보여줄 상세 항목 조회 -->
+  <select id="getDocumentsDetailShowList">
+    SELECT 
+        AD_CATEGORY_SEQ
+      , AD_DOCUMENTS_SEQ
+      , CATE_NM
+      , CATE_ITEM
+      , ITEM_CONTENTS
+      , RNUM
+    FROM (
+      SELECT 
+          A.AD_CATEGORY_SEQ
+        , A.AD_DOCUMENTS_SEQ
+        , A.CATE_NM
+        , A.CATE_ITEM
+        , A.ITEM_CONTENTS
+        , (CASE @vjob WHEN A.AD_DOCUMENTS_SEQ THEN @rownum := @rownum + 1 ELSE @rownum:= 0 END) AS RNUM
+        , (@vjob := A.AD_DOCUMENTS_SEQ) AS vjob
+      FROM (
+        SELECT
+          vac.AD_CATEGORY_SEQ
+          ,add2.AD_DOCUMENTS_SEQ
+          ,vac.CATE_NM
+          ,vac.CATE_ITEM
+          ,add2.ITEM_CONTENTS
+        FROM AD_DOCUMENTS_DETAIL add2
+          INNER JOIN V_AD_CATEGORY vac 
+            ON vac.AD_CATE_DETAIL_SEQ = add2.AD_CATE_DETAIL_SEQ
+        WHERE add2.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ} -- param1
+          AND vac.CATE_GB = #{DOC_GB}
+          AND vac.ITEM_SHOW_YN = 'Y'
+      ) A
+      , ( SELECT @vjob:='', @rownum:=0 FROM DUAL ) B
+    ) C    
+  </select>
+
+  <!-- 점주서류 디테일 조회 -->
+  <select id="getDocumentsDetail">
+    SELECT 
+        ad.AD_DOCUMENTS_SEQ
+      , ad.AD_STORE_INFO_SEQ
+      , ad.AD_CATEGORY_SEQ
+      , ad.DOC_GB
+      ,  ad.JOB_GB
+      , ad.START_DT
+      , ad.END_DT
+      , ad.PERIOD_ETC
+      , ad.CONTENTS 
+      , ac.CATE_NM
+    FROM AD_DOCUMENTS ad
+      INNER JOIN AD_CATEGORY ac
+        ON ad.AD_CATEGORY_SEQ = ac.AD_CATEGORY_SEQ 
+    WHERE ad.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      AND ad.AD_CATEGORY_SEQ   = #{AD_CATEGORY_SEQ}
+      AND ad.AD_DOCUMENTS_SEQ  = #{AD_DOCUMENTS_SEQ}
+    <!-- SELECT 
+        asod.AD_STORE_OWNER_DOC_SEQ, asod.AD_STORE_INFO_SEQ, asod.AD_CATEGORY_SEQ, asod.JOB_GB, asod.START_DT, asod.END_DT, asod.PERIOD_ETC, asod.CONTENTS 
+      , ac.CATE_NM
+    FROM AD_STORE_OWNER_DOC asod
+      INNER JOIN AD_CATEGORY ac
+        ON asod.AD_CATEGORY_SEQ = ac.AD_CATEGORY_SEQ 
+    WHERE asod.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      AND asod.AD_CATEGORY_SEQ = #{AD_CATEGORY_SEQ}
+      AND asod.AD_STORE_OWNER_DOC_SEQ = #{AD_STORE_OWNER_DOC_SEQ}    -->
+  </select>
+
+  <!-- 점주서류 하위 디테일 조회 -->
+  <select id="getDocumentDetailLower">
+    SELECT  
+        vad.AD_DOCUMENTS_SEQ
+      , vad.AD_DOCUMENTS_DETAIL_SEQ      
+      , vad.AD_STORE_INFO_SEQ
+      , acd.AD_CATE_DETAIL_SEQ 
+      , ac.CATE_NM
+      , acd.CATE_ITEM
+      , vad.ITEM_CONTENTS 
+    FROM AD_CATEGORY ac 
+      INNER JOIN AD_CATE_DETAIL acd
+        ON ac.AD_CATEGORY_SEQ = acd.AD_CATEGORY_SEQ
+      LEFT JOIN V_AD_DOCUMENTS vad
+        ON vad.AD_CATE_DETAIL_SEQ  = acd.AD_CATE_DETAIL_SEQ 
+          AND vad.AD_CATEGORY_SEQ = ac.AD_CATEGORY_SEQ 
+          AND vad.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ} -- param1
+    WHERE ac.CATE_GB = #{DOC_GB}	--  params2
+      AND ac.AD_CATEGORY_SEQ = #{AD_CATEGORY_SEQ} -- param3
+    ORDER BY ac.SORT_ORD, acd.SORT_ORDER
+  </select>
+
+
+  
+
+  <!-- 점주 서류 업데이트 -->
+  <update id="updDocuments">
+    UPDATE AD_DOCUMENTS
+    SET JOB_GB      = #{JOB_GB}
+      , START_DT    = IFNULL(#{START_DT}, NULL)
+      , END_DT      = IFNULL(#{END_DT}, NULL)
+      , PERIOD_ETC  = IFNULL(#{PERIOD_ETC}, NULL)      
+      , CONTENTS    = #{CONTENTS}
+      , DT_MOD      = NOW()
+      , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE AD_DOCUMENTS_SEQ = #{AD_DOCUMENTS_SEQ}
+  </update>
+
+  <!-- 점주 서류 디테일 업데이트 -->
+  <update id="updDocumentsDetail">
+    INSERT INTO AD_DOCUMENTS_DETAIL (
+        AD_DOCUMENTS_SEQ
+      , AD_STORE_INFO_SEQ
+      , AD_CATE_DETAIL_SEQ
+      , ITEM_CONTENTS
+      , ID_REG_USER 	
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_DOCUMENTS_SEQ}
+      , #{AD_STORE_INFO_SEQ}
+      , #{AD_CATE_DETAIL_SEQ}
+      , #{ITEM_CONTENTS}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+    ON DUPLICATE KEY UPDATE 
+        ITEM_CONTENTS = #{ITEM_CONTENTS}
+      , DT_MOD        = NOW() 	
+      , ID_MOD_USER   = #{ID_MOD_USER}
+  </update>
+ 
+  <!-- 점주 서류 공통 초기화(삭제) -->
+  <update id="delUpdDocuments">
+    UPDATE AD_DOCUMENTS
+    SET START_DT = null
+      , END_DT = null
+      , PERIOD_ETC = null
+      , CONTENTS = null
+      , JOB_GB = 'N'
+      , DT_MOD = '0000-00-00'
+    WHERE AD_DOCUMENTS_SEQ = #{AD_DOCUMENTS_SEQ}
+      AND AD_CATEGORY_SEQ = #{AD_CATEGORY_SEQ}
+  </update>
+
+  <!-- 서류 직접입력은 완전 삭제  -->
+  <delete id="delDocuments">
+    DELETE FROM AD_DOCUMENTS WHERE AD_DOCUMENTS_SEQ = #{AD_DOCUMENTS_SEQ}
+  </delete>
+
+  <!-- 점주 서류 디테일 초기화(삭제) -->
+  <update id="delDocumentsDetail">
+    DELETE FROM AD_DOCUMENTS_DETAIL WHERE AD_DOCUMENTS_SEQ = #{AD_DOCUMENTS_SEQ}
+  </update>   
+
+
+  <!-- 직접입력에 사용할 초기 데이터 -->
+  <select id="getDocumentInitDirect">
+    SELECT 
+        AD_CATEGORY_SEQ
+      , null AS AD_DOCUMENTS_SEQ
+      , #{AD_STORE_INFO_SEQ} AS AD_STORE_INFO_SEQ
+      , CATE_NM
+      , #{DOC_GB} AS DOC_GB
+      , 'N' AS JOB_GB
+      , '' AS START_DT
+      , '' AS END_DT
+      , '' AS PERIOD_ETC
+      , '' AS CONTENTS
+      , 'I' as STATUS
+    FROM V_AD_CATEGORY  
+    WHERE CATE_GB = #{DOC_GB}   -- fix
+      AND CATE_NM = '직접입력' -- fix
+  </select>
+
+  <!-- 점주서류 직접입력 등록 -->
+  <insert id="instDocumentsDirect">
+    INSERT INTO AD_DOCUMENTS (
+        AD_CATEGORY_SEQ
+      , AD_STORE_INFO_SEQ
+      , DOC_GB
+      , JOB_GB
+      , START_DT
+      , END_DT
+      , PERIOD_ETC
+      , CONTENTS
+      , ID_REG_USER
+      , ID_MOD_USER
+      , DT_MOD
+    ) VALUES(
+        #{AD_CATEGORY_SEQ}
+      , #{AD_STORE_INFO_SEQ}
+      , #{DOC_GB}
+      , #{JOB_GB}
+      , #{START_DT}
+      , #{END_DT}
+      , #{PERIOD_ETC}
+      , #{CONTENTS}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+      , NOW()
+    )
+  </insert>  
+</mapper>

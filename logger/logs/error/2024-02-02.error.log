@@ -1,0 +1,22 @@
+2024-02-02 15:39:19:3919 error: [Database] ======> Error: MAPPER_NULL_ERROR 
+2024-02-02 15:39:19:3919 error: transExec 에러 Namespace [UserMapper] not exists. 
+ Error Stack: Error: Namespace [UserMapper] not exists.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:88:52)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setPasswordReset (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:293:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-02 15:39:41:3941 error: transExec 에러 Parameter #{USER_PASS} is not converted. 
+ Error Stack: Error: Parameter #{USER_PASS} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setPasswordReset (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:293:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-02 15:42:08:428 error: transExec 에러 Parameter #{USER_PASS} is not converted. 
+ Error Stack: Error: Parameter #{USER_PASS} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setPasswordReset (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:294:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

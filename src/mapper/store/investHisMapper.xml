@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="investHisMapper">
+
+  <!-- 투자내역 조회 -->
+  <select id="getInvestHisList">
+    SELECT 
+        ac.AD_CATEGORY_SEQ	  
+      , aih.AD_INVEST_HISTORY_SEQ  	
+      , aih.AD_STORE_INFO_SEQ 
+      , ac.CATE_NM
+      , ac.CATE_SUB_NM
+      , aih.PLAN_A
+      , aih.SUPPLY_COST
+      , aih.TAX_COST
+      , aih.TOTAL_COST
+      , aih.DIFF_COST
+      , aih.MENO_1
+      , aih.MENO_2 
+    FROM AD_CATEGORY ac 
+      INNER JOIN AD_INVEST_HISTORY aih
+        ON ac.AD_CATEGORY_SEQ = aih.AD_CATEGORY_SEQ
+    WHERE CATE_GB = 'INVEST'
+      AND aih.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+    ORDER BY ac.SORT_ORD ASC
+  </select>
+
+  <!-- 투자내역 갯수 확인 -->
+  <select id="getInvestHisCnt">
+    SELECT COUNT(*) AS TOTAL_CNT FROM AD_INVEST_HISTORY WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 투자내역 등록 -->
+  <insert id="instInvestHis">
+    INSERT INTO AD_INVEST_HISTORY ( AD_STORE_INFO_SEQ, AD_CATEGORY_SEQ, ID_REG_USER, ID_MOD_USER )
+    SELECT     
+      #{AD_STORE_INFO_SEQ} AS AD_STORE_INFO_SEQ
+      , aoc.AD_CATEGORY_SEQ
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    FROM AD_CATEGORY aoc 
+    WHERE aoc.CATE_GB = 'INVEST'
+    ORDER BY aoc.SORT_ORD ASC
+
+    <!-- INSERT INTO AD_INVEST_HISTORY (
+        AD_STORE_INFO_SEQ
+      , ITEM_CD
+      , ITEM_NM
+      , ITEM_SUB_NM
+      , PLAN_A
+      , SUPPLY_COST
+      , TAX_COST
+      , TOTAL_COST
+      , DIFF_COST
+      , MENO_1
+      , MENO_2
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_STORE_INFO_SEQ}
+      , #{ITEM_CD}
+      , #{ITEM_NM}
+      , #{ITEM_SUB_NM}
+      , ${PLAN_A}
+      , ${SUPPLY_COST}
+      , ${TAX_COST}
+      , ${TOTAL_COST}
+      , ${DIFF_COST}
+      , #{MENO_1}
+      , #{MENO_2}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    ) -->
+  </insert>
+
+  <!-- 투자내역 수정 -->
+  <update id="updInvestHis">
+    UPDATE AD_INVEST_HISTORY 
+    SET PLAN_A      = ${PLAN_A}
+      , SUPPLY_COST = ${SUPPLY_COST}
+      , TAX_COST    = ${TAX_COST}
+      , TOTAL_COST  = ${TOTAL_COST}
+      , DIFF_COST   = ${DIFF_COST}
+      , MENO_1      = #{MENO_1}
+      , MENO_2      = #{MENO_2}
+      , DT_MOD      = SYSDATE() 
+      , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE AD_INVEST_HISTORY_SEQ = #{AD_INVEST_HISTORY_SEQ}
+  </update>
+</mapper>

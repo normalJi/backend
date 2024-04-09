@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="batchServerMapper">
+
+  <!-- 배치 실행 정보 등록 -->
+  <insert id="instBatchHistory">
+    INSERT INTO BATCH_HISTORY (
+      DC_PATH, DC_FUNCTION, DC_PARAMS, CD_RESULT, DC_RESULT
+    ) VALUES (
+      #{DC_PATH}, #{DC_FUNCTION}, #{DC_PARAMS}, 'READY', '준비중'
+    )
+  </insert>
+
+  <!-- 배치 실행 정보 가져오기 -->
+  <select id="getBatchHistoryInfo">
+    SELECT 
+      DC_PATH 
+      , DC_FUNCTION 
+      , DC_PARAMS 
+    FROM BATCH_HISTORY
+    WHERE BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+  </select>
+
+  <!-- 배치 실행 정보 가져오기 -->
+  <update id="updBatchHistoryRunningTime">
+    UPDATE BATCH_HISTORY 
+    SET DT_RUNNING = now()
+    WHERE BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+  </update>
+
+  <!-- 배치 실행 상태 업데이트 -->
+  <update id="updBatchHistoryStatus">
+    UPDATE BATCH_HISTORY 
+    SET CD_RESULT = #{CD_RESULT}
+      , DC_RESULT = #{DC_RESULT}
+    WHERE BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+      AND CD_RESULT != 'ERROR'
+  </update>
+
+  <!-- 배치 실행 종료 업데이트 (성공, 오류, 중지 등..) -->
+  <update id="updBatchHistoryClose">
+    UPDATE BATCH_HISTORY 
+    SET CD_RESULT = #{CD_RESULT}
+      , DC_RESULT = #{DC_RESULT}
+      , DT_RESULT = NOW()
+    WHERE BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+  </update>
+</mapper>

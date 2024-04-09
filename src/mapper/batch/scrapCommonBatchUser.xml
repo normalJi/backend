@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scrapCommonBatchUser">
+
+  <!-- 스크래핑 회원 등록 -->
+  <insert id="instScrapUser">
+    <foreach collection="CD_TRAN" item="_CD_TRAN">
+      INSERT INTO SCRP_USER_ACTION (
+        BATCH_HISTORY_SEQ, SCRP_USER_ACCOUNT_SEQ, CD_TRAN, DT_STR, DT_END, ID_REG_USER
+      ) SELECT 
+        ${BATCH_HISTORY_SEQ} AS BATCH_HISTORY_SEQ
+        , sua.SCRP_USER_ACCOUNT_SEQ 
+        , #{_CD_TRAN} AS CD_TRAN 
+        , <choose>
+            <when test="DT_STR != null and DT_STR != ''">
+              #{DT_STR} AS DT_STR
+            </when>
+            <otherwise>
+              NULL AS DT_STR
+            </otherwise>
+          </choose>
+        , <choose>
+            <when test="DT_END != null and DT_END != ''">
+              #{DT_END} AS DT_END
+            </when>
+            <otherwise>
+              NULL AS DT_END
+            </otherwise>
+          </choose>
+        , #{ID_REG_USER} AS ID_REG_USER 
+      FROM SCRP_USER_ACCOUNT sua
+      <if test=" NO_BIZ != null and NO_BIZ != '' ">
+        INNER JOIN SCRP_USER_ACCOUNT sua2
+          ON sua.SCRP_USER_ACCOUNT_SEQ = sua2.SCRP_USER_ACCOUNT_SEQ
+        INNER JOIN AD_STORE_INFO asi
+          ON sua2.AD_STORE_INFO_SEQ = asi.AD_STORE_INFO_SEQ
+            AND asi.NO_BIZ IN 
+            <foreach collection="NO_BIZ" item="_NO_BIZ"  open="(" close=")" separator=",">
+              #{_NO_BIZ}
+            </foreach>
+      </if>
+      <if test=" TP_SITE == 'yessin' and _CD_TRAN != 'yessin_key' ">
+        INNER JOIN SCRP_YESSIN_SHOP_KEY sysk
+          ON sua.SCRP_USER_ACCOUNT_SEQ = sysk.SCRP_USER_ACCOUNT_SEQ
+            AND sysk.CD_KEY IS NOT NULL
+      </if>
+      WHERE 1=1 
+        AND sua.TP_SITE = #{TP_SITE};
+    </foreach>
+  </insert>
+
+  <!-- 일별 배치 > 스크래핑 회원 등록 -->
+  <insert id="instDaliyScrapUser">
+    <foreach collection="CD_TRAN" item="_CD_TRAN">
+      INSERT INTO SCRP_USER_ACTION (
+        BATCH_HISTORY_SEQ, SCRP_USER_ACCOUNT_SEQ, CD_TRAN, DT_STR, DT_END, ID_REG_USER
+      ) SELECT 
+        ${BATCH_HISTORY_SEQ} AS BATCH_HISTORY_SEQ
+        , sua.SCRP_USER_ACCOUNT_SEQ 
+        , #{_CD_TRAN} AS CD_TRAN 
+        , #{DT_STR} AS DT_STR
+        , #{DT_END} AS DT_END
+        , #{ID_REG_USER} AS ID_REG_USER 
+      FROM SCRP_USER_ACCOUNT sua
+      <if test=" TP_SITE == 'yessin' and CD_TRAN != 'yessin_key' ">
+        INNER JOIN SCRP_YESSIN_SHOP_KEY sysk
+          ON sua.SCRP_USER_ACCOUNT_SEQ = sysk.SCRP_USER_ACCOUNT_SEQ
+            AND sysk.CD_KEY IS NOT NULL
+      </if>
+      WHERE 1=1 
+        AND sua.TP_SITE = #{TP_SITE}
+      ;
+    </foreach>
+  </insert>
+
+  <!-- 배치 실행 정보 등록 -->
+  <select id="getScrapUsersAccount">
+    SELECT 
+      GROUP_CONCAT(B.SCRP_USER_ACCOUNT_SEQ) AS SCRP_USER_ACCOUNT_SEQS
+      , GROUP_CONCAT(C.NO_BIZ) AS NO_BIZS
+      , A.CD_TRANS
+      , B.ID_LOGIN
+      , B.PW_LOGIN
+    FROM (
+      SELECT 
+        SCRP_USER_ACCOUNT_SEQ
+        , GROUP_CONCAT(CD_TRAN) AS CD_TRANS
+      FROM SCRP_USER_ACTION
+      WHERE 1=1
+        AND BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+        AND CD_RES IS NULL
+      GROUP BY SCRP_USER_ACCOUNT_SEQ
+    ) A 
+      INNER JOIN SCRP_USER_ACCOUNT B 
+        ON A.SCRP_USER_ACCOUNT_SEQ = B.SCRP_USER_ACCOUNT_SEQ
+      INNER JOIN AD_STORE_INFO C
+        ON B.AD_STORE_INFO_SEQ = C.AD_STORE_INFO_SEQ
+    GROUP BY B.ID_LOGIN, B.PW_LOGIN
+  </select>
+
+  <!-- 배치 실행 정보 가져오기 -->
+  <select id="getUserScrapInfo">
+    SELECT 
+      sua.SCRP_USER_ACTION_SEQ
+      , sua2.AD_STORE_INFO_SEQ
+      , sua.SCRP_USER_ACCOUNT_SEQ
+      , sua2.TP_SITE
+      , sysk.CD_KEY
+      , sua.CD_TRAN
+      , sua.DT_STR
+      , sua.DT_END
+      , sua.ID_REG_USER
+    FROM SCRP_USER_ACTION sua
+      LEFT JOIN SCRP_USER_ACCOUNT sua2
+        ON sua.SCRP_USER_ACCOUNT_SEQ = sua2.SCRP_USER_ACCOUNT_SEQ
+      LEFT JOIN SCRP_YESSIN_SHOP_KEY sysk
+        ON sua.SCRP_USER_ACCOUNT_SEQ = sysk.SCRP_USER_ACCOUNT_SEQ
+    WHERE 1=1 
+      AND sua.BATCH_HISTORY_SEQ = ${BATCH_HISTORY_SEQ}
+      AND sua.SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      AND sua.CD_RES IS NULL
+  </select>
+
+</mapper>

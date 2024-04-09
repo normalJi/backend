@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="storeMapper">
+
+  <!-- 매장현황 - 매장정보 리스트 -->
+  <select id="getStoreList">
+    SELECT 
+        AD_STORE_INFO_SEQ, asi.OPEN_DT, asi.CLOSE_DT, asi.STORE_NM, asi.BOSS_NM, asi.BOSS_HP, asi.STORE_ADDR, asi.NO_BIZ, asi.FRANCHISE_GB
+      , concat(asi.BOSS_NM,' / ', asi.BOSS_HP) AS BOSS_INFO
+    FROM AD_STORE_INFO asi
+    WHERE 1 = 1
+    <if test=" STORE_NM != null and STORE_NM != '' ">
+      AND STORE_NM LIKE CONCAT('%', #{STORE_NM}, '%')
+    </if>
+    <if test=" FRANCHISE_GB != null and FRANCHISE_GB != '' ">
+      AND FRANCHISE_GB = #{FRANCHISE_GB}
+    </if>
+    <if test=" OPER_STATUS == 'A' ">
+      AND IFNULL(NULLIF(OPEN_DT, ''), '') = ''
+    </if>
+    <if test=" OPER_STATUS == 'B' ">
+      AND ( IFNULL(NULLIF(OPEN_DT, ''), '') != '' AND IFNULL(NULLIF(CLOSE_DT, ''), '') = '' )
+    </if>
+    <if test=" OPER_STATUS == 'D' ">
+      AND  IFNULL(NULLIF(CLOSE_DT, ''), '') != ''
+    </if>
+    ORDER BY asi.AD_STORE_INFO_SEQ DESC
+  </select>
+
+  <!-- 매장기본정보 상세조회 -->
+  <select id="getStoreDetails">
+    SELECT 
+        asi.AD_STORE_INFO_SEQ
+      , asi.NO_BIZ
+      , asi.STORE_NM
+      , asi.STORE_ADDR
+      , asi.BOSS_NM
+      , asi.INDUSTRY_CD
+      , asi.BOSS_HP
+      , asi.OPEN_DT
+      , asi.CLOSE_DT
+      , asi.AREA_NM
+      , asi.AREA_TRANSPORT
+      , asi.FIRE_INSURANCE
+      , asi.LIABILITY_INSURANCE
+      , asi.FRANCHISE_GB
+      , asi.MENO
+      , asi.LATITUDE
+      , asi.LONGITUDE
+      , asi.OPER_STATUS
+      , ali.AD_LEASE_INFO_SEQ
+      , ali.ACTUAL_AREA_M
+      , ali.ACTUAL_AREA_P
+    FROM AD_STORE_INFO asi
+      LEFT JOIN AD_LEASE_INFO ali
+        ON asi.AD_STORE_INFO_SEQ = ali.AD_STORE_INFO_SEQ 
+    WHERE asi.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 매장정보 투자내역 상세조회 (사용안함) -->
+  <select id="getStoreInvestDetails">
+    SELECT 
+        ali.DEPOSIT           , ali.PREMIUM                , ali.MONTH_RENT      , ali.MAINT_COST           , ali.STORE_SUM_COST
+      , asii.TOTAL_INVEST_COST, asii.TOTAL_INVEST_COST_RATE, asii.INVEST_ASSETS  , asii.INVEST_ASSETS_RATE  , asii.INVEST_BOSS  , asii.INVEST_BOSS_RATE
+      , asii.RANTAL           , asii.RANTAL_RATE           , asii.INVEST_SUM_COST, asii.INVEST_SUM_COST_RATE, asii.FR_HQ_DEPOSIT, asii.MEMBER_COST
+      , asii.EDU_COST         , asii.INTERIOR_COST         , asii.MENO	
+    FROM AD_STORE_INFO asi
+      LEFT JOIN AD_LEASE_INFO ali 
+        ON asi.AD_STORE_INFO_SEQ = ali.AD_STORE_INFO_SEQ 
+      LEFT JOIN AD_STORE_INVEST_INFO asii
+        ON asi.AD_STORE_INFO_SEQ = asii.AD_STORE_INFO_SEQ 
+    WHERE asi.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 매장정보 - 등록전 등록여부 갯수 가져오기 -->
+  <select id="getStoreInfoCnt">
+    SELECT COUNT(*) AS TOTAL_CNT FROM AD_STORE_INFO asi WHERE asi.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 매장정보 - 사업자번호 중복 체크 -->
+  <select id="getNobizDupliCheck">
+    SELECT COUNT(*) AS TOTAL_CNT FROM sogul.AD_STORE_INFO WHERE NO_BIZ = #{NO_BIZ}
+  </select>
+
+  <!-- 매장정보 - 기본정보 등록 -->
+  <insert id="instStoreInfo">  
+    INSERT INTO AD_STORE_INFO (
+        NO_BIZ           , STORE_NM              , STORE_ADDR     , BOSS_NM      , INDUSTRY_CD
+      , BOSS_HP          , OPEN_DT               , CLOSE_DT       , AREA_NM      , AREA_TRANSPORT
+      , FIRE_INSURANCE   , LIABILITY_INSURANCE   , FRANCHISE_GB   , MENO         , OPER_STATUS
+      , ID_REG_USER      , ID_MOD_USER
+    ) VALUES(
+        #{NO_BIZ}        , #{STORE_NM}           , #{STORE_ADDR}  , #{BOSS_NM}   , #{INDUSTRY_CD}
+      , #{BOSS_HP}       , #{OPEN_DT}            , #{CLOSE_DT}    , #{AREA_NM}   , #{AREA_TRANSPORT}
+      , #{FIRE_INSURANCE}, #{LIABILITY_INSURANCE}, #{FRANCHISE_GB}, #{STORE_MENO}, #{OPER_STATUS}
+      , #{ID_REG_USER}   , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 매장정보 - 기본정보 수정 -->
+  <update id="updStoreInfo">
+    UPDATE AD_STORE_INFO 
+    SET STORE_NM            = #{STORE_NM}
+      , STORE_ADDR          = #{STORE_ADDR}
+      , STORE_ADDR_DETAIL   = #{STORE_ADDR_DETAIL}
+      , BOSS_NM             = #{BOSS_NM}
+      , INDUSTRY_CD         = #{INDUSTRY_CD}
+      , BOSS_HP             = #{BOSS_HP}
+      , OPEN_DT             = #{OPEN_DT}
+      , CLOSE_DT            = #{CLOSE_DT}
+      , AREA_NM             = #{AREA_NM}
+      , AREA_TRANSPORT      = #{AREA_TRANSPORT}
+      , FIRE_INSURANCE      = #{FIRE_INSURANCE}
+      , LIABILITY_INSURANCE = #{LIABILITY_INSURANCE}
+      , FRANCHISE_GB        = #{FRANCHISE_GB}
+      , MENO                = #{STORE_MENO}
+      , OPER_STATUS         = #{OPER_STATUS}
+      , DT_MOD              = SYSDATE() 
+      , ID_MOD_USER         = #{ID_MOD_USER}
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </update>
+
+  <!-- 매장정보 - 기본정보 삭제 시 연관된 다른 테이블 전체 삭제 -->
+  <delete id="delStoreInfo">
+    CALL FUNC_ALL_STORE_DEL(${AD_STORE_INFO_SEQ})
+  </delete>
+
+  <!-- 매장정보 - 임차정보 등록 -->
+  <insert id="instLeaseInfo">
+    INSERT INTO AD_LEASE_INFO (
+        AD_STORE_INFO_SEQ   
+      , DEPOSIT
+      , PREMIUM
+      , MONTH_RENT
+      , MAINT_COST
+      , STORE_SUM_COST
+      , ACTUAL_AREA_M
+      , ACTUAL_AREA_P
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+      ${AD_STORE_INFO_SEQ}
+      , FUNC_CONV_NULL_TO_ZERO(#{DEPOSIT})
+      , FUNC_CONV_NULL_TO_ZERO(#{PREMIUM})
+      , FUNC_CONV_NULL_TO_ZERO(#{MONTH_RENT})
+      , FUNC_CONV_NULL_TO_ZERO(#{MAINT_COST})
+      , FUNC_CONV_NULL_TO_ZERO(#{STORE_SUM_COST})
+      , FUNC_CONV_NULL_TO_ZERO(#{ACTUAL_AREA_M})
+      , FUNC_CONV_NULL_TO_ZERO(#{ACTUAL_AREA_P})
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 매장정보 - 임차정보 수정 -->
+  <update id="updLeaseInfo">
+    UPDATE AD_LEASE_INFO 
+    SET DEPOSIT        = FUNC_CONV_NULL_TO_ZERO(#{DEPOSIT})
+      , PREMIUM        = FUNC_CONV_NULL_TO_ZERO(#{PREMIUM})
+      , MONTH_RENT     = FUNC_CONV_NULL_TO_ZERO(#{MONTH_RENT})
+      , MAINT_COST     = FUNC_CONV_NULL_TO_ZERO(#{MAINT_COST})
+      , STORE_SUM_COST = FUNC_CONV_NULL_TO_ZERO(#{STORE_SUM_COST})
+      , ACTUAL_AREA_M  = FUNC_CONV_NULL_TO_ZERO(#{ACTUAL_AREA_M})
+      , ACTUAL_AREA_P  = FUNC_CONV_NULL_TO_ZERO(#{ACTUAL_AREA_P})
+      , DT_MOD         = SYSDATE() 
+      , ID_MOD_USER    = #{ID_MOD_USER}
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </update>
+
+  <!-- 매장정보 - 임차정보 삭제 -->
+  <delete id="delLeaseInfo">
+    DELETE FROM AD_LEASE_INFO WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </delete>
+
+  <!-- 매장정보 - 매장투자정보 등록 -->
+  <insert id="instInvestInfo">
+    INSERT INTO AD_STORE_INVEST_INFO (
+        AD_STORE_INFO_SEQ
+      , TOTAL_INVEST_COST
+      , TOTAL_INVEST_COST_RATE
+      , INVEST_ASSETS
+      , INVEST_ASSETS_RATE
+      , INVEST_BOSS
+      , INVEST_BOSS_RATE
+      , RANTAL
+      , RANTAL_RATE
+      , INVEST_SUM_COST
+      , INVEST_SUM_COST_RATE
+      , FR_HQ_DEPOSIT
+      , MEMBER_COST
+      , EDU_COST
+      , INTERIOR_COST
+      , MENO
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        ${AD_STORE_INFO_SEQ}
+      , FUNC_CONV_NULL_TO_ZERO(#{TOTAL_INVEST_COST})
+      , FUNC_CONV_NULL_TO_ZERO(#{TOTAL_INVEST_COST_RATE})
+      , FUNC_CONV_NULL_TO_ZERO(#{INVEST_ASSETS})
+      , FUNC_CONV_NULL_TO_ZERO(#{INVEST_ASSETS_RATE})
+      , FUNC_CONV_NULL_TO_ZERO(#{INVEST_BOSS})
+      , FUNC_CONV_NULL_TO_ZERO(#{INVEST_BOSS_RATE})
+      , FUNC_CONV_NULL_TO_ZERO(#{RANTAL})
+      , FUNC_CONV_NULL_TO_ZERO(#{RANTAL_RATE})
+      , FUNC_CONV_NULL_TO_ZERO(#{INVEST_SUM_COST})
+      , FUNC_CONV_NULL_TO_ZERO(#{INVEST_SUM_COST_RATE})
+      , FUNC_CONV_NULL_TO_ZERO(#{FR_HQ_DEPOSIT})
+      , FUNC_CONV_NULL_TO_ZERO(#{MEMBER_COST})
+      , FUNC_CONV_NULL_TO_ZERO(#{EDU_COST})
+      , FUNC_CONV_NULL_TO_ZERO(#{INTERIOR_COST})
+      , #{INVEST_MENO}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 매장정보 - 매장투자정보 수정 -->
+  <update id="updInvestInfo">
+    UPDATE AD_STORE_INVEST_INFO 
+    SET TOTAL_INVEST_COST      = FUNC_CONV_NULL_TO_ZERO(#{TOTAL_INVEST_COST})
+      , TOTAL_INVEST_COST_RATE = FUNC_CONV_NULL_TO_ZERO(#{TOTAL_INVEST_COST_RATE})
+      , INVEST_ASSETS          = FUNC_CONV_NULL_TO_ZERO(#{INVEST_ASSETS})
+      , INVEST_ASSETS_RATE     = FUNC_CONV_NULL_TO_ZERO(#{INVEST_ASSETS_RATE})
+      , INVEST_BOSS            = FUNC_CONV_NULL_TO_ZERO(#{INVEST_BOSS})
+      , INVEST_BOSS_RATE       = FUNC_CONV_NULL_TO_ZERO(#{INVEST_BOSS_RATE})
+      , RANTAL                 = FUNC_CONV_NULL_TO_ZERO(#{RANTAL})
+      , RANTAL_RATE            = FUNC_CONV_NULL_TO_ZERO(#{RANTAL_RATE})
+      , INVEST_SUM_COST        = FUNC_CONV_NULL_TO_ZERO(#{INVEST_SUM_COST})
+      , INVEST_SUM_COST_RATE   = FUNC_CONV_NULL_TO_ZERO(#{INVEST_SUM_COST_RATE})
+      , FR_HQ_DEPOSIT          = FUNC_CONV_NULL_TO_ZERO(#{FR_HQ_DEPOSIT})
+      , MEMBER_COST            = FUNC_CONV_NULL_TO_ZERO(#{MEMBER_COST})
+      , EDU_COST               = FUNC_CONV_NULL_TO_ZERO(#{EDU_COST})
+      , INTERIOR_COST          = FUNC_CONV_NULL_TO_ZERO(#{INTERIOR_COST})
+      , MENO                   = #{INVEST_MENO}
+      , DT_MOD                 = SYSDATE() 
+      , ID_MOD_USER            = #{ID_MOD_USER} 
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </update>
+
+  <!-- 매장정보 - 매장투자정보 삭제 -->
+  <delete id="delInvestInfo">    
+    DELETE FROM AD_STORE_INVEST_INFO WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}    
+  </delete>  
+
+  <!-- 매장정보 매장사진 조회 -->
+  <select id="getStorePictures">
+    SELECT 
+      AD_STORE_FILE_SEQ, AD_STORE_INFO_SEQ, ORI_FILE_NM, FILE_NM, FILE_SIZE, DT_REG, ID_REG_USER, DT_MOD, ID_MOD_USER
+    FROM AD_STORE_FILE
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+  
+  <!-- 매장정보 매장사진 추가 -->
+  <insert id="instStorePicture">
+    INSERT INTO AD_STORE_FILE (
+      AD_STORE_INFO_SEQ, ORI_FILE_NM, FILE_NM, FILE_SIZE, DT_REG, ID_REG_USER, DT_MOD, ID_MOD_USER
+    ) VALUES(
+      #{AD_STORE_INFO_SEQ}, #{ORI_FILE_NM}, #{FILE_NM}, #{FILE_SIZE}, SYSDATE(), #{ID_REG_USER}, SYSDATE(), #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 매장정보 매장사진 삭제대상조회 -->
+  <select id="getStorePicturesForDelete">
+    SELECT 
+      AD_STORE_FILE_SEQ, FILE_NM
+    FROM AD_STORE_FILE
+    WHERE AD_STORE_FILE_SEQ IN 
+      <foreach collection="AD_STORE_FILE_SEQ_LIST" item="seq"  open="(" close=")" separator=",">
+        #{seq}
+      </foreach>
+  </select>
+
+  <!-- 매장정보 매장사진 삭제 -->
+  <delete id="delStorePicture">    
+    DELETE FROM AD_STORE_FILE WHERE AD_STORE_FILE_SEQ = #{AD_STORE_FILE_SEQ}
+  </delete>  
+
+
+  <!-- 매장 위치 정보 유무 체크 -->
+  <!-- <select id="getStoreAddr">
+    SELECT STORE_ADDR AS TOTAL_CNT FROM AD_STORE_INFO asi WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select> -->
+
+  <!-- 매장 위치 업데이트 -->
+  <insert id="updateStoreAddr">
+    UPDATE AD_STORE_INFO 
+    SET STORE_ADDR  = '${STORE_ADDR}'
+      , STORE_ADDR_DETAIL = NULL
+      , DT_MOD      = SYSDATE() 
+      , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </insert>
+</mapper>

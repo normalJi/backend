@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="openReadyMapper">
+
+  <!-- 개설프로세스 카테고리 리스트 조회 -->
+  <select id="getOpenProcessCateList">
+    SELECT 
+        aop.AD_CATEGORY_SEQ AS VALUE
+      , ac.CATE_NM AS NAME
+    FROM AD_OPEN_PROCESS aop 
+      INNER JOIN AD_CATEGORY ac 
+        ON aop.AD_CATEGORY_SEQ = ac.AD_CATEGORY_SEQ
+          AND ac.CATE_GB = 'OPEN'
+    WHERE aop.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      <if test=" AD_OPEN_PROCESS_SEQ != null and AD_OPEN_PROCESS_SEQ != '' ">
+        AND aop.AD_OPEN_PROCESS_SEQ = #{AD_OPEN_PROCESS_SEQ}
+      </if>
+  </select>
+
+  <!-- 개설프로세스 리스트 조회 -->
+  <select id="getOpenProcessList">
+    SELECT 
+        @NO_RNUM := @NO_RNUM + 1 AS NO_RNUM
+      , A.AD_OPEN_PROCESS_SEQ
+      , A.AD_OPEN_PROCESS_CATEGORY_SEQ
+      , A.AD_STORE_INFO_SEQ
+      , A.CATE_NM
+      , A.JOB_GB
+      , A.JOB_GB_NM
+      , A.PROGRESS_ADMIN
+      , A.PROGRESS_ADMIN_NM
+      , A.START_DT
+      , A.END_DT
+      , A.PERIOD_ETC
+      , A.CONTENTS
+    FROM (
+      SELECT 
+          vaop.AD_OPEN_PROCESS_SEQ
+        , vaop.AD_OPEN_PROCESS_CATEGORY_SEQ
+        , vaop.AD_STORE_INFO_SEQ
+        , vaop.CATE_NM
+        , vaop.JOB_GB
+        , vaop.JOB_GB_NM
+        , vaop.PROGRESS_ADMIN
+        , vaop.PROGRESS_ADMIN_NM
+        , vaop.START_DT
+        , vaop.END_DT
+        , vaop.PERIOD_ETC
+        , vaop.CONTENTS
+      FROM V_AD_OPEN_PROCESS vaop 
+      WHERE vaop.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      <if test=" CATE_NM != null and CATE_NM != '' ">
+        AND vaop.CATE_NM LIKE CONCAT('%',#{CATE_NM},'%')
+      </if>
+      <if test=" AD_OPEN_PROCESS_SEQ != null and AD_OPEN_PROCESS_SEQ != '' ">
+        AND vaop.AD_OPEN_PROCESS_SEQ = #{AD_OPEN_PROCESS_SEQ}
+      </if>
+    ) A
+    , ( SELECT @NO_RNUM := 0 ) R
+  </select>
+
+  <!-- 개설프로세스 상세 조회 -->
+  <select id="getOpenProcessDetails">
+    SELECT 
+        aopd.AD_OPEN_PROCESS_DETAIL
+      , aopd.AD_OPEN_PROCESS_SEQ
+      , aopd.ITEM_ID
+      , aopd.ITEM_TITLE
+      , aopd.ITEM_CONTENTS
+      , aopd.PROGRESS_COMP 
+    FROM AD_OPEN_PROCESS_DETAIL aopd
+    WHERE aopd.AD_OPEN_PROCESS_SEQ = #{AD_OPEN_PROCESS_SEQ}
+  </select>
+
+  <!-- 개설프로세스 파일 리스트 -->
+  <select id="getFileList">
+    SELECT 
+        doc.AD_CATEGORY_SEQ, doc.CATE_NM
+      , doc.AD_DOCUMENTS_SEQ, doc.ORI_FILE_NM, doc.FILE_NM
+    FROM AD_OPEN_DOC_MAP aodm
+    INNER JOIN (
+      SELECT 
+        ac.AD_CATEGORY_SEQ, ac.CATE_NM
+        , ad.AD_DOCUMENTS_SEQ, aa.ORI_FILE_NM, aa.FILE_NM 
+      FROM AD_CATEGORY ac
+        INNER JOIN AD_DOCUMENTS ad
+          ON ac.AD_CATEGORY_SEQ = ad.AD_CATEGORY_SEQ 
+            AND ad.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+        INNER JOIN AD_ATTACHMENTS aa 
+          ON ad.AD_DOCUMENTS_SEQ = aa.SEQ
+      WHERE ac.USE_YN = 'Y'
+    ) doc
+      ON aodm.AD_CATEGORY_SEQ = doc.AD_CATEGORY_SEQ
+    WHERE aodm.AD_OPEN_PROCESS_CATEGORY_SEQ = #{AD_OPEN_PROCESS_CATEGORY_SEQ}
+
+  </select>
+
+  <!-- 개설프로세스 상세 SUB 조회 -->
+  <select id="getOpenProcessSubDetails">
+    SELECT
+        AD_DYNAMIC_DETAIL_SEQ
+      , AD_USE_SEQ
+      , ITEM_ID
+      , ITEM_NM
+      , ITEM_CONTENTS
+    FROM AD_DYNAMIC_DETAIL
+    WHERE AD_DYNAMIC_DETAIL_SEQ = #{AD_DYNAMIC_DETAIL_SEQ}
+  </select>
+
+  <!-- 개설프로세스 등록 전 갯수 체크-->
+  <select id="getOpenProcessCnt">
+    SELECT 
+      COUNT(*) AS TOTAL_CNT 
+    FROM AD_OPEN_PROCESS ac 
+	  WHERE AD_STORE_INFO_SEQ  = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 개설프로세스 등록 -->
+  <insert id="instOpenProcess">
+    INSERT INTO AD_OPEN_PROCESS (AD_OPEN_PROCESS_CATEGORY_SEQ, AD_STORE_INFO_SEQ, ID_REG_USER, ID_MOD_USER)
+    SELECT 
+        aopc.AD_OPEN_PROCESS_CATEGORY_SEQ	
+      , #{AD_STORE_INFO_SEQ}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    FROM AD_OPEN_PROCESS_CATEGORY aopc
+      LEFT JOIN AD_OPEN_PROCESS aop 
+        ON aopc.AD_OPEN_PROCESS_CATEGORY_SEQ = aop.AD_OPEN_PROCESS_CATEGORY_SEQ 
+    WHERE aopc.USE_YN = 'Y'
+    ORDER BY aopc.SORT_ORDER    
+  </insert>
+
+  <!-- 개설프로세스 최초 등록 시 서류와 맵핑 -->
+  <insert id="instOpenDocumentMap">
+    INSERT INTO AD_OPEN_DOC_MAP (AD_STORE_INFO_SEQ, AD_CATEGORY_SEQ, AD_OPEN_PROCESS_CATEGORY_SEQ)
+    SELECT 
+      11 AS AD_STORE_INFO_SEQ, AD_CATEGORY_SEQ, AD_OPEN_PROCESS_CATEGORY_SEQ 
+    FROM (
+      SELECT 
+        AD_OPEN_PROCESS_CATEGORY_SEQ, CATE_NM
+        , (SELECT AD_CATEGORY_SEQ FROM AD_CATEGORY WHERE CATE_GB = 'CONTRACT' AND CATE_NM = '권리금계약서') AS AD_CATEGORY_SEQ
+      FROM AD_OPEN_PROCESS_CATEGORY aopc	 
+      WHERE AD_OPEN_PROCESS_CATEGORY_SEQ = 5
+        AND USE_YN = 'Y'
+      UNION ALL
+      SELECT 
+          AD_OPEN_PROCESS_CATEGORY_SEQ, CATE_NM
+        , (SELECT AD_CATEGORY_SEQ FROM AD_CATEGORY  WHERE CATE_GB = 'CONTRACT' AND CATE_NM = '프랜차이즈계약') AS AD_CATEGORY_SEQ
+      FROM AD_OPEN_PROCESS_CATEGORY aopc	 
+      WHERE AD_OPEN_PROCESS_CATEGORY_SEQ = 6
+        AND USE_YN = 'Y'
+      UNION ALL
+      SELECT 
+          AD_OPEN_PROCESS_CATEGORY_SEQ, CATE_NM	
+        , (SELECT AD_CATEGORY_SEQ FROM AD_CATEGORY  WHERE CATE_GB = 'CONTRACT' AND CATE_NM = '인테리어계약') AS AD_CATEGORY_SEQ
+      FROM AD_OPEN_PROCESS_CATEGORY aopc	 
+      WHERE AD_OPEN_PROCESS_CATEGORY_SEQ = 6
+        AND USE_YN = 'Y'
+      UNION ALL
+      SELECT 
+          AD_OPEN_PROCESS_CATEGORY_SEQ, CATE_NM	
+        , (SELECT AD_CATEGORY_SEQ FROM AD_CATEGORY  WHERE CATE_GB = 'CONTRACT' AND CATE_NM = '초도물품비용') AS AD_CATEGORY_SEQ
+      FROM AD_OPEN_PROCESS_CATEGORY aopc	 
+      WHERE AD_OPEN_PROCESS_CATEGORY_SEQ = 6
+        AND USE_YN = 'Y'
+    ) A
+  </insert>
+
+  <!-- 개설프로세스 수정 -->
+  <update id="updOpenProcess">
+    UPDATE AD_OPEN_PROCESS 
+    SET JOB_GB      = #{JOB_GB}
+      , START_DT    = #{START_DT}
+      , END_DT      = #{END_DT}
+      , PERIOD_ETC  = #{PERIOD_ETC}
+      , CONTENTS    = #{CONTENTS}	
+      , DT_MOD      = SYSDATE() 
+      , ID_MOD_USER = #{ID_MOD_USER} 
+    WHERE AD_OPEN_PROCESS_SEQ = #{AD_OPEN_PROCESS_SEQ}
+  </update>
+
+  <!-- 개설프로세스 상세 갯수 -->
+  <select id="cntOpenProcessDetail">
+    SELECT COUNT(*) AS TOTAL_CNT FROM AD_OPEN_PROCESS_DETAIL
+    WHERE AD_OPEN_PROCESS_SEQ = #{AD_OPEN_PROCESS_SEQ}
+  </select>
+
+  <!-- 개설프로세스 상세 등록 -->
+  <insert id="instOpenProcessDetail">
+    INSERT INTO AD_OPEN_PROCESS_DETAIL (
+        AD_OPEN_PROCESS_SEQ
+      , ITEM_ID
+      , ITEM_TITLE
+      , ITEM_CONTENTS
+      , PROGRESS_COMP
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_OPEN_PROCESS_SEQ}
+      , #{ITEM_ID}
+      , #{ITEM_TITLE}
+      , #{ITEM_CONTENTS}
+      , #{PROGRESS_COMP}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <update id="updOpenProcessDetail">
+    UPDATE AD_OPEN_PROCESS_DETAIL
+    SET ITEM_CONTENTS = #{ITEM_CONTENTS}
+      , PROGRESS_COMP = #{PROGRESS_COMP}
+      , DT_MOD        = NOW()
+      , ID_MOD_USER   = #{ID_MOD_USER} 
+    WHERE AD_OPEN_PROCESS_DETAIL = #{AD_OPEN_PROCESS_DETAIL}
+  </update>
+  
+  <!-- 일정관리 리스트 조회 -->
+  <select id="getScheduleMngList">
+    SELECT 
+      SEQ, GUBUN, title, start, end, color, SORT_ORD
+    FROM (
+      SELECT 
+          asm.AD_SCHEDULE_MNG_SEQ AS SEQ
+        , 'SCHEDULE' AS GUBUN
+        , ccd.DETAIL_NM  AS title
+        , asm.SCHEDULE_DT AS 'start'
+        , asm.SCHEDULE_DT AS 'end'
+        , '#E6E6FA' AS color
+        , 1 AS SORT_ORD
+      FROM sogul.AD_SCHEDULE_MNG asm 
+        INNER JOIN COMM_CODE_DETAIL ccd 
+          ON asm.SCHEDULE_NM   = ccd.DETAIL_VAL 
+            AND ccd.DETAIL_KEY = "SCHEDULE_NM"  		
+      WHERE asm.MARK_GB = 'Y'
+        AND asm.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+      UNION ALL
+		SELECT     
+			aop.AD_OPEN_PROCESS_SEQ AS SEQ    
+			, 'PROCESS' AS GUBUN
+			, aopc.CATE_NM
+			, REPLACE(aop.START_DT, '-', '') AS START_DT
+			, REPLACE(DATE_ADD(aop.END_DT, INTERVAL 1 DAY),'-','') AS END_DT
+			, '#FFF0F5' AS COLOR
+			, 2 AS SORT_ORD
+		FROM AD_OPEN_PROCESS_CATEGORY aopc
+			INNER JOIN AD_OPEN_PROCESS aop
+				ON aopc.AD_OPEN_PROCESS_CATEGORY_SEQ  = aop.AD_OPEN_PROCESS_CATEGORY_SEQ
+		WHERE aop.START_DT IS NOT NULL
+			AND aop.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+    ) A
+    WHERE start LIKE CONCAT(#{SEARCH_YEAR},#{SEARCH_MONTH}, '%')
+    ORDER BY SORT_ORD DESC, start
+  </select>
+
+  <!-- 일정관리 상세 조회 -->
+  <select id="getScheduleMngDetails">
+    SELECT 
+      AD_SCHEDULE_MNG_SEQ, AD_STORE_INFO_SEQ, SCHEDULE_DT, WEEK_NM, MARK_GB, SCHEDULE_GB, SCHEDULE_NM, SCHEDULE_CONTENTS, SCHEDULE_COLOR 
+    FROM AD_SCHEDULE_MNG
+    WHERE AD_SCHEDULE_MNG_SEQ = #{SEQ}
+  </select>
+
+  <!-- 일정관리 등록 -->
+  <insert id="instScheduleMng">
+    INSERT INTO AD_SCHEDULE_MNG (
+        AD_STORE_INFO_SEQ
+      , SCHEDULE_DT
+      , WEEK_NM
+      , MARK_GB
+      , SCHEDULE_GB
+      , SCHEDULE_NM
+      , SCHEDULE_CONTENTS
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_STORE_INFO_SEQ}
+      , REPLACE(#{SCHEDULE_DT},'-' ,'')
+      , #{WEEK_NM}
+      , #{MARK_GB}
+      , 'N'
+      , #{SCHEDULE_NM}
+      , #{SCHEDULE_CONTENTS}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 일정관리 수정 -->
+  <update id="updScheduleMng">
+    UPDATE AD_SCHEDULE_MNG 
+    SET SCHEDULE_DT       = REPLACE(#{SCHEDULE_DT},'-' ,'')
+      , WEEK_NM           = #{WEEK_NM}
+      , MARK_GB           = #{MARK_GB}      
+      , SCHEDULE_NM       = #{SCHEDULE_NM}
+      , SCHEDULE_CONTENTS = #{SCHEDULE_CONTENTS}
+      , DT_MOD            = NOW()
+      , ID_MOD_USER       = #{ID_MOD_USER} 
+    WHERE AD_SCHEDULE_MNG_SEQ = #{AD_SCHEDULE_MNG_SEQ}
+  </update>
+</mapper>

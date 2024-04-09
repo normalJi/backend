@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="customerMapper">
+
+  <!-- 거래처관리 리스트 조회 -->
+  <select id="getCustomerMngList">
+    SELECT 
+      AD_STORE_CUSTOMER_MNG_SEQ, AD_STORE_INFO_SEQ, STORE_NM, MANAGER_NM, BOSS_HP, MANAGER_HP, SECTOR, RECEIVABLE_COST, PAYABLE_COST, BALANCE_COST, MENO
+    FROM AD_STORE_CUSTOMER_MNG
+    WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+    ORDER BY AD_STORE_CUSTOMER_MNG_SEQ DESC
+  </select>
+
+  <!-- 거래처관리 상세조회 -->
+  <select id="getCustomerMngDetails">
+    SELECT 
+      AD_STORE_CUSTOMER_MNG_SEQ, AD_STORE_INFO_SEQ, STORE_NM, MANAGER_NM, BOSS_HP, MANAGER_HP, SECTOR, RECEIVABLE_COST, PAYABLE_COST, BALANCE_COST, MENO
+    FROM AD_STORE_CUSTOMER_MNG
+    WHERE AD_STORE_CUSTOMER_MNG_SEQ = #{AD_STORE_CUSTOMER_MNG_SEQ}
+      AND AD_STORE_INFO_SEQ         = #{AD_STORE_INFO_SEQ}
+  </select>
+
+  <!-- 거래처관리 등록 -->
+  <insert id="instCustomerMng">
+    INSERT INTO AD_STORE_CUSTOMER_MNG (
+        AD_STORE_INFO_SEQ   , STORE_NM       , MANAGER_NM     , BOSS_HP   , MANAGER_HP    , SECTOR
+      , RECEIVABLE_COST     , PAYABLE_COST   , BALANCE_COST   , MENO      , ID_REG_USER   , ID_MOD_USER
+    ) VALUES(
+        #{AD_STORE_INFO_SEQ}, #{STORE_NM}    , #{MANAGER_NM}  , #{BOSS_HP}, #{MANAGER_HP} , #{SECTOR}
+      , #{RECEIVABLE_COST}  , #{PAYABLE_COST}, #{BALANCE_COST}, #{MENO}   , #{ID_REG_USER}, #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 거래처관리 수정 -->
+  <update id="updCustomerMng">
+    UPDATE AD_STORE_CUSTOMER_MNG 
+    SET STORE_NM        = #{STORE_NM}
+      , MANAGER_NM      = #{MANAGER_NM}
+      , BOSS_HP         = #{BOSS_HP}
+      , MANAGER_HP      = #{MANAGER_HP}
+      , SECTOR          = #{SECTOR}
+      , RECEIVABLE_COST = #{RECEIVABLE_COST}
+      , PAYABLE_COST    = #{PAYABLE_COST}
+      , BALANCE_COST    = #{BALANCE_COST}
+      , MENO            = #{MENO}
+      , DT_MOD          = SYSDATE() 
+      , ID_MOD_USER     = #{ID_MOD_USER} 
+    WHERE AD_STORE_CUSTOMER_MNG_SEQ = #{AD_STORE_CUSTOMER_MNG_SEQ}
+  </update>
+
+  <!-- 거래처관리 삭제 -->
+  <delete id="delCustomerMng">
+    DELETE FROM AD_STORE_CUSTOMER_MNG WHERE AD_STORE_CUSTOMER_MNG_SEQ = #{AD_STORE_CUSTOMER_MNG_SEQ}
+  </delete>  
+
+</mapper>

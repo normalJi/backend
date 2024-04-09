@@ -1,0 +1,21 @@
+2024-03-11 17:18:48:1848 error: transExec 에러 SQL ID [saveOpenProcessDetail] not exists 
+ Error Stack: Error: SQL ID [saveOpenProcessDetail] not exists
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:90:57)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:114:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-11 17:46:31:4631 error: transExec 에러 SQL ID [saveOpenProcessDetail] not exists 
+ Error Stack: Error: SQL ID [saveOpenProcessDetail] not exists
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:90:57)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:114:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-11 17:48:35:4835 error: transExec 에러 SQL ID [saveOpenProcessDetail] not exists 
+ Error Stack: Error: SQL ID [saveOpenProcessDetail] not exists
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:90:57)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:114:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

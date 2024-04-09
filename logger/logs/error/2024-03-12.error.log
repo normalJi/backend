@@ -1,0 +1,35 @@
+2024-03-12 15:11:21:1121 error: transExec 에러 Cannot add or update a child row: a foreign key constraint fails (`sogul`.`AD_OPEN_DOC_MAP`, CONSTRAINT `FK_AD_DOCUMENTS_TO_AD_OPEN_DOC_MAP_1` FOREIGN KEY (`AD_CATEGORY_SEQ`) REFERENCES `AD_DOCUMENTS` (`AD_DOCUMENTS_SEQ`)) 
+ Error Stack: Error: Cannot add or update a child row: a foreign key constraint fails (`sogul`.`AD_OPEN_DOC_MAP`, CONSTRAINT `FK_AD_DOCUMENTS_TO_AD_OPEN_DOC_MAP_1` FOREIGN KEY (`AD_CATEGORY_SEQ`) REFERENCES `AD_DOCUMENTS` (`AD_DOCUMENTS_SEQ`))
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at getOpenProcessList (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-12 15:11:43:1143 error: transExec 에러 Cannot add or update a child row: a foreign key constraint fails (`sogul`.`AD_OPEN_DOC_MAP`, CONSTRAINT `FK_AD_DOCUMENTS_TO_AD_OPEN_DOC_MAP_1` FOREIGN KEY (`AD_CATEGORY_SEQ`) REFERENCES `AD_DOCUMENTS` (`AD_DOCUMENTS_SEQ`)) 
+ Error Stack: Error: Cannot add or update a child row: a foreign key constraint fails (`sogul`.`AD_OPEN_DOC_MAP`, CONSTRAINT `FK_AD_DOCUMENTS_TO_AD_OPEN_DOC_MAP_1` FOREIGN KEY (`AD_CATEGORY_SEQ`) REFERENCES `AD_DOCUMENTS` (`AD_DOCUMENTS_SEQ`))
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at getOpenProcessList (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-12 15:12:00:120 error: transExec 에러 Cannot add or update a child row: a foreign key constraint fails (`sogul`.`AD_OPEN_DOC_MAP`, CONSTRAINT `FK_AD_DOCUMENTS_TO_AD_OPEN_DOC_MAP_1` FOREIGN KEY (`AD_CATEGORY_SEQ`) REFERENCES `AD_DOCUMENTS` (`AD_DOCUMENTS_SEQ`)) 
+ Error Stack: Error: Cannot add or update a child row: a foreign key constraint fails (`sogul`.`AD_OPEN_DOC_MAP`, CONSTRAINT `FK_AD_DOCUMENTS_TO_AD_OPEN_DOC_MAP_1` FOREIGN KEY (`AD_CATEGORY_SEQ`) REFERENCES `AD_DOCUMENTS` (`AD_DOCUMENTS_SEQ`))
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at getOpenProcessList (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:41:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-12 18:32:50:3250 error: transExec 에러 Parameter #{ITEM_NM} is not converted. 
+ Error Stack: Error: Parameter #{ITEM_NM} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:120:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-12 18:33:15:3315 error: transExec 에러 Parameter #{ITEM_NM} is not converted. 
+ Error Stack: Error: Parameter #{ITEM_NM} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:120:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

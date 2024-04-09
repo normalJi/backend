@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="codeMapper">
+
+  <!-- 업종코드 리스트 조회 -->
+  <select id="getIndustryCdList">
+    SELECT 
+      CD_SECTOR2 AS VALUE , NM_SECTOR2 AS NAME
+    FROM MATCH_SECTOR2 ms 
+    WHERE CD_SECTOR2 LIKE '3%'
+    GROUP BY NM_SECTOR2
+    ORDER BY CD_SECTOR2 
+  </select>  
+
+  <!-- 동적 상세 리스트 조회 -->
+  <select id="getDynamicDetails">
+    SELECT
+        AD_DYNAMIC_DETAIL_SEQ
+      , AD_USE_SEQ
+      , DYNAMIC_DIVISION 
+      , ITEM_ID
+      , ITEM_NM
+      , ITEM_CONTENTS
+    FROM AD_DYNAMIC_DETAIL
+    WHERE AD_USE_SEQ  = #{AD_USE_SEQ}
+    	AND DYNAMIC_DIVISION = #{DYNAMIC_DIVISION}
+  </select>
+
+  <!-- 동적 상세 등록 -->
+  <insert id="instDynamicDetails">
+    INSERT INTO AD_DYNAMIC_DETAIL (
+        AD_USE_SEQ
+      , DYNAMIC_DIVISION
+      , ITEM_ID
+      , ITEM_NM
+      , ITEM_CONTENTS
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_USE_SEQ}
+      , #{DYNAMIC_DIVISION}
+      , #{ITEM_ID}
+      , #{ITEM_NM}
+      , #{ITEM_CONTENTS}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 동적 상세 수정 -->
+  <update id="updDynamicDetails">
+    UPDATE AD_DYNAMIC_DETAIL 
+    SET ITEM_NM       = #{ITEM_NM}
+      , ITEM_CONTENTS = #{ITEM_CONTENTS}
+      , DT_MOD        = NOW()
+      , ID_MOD_USER   = #{ID_MOD_USER} 
+    WHERE AD_DYNAMIC_DETAIL_SEQ = #{AD_DYNAMIC_DETAIL_SEQ}
+      AND DYNAMIC_DIVISION = #{DYNAMIC_DIVISION}
+  </update>
+
+  <!-- 상위 삭제 시 동적 상세 전체 삭제 -->
+  <delete id="delDynamicDetails">
+    DELETE FROM AD_DYNAMIC_DETAIL WHERE AD_USE_SEQ = #{AD_USE_SEQ}
+  </delete>
+
+  <!-- 동적 상세 건별 삭제 -->
+  <delete id="delRowDynamicDetails">
+    DELETE FROM AD_DYNAMIC_DETAIL WHERE AD_DYNAMIC_DETAIL_SEQ = #{AD_DYNAMIC_DETAIL_SEQ} AND AD_USE_SEQ = #{AD_USE_SEQ} AND DYNAMIC_DIVISION = #{DYNAMIC_DIVISION}
+  </delete>
+
+
+</mapper>

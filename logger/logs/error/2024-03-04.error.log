@@ -1,0 +1,7 @@
+2024-03-04 18:29:28:2928 error: transExec 에러 Parameter #{NAME} is not converted. 
+ Error Stack: Error: Parameter #{NAME} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setOwnerIns (D:\02.project\dev_workspace\sogul_admin_backend\src\store\ownerDoc.js:155:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

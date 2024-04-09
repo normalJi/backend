@@ -1,0 +1,86 @@
+2024-02-16 15:53:37:5337 error: transExec 에러 Parameter #{SELECT_YN} is not converted. 
+ Error Stack: Error: Parameter #{SELECT_YN} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAuthMenuMap (D:\02.project\dev_workspace\sogul_admin_backend\src\system\authority.js:68:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-16 15:54:19:5419 error: transExec 에러 Parameter #{SELECT_YN} is not converted. 
+ Error Stack: Error: Parameter #{SELECT_YN} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAuthMenuMap (D:\02.project\dev_workspace\sogul_admin_backend\src\system\authority.js:68:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-16 15:55:30:5530 error: transExec 에러 Column count doesn't match value count at row 1 
+ Error Stack: Error: Column count doesn't match value count at row 1
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setAuthMenuMap (D:\02.project\dev_workspace\sogul_admin_backend\src\system\authority.js:62:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-16 15:56:43:5643 error: transExec 에러 Parameter #{SELECT_YN} is not converted. 
+ Error Stack: Error: Parameter #{SELECT_YN} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAuthMenuMap (D:\02.project\dev_workspace\sogul_admin_backend\src\system\authority.js:68:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-16 15:59:35:5935 error: transExec 에러 Parameter #{SELECT_YN} is not converted. 
+ Error Stack: Error: Parameter #{SELECT_YN} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAuthMenuMap (D:\02.project\dev_workspace\sogul_admin_backend\src\system\authority.js:68:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-16 16:00:07:07 error: transExec 에러 Parameter #{SYS_MENU_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{SYS_MENU_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAuthMenuMap (D:\02.project\dev_workspace\sogul_admin_backend\src\system\authority.js:68:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-16 16:00:41:041 error: transExec 에러 Parameter #{SYS_MENU_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{SYS_MENU_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAuthMenuMap (D:\02.project\dev_workspace\sogul_admin_backend\src\system\authority.js:68:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-16 16:01:12:112 error: [Database] ======> Error: MAPPER_NULL_ERROR 
+2024-02-16 16:03:13:313 error: transExec 에러 SQL ID [updAuthMenu] not exists 
+ Error Stack: Error: SQL ID [updAuthMenu] not exists
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:90:57)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAuthMenuMap (D:\02.project\dev_workspace\sogul_admin_backend\src\system\authority.js:77:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-16 16:33:32:3332 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 16:38:41:3841 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 16:39:04:394 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 16:40:47:4047 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 16:40:56:4056 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 16:41:07:417 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 16:42:16:4216 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 16:57:49:5749 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:21:16:2116 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:21:37:2137 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:21:51:2151 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:22:26:2226 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:23:04:234 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:23:18:2318 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:23:32:2332 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:23:40:2340 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:25:16:2516 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:26:09:269 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:27:02:272 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:49:30:4930 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:50:09:509 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:51:06:516 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:51:35:5135 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:53:03:533 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:53:43:5343 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:53:47:5347 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 17:54:25:5425 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 18:09:58:958 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.
+2024-02-16 18:10:02:102 error: /api/v1/system/authority/getAuthUserList == ERROR == Parameter ${SYS_AUTHORITY_SEQ} is not converted.

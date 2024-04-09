@@ -1,0 +1,21 @@
+2024-02-08 12:02:49:249 error: transExec 에러 Parameter #{ID_MOD_USER} is not converted. 
+ Error Stack: Error: Parameter #{ID_MOD_USER} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setInvestCunsult (D:\02.project\dev_workspace\sogul_admin_backend\src\invest\invest.js:61:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-08 12:03:15:315 error: transExec 에러 Incorrect number of arguments for FUNCTION sogul.FUNC_CONV_NULL_TO_ZERO; expected 1, got 2 
+ Error Stack: Error: Incorrect number of arguments for FUNCTION sogul.FUNC_CONV_NULL_TO_ZERO; expected 1, got 2
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setInvestCunsult (D:\02.project\dev_workspace\sogul_admin_backend\src\invest\invest.js:61:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-08 12:34:18:3418 error: transExec 에러 Data too long for column 'INVEST_TYPE' at row 1 
+ Error Stack: Error: Data too long for column 'INVEST_TYPE' at row 1
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setInvestCunsult (D:\02.project\dev_workspace\sogul_admin_backend\src\invest\invest.js:92:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

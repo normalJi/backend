@@ -1,0 +1,7 @@
+2024-02-20 10:20:16:2016 error: transExec 에러 Parameter #{AD_OPEN_PROCESS_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_OPEN_PROCESS_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setOpenProcess (D:\02.project\dev_workspace\sogul_admin_backend\src\store\openReady.js:118:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

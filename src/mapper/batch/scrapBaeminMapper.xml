@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scrapBaeminMapper">
+
+  <!-- 배민 주문내역, 메뉴 삭제 -->
+  <delete id="delBaeminOrder">
+    DELETE sbo, sboi
+    FROM SCRP_BAEMIN_ORDER sbo
+      INNER JOIN SCRP_BAEMIN_ORDER_ITEM sboi
+        ON sbo.AD_STORE_INFO_SEQ = sboi.AD_STORE_INFO_SEQ
+          AND sbo.SCRP_USER_ACCOUNT_SEQ = sboi.SCRP_USER_ACCOUNT_SEQ
+          AND sbo.NO_SHOP = sboi.NO_SHOP
+          AND sbo.NO_ORDER = sboi.NO_ORDER
+    WHERE 1=1
+      AND sbo.AD_STORE_INFO_SEQ = ${AD_STORE_INFO_SEQ}
+      AND sbo.SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      AND sbo.DT_TRAN BETWEEN #{DT_STR} AND #{DT_END}
+  </delete>
+
+  <!-- 배민 주문내역 생성 -->
+  <insert id="instBaeminOrder">
+    INSERT INTO SCRP_BAEMIN_ORDER (
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, NO_SHOP, NO_ORDER, DT_TRAN, TM_TRAN, CD_CAMPAIGN
+      , TP_SERVICE, TP_RECEIVE, TP_PAY, TP_PAY_DETAIL, TP_PAY_CUSTOM, AM_DELIVERY, AM_TOTAL
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{NO_SHOP}, #{NO_ORDER}, #{DT_TRAN}, #{TM_TRAN}, #{CD_CAMPAIGN}
+      , #{TP_SERVICE}, #{TP_RECEIVE}, #{TP_PAY}, #{TP_PAY_DETAIL}, #{TP_PAY_CUSTOM}, ${AM_DELIVERY}, ${AM_TOTAL}
+    );
+  </insert>
+
+  <!-- 배민 주문내역 메뉴 생성 -->
+  <insert id="instBaeminOrderItem">
+    INSERT INTO SCRP_BAEMIN_ORDER_ITEM (
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, NO_SHOP, NO_ORDER
+      , NO_ORD, NM_ITEM, NO_QTY, AM_TOTAL, JSON_ITEM_OPTIONS
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{NO_SHOP}, #{NO_ORDER}
+      , ${NO_ORD}, #{NM_ITEM}, ${NO_QTY}, ${AM_TOTAL}, #{JSON_ITEM_OPTIONS}
+    );
+  </insert>
+
+  <!-- 배민 정산내역 삭제 -->
+  <delete id="delBaeminSettle">
+    DELETE 
+    FROM SCRP_BAEMIN_SETTLE 
+    WHERE 1=1
+      AND AD_STORE_INFO_SEQ = ${AD_STORE_INFO_SEQ}
+      AND SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      AND DT_DEPOSIT BETWEEN #{DT_STR} AND #{DT_END}
+  </delete>
+
+  <!-- 배민 정산내역 생성 -->
+  <insert id="instBaeminSettle">
+    INSERT INTO SCRP_BAEMIN_SETTLE (
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, DT_DEPOSIT, NM_SERVICE, DT_TRAN_ST, DT_TRAN_ED, AM_TOTAL
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{DT_DEPOSIT}, #{NM_SERVICE}, #{DT_TRAN_ST}, #{DT_TRAN_ED}, ${AM_TOTAL}
+    );
+  </insert>
+
+</mapper>

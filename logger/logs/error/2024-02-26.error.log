@@ -1,0 +1,83 @@
+2024-02-26 10:45:18:4518 error: transExec 에러 Parameter #{ACCOUNT_CD} is not converted. 
+ Error Stack: Error: Parameter #{ACCOUNT_CD} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:91:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 10:48:02:482 error: transExec 에러 Parameter #{AD_STORE_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_STORE_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:91:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 10:51:25:5125 error: transExec 에러 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',
+    ITEM_ID,
+    ITEM_NM,
+    ITEM_CONTENTS,
+    ID_REG_USER,
+    ID_MOD_USER
+' at line 4 
+ Error Stack: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',
+    ITEM_ID,
+    ITEM_NM,
+    ITEM_CONTENTS,
+    ID_REG_USER,
+    ID_MOD_USER
+' at line 4
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:109:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 11:31:47:3147 error: transExec 에러 SQL ID [instAccountInfoDetail] not exists 
+ Error Stack: Error: SQL ID [instAccountInfoDetail] not exists
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:90:57)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:54:23)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:106:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 14:22:57:2257 error: transExec 에러 Lock wait timeout exceeded; try restarting transaction 
+ Error Stack: Error: Lock wait timeout exceeded; try restarting transaction
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:105:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 14:23:07:237 error: transExec 에러 Lock wait timeout exceeded; try restarting transaction 
+ Error Stack: Error: Lock wait timeout exceeded; try restarting transaction
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:105:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 14:25:39:2539 error: transExec 에러 Lock wait timeout exceeded; try restarting transaction 
+ Error Stack: Error: Lock wait timeout exceeded; try restarting transaction
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:105:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 14:28:24:2824 error: transExec 에러 Parameter #{AD_ACCOUNT_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_ACCOUNT_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:105:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 14:32:31:3231 error: transExec 에러 Lock wait timeout exceeded; try restarting transaction 
+ Error Stack: Error: Lock wait timeout exceeded; try restarting transaction
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:107:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-26 14:39:02:392 error: transExec 에러 Lock wait timeout exceeded; try restarting transaction 
+ Error Stack: Error: Lock wait timeout exceeded; try restarting transaction
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setAccountInfo (D:\02.project\dev_workspace\sogul_admin_backend\src\store\account.js:107:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

@@ -1,0 +1,265 @@
+// 실행 방법 : ctrl + shift + p
+### 로그인
+POST http://127.0.0.1:4000/api/v1/login HTTP/1.1
+Content-Type: application/json
+  
+{
+  "USER_ID": "hrji", "USER_PASS": "hrji"
+}
+
+### 매장정보 리스트
+POST http://127.0.0.1:4000/api/v1/store/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{}
+
+### 매장정보 상세보기
+POST http://127.0.0.1:4000/api/v1/store/details HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{"AD_STORE_INFO_SEQ": "11"}
+
+### 매장정보 등록
+POST http://127.0.0.1:4000/api/v1/store/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+
+{   
+  "store_info" : {
+    "NO_BIZ" : "1234567893",
+    "STORE_NM" : "세친구",
+    "STORE_ADDR" : "서울시 강남구 테헤란로7길 12",
+    "BOSS_NM" : "한세옥",
+    "INDUSTRY_CD" : "303",
+    "BOSS_HP" : "01012341234",
+    "OPEN_DT" : "20230101",
+    "CLOSE_DT" : "",
+    "AREA_NM" : "강남",
+    "AREA_TRANSPORT" : "강남역12번 출구 도보 5분",
+    "FIRE_INSURANCE" : "Y",
+    "LIABILITY_INSURANCE" : "Y",
+    "FRANCHISE_GB" : "A",
+    "MENO" : "메모 입니다.",
+    "OPER_STATUS" : "N"
+  },
+  "lease_info" : {    
+    "DEPOSIT": "100",
+    "PREMIUM": "200",
+    "MONTH_RENT": "300",
+    "MAINT_COST": "400",
+    "STORE_SUM_COST": "500",
+    "ACTUAL_AREA_M": "600",
+    "ACTUAL_AREA_P": "700"
+  },
+  "invest_info" : {    
+    "TOTAL_INVEST_COST": "100",
+    "TOTAL_INVEST_COST_RATE": "200",
+    "INVEST_ASSETS": "300",
+    "INVEST_ASSETS_RATE": "400",
+    "INVEST_BOSS": "500",
+    "INVEST_BOSS_RATE": "600",
+    "RANTAL": "700",
+    "RANTAL_RATE": "800",
+    "INVEST_SUM_COST": "900",
+    "INVEST_SUM_COST_RATE": "1000",
+    "FR_HQ_DEPOSIT": "2000",
+    "MEMBER_COST": "3000",
+    "EDU_COST": "4000",
+    "INTERIOR_COST": "5000",
+    "MENO": "매장 투자내역 입니다."
+  },
+  "STATUS": "I"
+}
+
+
+### 매장정보 수정
+POST http://127.0.0.1:4000/api/v1/store/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+
+{   
+  "store_info" : {    
+    "STORE_NM" : "세친구1",
+    "STORE_ADDR" : "서울시 강남구 테헤란로7길 12, 3층",
+    "BOSS_NM" : "한세옥",
+    "INDUSTRY_CD" : "303",
+    "BOSS_HP" : "01099999999",
+    "OPEN_DT" : "20230102",
+    "CLOSE_DT" : "",
+    "AREA_NM" : "강남역",
+    "AREA_TRANSPORT" : "강남역12번 출구 도보 5분",
+    "FIRE_INSURANCE_YN" : "Y",
+    "LIABILITY_INSURANCE_YN" : "Y",
+    "FRANCHISE_GB" : "A",
+    "MENO" : "메모 입니다.",
+    "OPER_STATUS" : "Y"
+  },
+  "lease_info" : {    
+    "DEPOSIT": "1",
+    "PREMIUM": "2",
+    "MONTH_RENT": "3",
+    "MAINT_COST": "4",
+    "STORE_SUM_COST": "5",
+    "ACTUAL_AREA_M": "6",
+    "ACTUAL_AREA_P": "7"
+  },
+  "invest_info" : {    
+    "TOTAL_INVEST_COST": "1",
+    "TOTAL_INVEST_COST_RATE": "2",
+    "INVEST_ASSETS": "3",
+    "INVEST_ASSETS_RATE": "4",
+    "INVEST_BOSS": "5",
+    "INVEST_BOSS_RATE": "6",
+    "RANTAL": "7",
+    "RANTAL_RATE": "8",
+    "INVEST_SUM_COST": "9",
+    "INVEST_SUM_COST_RATE": "10",
+    "FR_HQ_DEPOSIT": "20",
+    "MEMBER_COST": "30",
+    "EDU_COST": "40",
+    "INTERIOR_COST": "50",
+    "MENO": "매장 투자내역 입니다."
+  },
+  "STATUS": "U",
+  "AD_STORE_INFO_SEQ": 11
+}
+
+### 매장정보 삭제
+POST http://127.0.0.1:4000/api/v1/store/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+
+{   
+  "STATUS": "D",
+  "AD_STORE_INFO_SEQ": 13
+}
+
+### 거래처관리 조회
+POST http://127.0.0.1:4000/api/v1/customer/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_STORE_INFO_SEQ": "11"
+}
+
+### 거래처관리 상세조회
+POST http://127.0.0.1:4000/api/v1/customer/details HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_STORE_CUSTOMER_MNG_SEQ": "2",
+  "AD_STORE_INFO_SEQ": "11"
+}
+
+### 거래처관리 등록
+POST http://127.0.0.1:4000/api/v1/customer/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_STORE_INFO_SEQ": "11",
+  "STORE_NM": "농협 축산물 센터",
+  "MANAGER_NM": "임시완",
+  "BOSS_HP": "0233334444",
+  "MANAGER_HP": "01022223333",
+  "SECTOR": "식품",
+  "RECEIVABLE_COST": "1000",
+  "PAYABLE_COST": "2000",
+  "BALANCE_COST": "3000",
+  "MENO": "테스트 입니다.",
+  "STATUS": "I"
+}
+
+### 거래처관리 수정
+POST http://127.0.0.1:4000/api/v1/customer/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_STORE_CUSTOMER_MNG_SEQ": "1",
+  "STORE_NM": "농협 축산물 센터",
+  "MANAGER_NM": "임시완",
+  "BOSS_HP": "0233334444",
+  "MANAGER_HP": "01022223333",
+  "SECTOR": "식품",
+  "RECEIVABLE_COST": "1",
+  "PAYABLE_COST": "2",
+  "BALANCE_COST": "3",
+  "MENO": "테스트 입니다.111",
+  "STATUS": "U"
+}
+
+### 거래처관리 삭제
+POST http://127.0.0.1:4000/api/v1/customer/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_STORE_CUSTOMER_MNG_SEQ": "1",  
+  "STATUS": "D"
+}
+
+### 계좌정보 조회
+POST http://127.0.0.1:4000/api/v1/account/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  
+}
+
+### 계좌정보 상세조회
+POST http://127.0.0.1:4000/api/v1/account/details HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_ACCOUNT_INFO_SEQ": "1"
+}
+
+### 계좌정보 등록
+POST http://127.0.0.1:4000/api/v1/account/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_STORE_INFO_SEQ": "11",
+  "ACCOUNT_CD": "25",
+  "BANK_CD": "28",
+  "ACCOUNT_NUM": "123412887644",
+  "BRANCH_NM": "강남점",
+  "OPEN_DT": "20200502",
+  "STATUS": "I"
+}
+
+### 계좌정보 수정
+POST http://127.0.0.1:4000/api/v1/account/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_ACCOUNT_INFO_SEQ": "1",
+  "AD_STORE_INFO_SEQ": "11",
+  "ACCOUNT_CD": "25",
+  "BANK_CD": "28",
+  "ACCOUNT_NUM": "123412887644",
+  "BRANCH_NM": "강남점",
+  "OPEN_DT": "20200502",
+  "STATUS": "U"
+}
+
+### 계좌정보 삭제
+POST http://127.0.0.1:4000/api/v1/account/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{ 
+  "AD_ACCOUNT_INFO_SEQ": "1",  
+}

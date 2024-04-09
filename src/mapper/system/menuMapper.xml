@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menuMapper">
+
+  <!-- 전체 메뉴 리스트 조회 -->
+  <select id="getMenuList">  
+    SELECT	  
+        vam.SYS_MENU_SEQ       
+      , vam.PRT_MENU_SEQ
+      , vam.MANAGE_CD
+      , vam.MENU_NM
+      , vam.GROUP_NM
+      , vam.MENU_URL
+      , vam.MENU_SORT
+      , vam.USE_YN
+      , ccd.DETAIL_NM AS USE_YN_NM
+      , vam.SYSTEM_GB
+      , vam.MENU_LEVEL
+      , vam.SUB_MENU_CNT
+      , vam.MENU_PATH_CD
+      , vam.MENU_PATH_NM
+    FROM V_ALL_MENU vam
+      LEFT JOIN COMM_CODE_DETAIL ccd
+        ON ccd.DETAIL_VAL = vam.USE_YN
+    WHERE vam.MANAGE_CD = ${MANAGE_CD}
+    ORDER BY vam.MENU_SORT, vam.MENU_PATH_CD
+  </select>
+
+
+  <!-- 사용자 left 메뉴 리스트 조회 -->
+  <select id="getUserMenuList">  
+    SELECT 
+        vumm.AD_USER_INFO_SEQ
+      , vumm.USER_ID
+      , vumm.USER_NAME
+      , vumm.SYS_AUTHORITY_SEQ
+      , vumm.AUTHORITY_NAME
+      , vumm.SYSTEM_GB
+      , vumm.SYS_MENU_SEQ
+      , vumm.SELECT_YN
+      , vumm.SAVE_YN      
+      , vumm.DELETE_YN
+      , vm.PRT_MENU_SEQ    
+      , vm.MENU_NM
+      , vm.GROUP_NM
+      , vm.MENU_URL
+      , vm.MENU_SORT
+      , vm.MENU_PATH_NM 
+      , vm.MENU_LEVEL
+    FROM V_USER_MENU_MAPPING vumm
+      INNER JOIN V_MENU vm 
+        ON vumm.SYS_MENU_SEQ = vm.SYS_MENU_SEQ
+    WHERE vumm.USER_ID = #{USER_ID}
+      AND vumm.SELECT_YN = 'Y'
+    ORDER BY vm.MENU_SORT     
+  </select>
+
+  <!-- 메뉴 저장 -->
+  <insert id="instMenuInfo">
+    INSERT INTO SYS_MENU (
+        PRT_MENU_SEQ
+      , MANAGE_CD
+      , MENU_NM
+      , GROUP_NM
+      , MENU_URL
+      , MENU_SORT
+      , USE_YN      
+      , ID_REG_USER
+      , DT_REG
+      , ID_MOD_USER
+      , DT_MOD
+    ) VALUES(
+        0
+      , ${MANAGE_CD}
+      , #{MENU_NM}
+      , #{GROUP_NM}
+      , #{MENU_URL}
+      , #{MENU_SORT}
+      , #{USE_YN}
+      , #{ID_REG_USER}
+      , NOW()
+      , #{ID_MOD_USER}
+      , NOW()
+    )
+  </insert>
+
+  <!-- 메뉴 수정 , MENU_SORT   = #{MENU_SORT}, , SYSTEM_GB   = #{SYSTEM_GB} -->
+  <update id="updMenuInfo">    
+    UPDATE SYS_MENU 
+    SET MENU_NM     = #{MENU_NM}
+      , GROUP_NM    = #{GROUP_NM}
+      , MENU_URL    = #{MENU_URL}
+      , USE_YN      = #{USE_YN}	
+      , ID_MOD_USER = #{ID_MOD_USER}
+      , DT_MOD      = NOW() 
+    WHERE SYS_MENU_SEQ = ${SYS_MENU_SEQ}
+      AND PRT_MENU_SEQ = ${PRT_MENU_SEQ}
+  </update>
+
+  <!-- 하위메뉴 등록 -->
+  <update id="instUnderMenuInfo">    
+    INSERT INTO SYS_MENU (
+        PRT_MENU_SEQ
+      , MANAGE_CD
+      , MENU_NM
+      , GROUP_NM
+      , MENU_URL
+      , MENU_SORT   
+      , USE_YN
+      , ID_REG_USER
+      , DT_REG
+      , ID_MOD_USER
+      , DT_MOD
+    ) VALUES(
+        ${SYS_MENU_SEQ}
+      , ${MANAGE_CD}
+      , #{MENU_NM}
+      , #{GROUP_NM}
+      , #{MENU_URL}      
+      , #{MENU_SORT}
+      , #{USE_YN}
+      , #{ID_REG_USER}
+      , NOW()
+      , #{ID_MOD_USER}
+      , NOW()
+    )
+  </update>
+
+  <!-- 상위 메뉴의 max 정렬값 -->
+  <select id="getPrtMenuSortNo">
+    SELECT 
+      MAX(MENU_SORT) + 100 AS MENU_SORT
+    FROM SYS_MENU
+    WHERE PRT_MENU_SEQ = 0 AND MENU_SORT != 100000
+  </select>
+
+  <!-- 하위 메뉴의 max 정렬값 -->
+  <select id="getUnderMenuSortNo">
+    SELECT 
+      IFNULL(MAX(MENU_SORT), (SELECT MENU_SORT FROM SYS_MENU sm WHERE SYS_MENU_SEQ = #{SYS_MENU_SEQ})) + 1 AS MENU_SORT 
+    FROM SYS_MENU
+    WHERE PRT_MENU_SEQ = #{SYS_MENU_SEQ}
+  </select>
+
+  <!-- 메뉴 리스트 조회 -->
+  <select id="findMenuByUserAccount">
+    SELECT 
+        vumm.AD_USER_INFO_SEQ
+      , vumm.USER_ID
+      , vumm.USER_NAME
+      , vumm.SYS_AUTHORITY_SEQ
+      , vumm.AUTHORITY_NAME
+      , vumm.SYSTEM_GB
+      , vumm.SYS_MENU_SEQ
+      , vumm.SELECT_YN
+      , vumm.SAVE_YN      
+      , vumm.DELETE_YN
+      , vm.PRT_MENU_SEQ    
+      , vm.MENU_NM
+      , vm.GROUP_NM
+      , vm.MENU_URL
+      , vm.MENU_SORT
+      , vm.MENU_PATH_NM 
+      , vm.MENU_LEVEL
+    FROM V_USER_MENU_MAPPING vumm
+      INNER JOIN V_MENU vm 
+        ON vumm.SYS_MENU_SEQ = vm.SYS_MENU_SEQ
+    WHERE vumm.USER_ID = #{user_id}
+      AND vumm.SELECT_YN = 'Y'
+    ORDER BY vm.MENU_SORT 
+  </select>
+
+  <!-- 사용 Y 메뉴 리스트 조회 -->
+  <select id="findMenuByUse">
+    SELECT 
+        vm.SYS_MENU_SEQ
+      , vm.PRT_MENU_SEQ
+      , vm.MENU_NM
+      , vm.GROUP_NM
+      , vm.MENU_URL
+      , vm.MENU_LEVEL
+      , vm.MENU_PATH_CD
+      , vm.MENU_PATH_NM
+      , vm.SUB_MENU_CNT
+    FROM V_MENU vm    
+  </select>
+
+  <!-- 권한에 연결되어 있는 메뉴 리스트 조회 -->
+  <select id="getAuthMenuList">
+    SELECT 
+        vm.SYS_MENU_SEQ
+      , vm.PRT_MENU_SEQ
+      , vm.MENU_NM
+      , vm.GROUP_NM
+      , vm.MENU_URL
+      , vm.MENU_SORT
+      , vm.USE_YN
+      , vm.SYSTEM_GB
+      , vm.MENU_LEVEL
+      , vm.MENU_PATH_CD
+      , vm.MENU_PATH_NM 
+      , vm.SUB_MENU_CNT
+      , tamm.SYS_AUTH_MENU_MAP_SEQ
+      , tamm.SYS_AUTHORITY_SEQ
+      , ifnull(tamm.SELECT_YN,'N') AS SELECT_YN
+      , ifnull(tamm.SAVE_YN,'N')   AS SAVE_YN
+      , ifnull(tamm.DELETE_YN,'N') AS DELETE_YN
+    FROM V_MENU vm 
+      LEFT JOIN SYS_AUTHORITY_MENU_MAP tamm
+        ON tamm.SYS_MENU_SEQ = vm.SYS_MENU_SEQ
+    <if test=" SYS_AUTHORITY_SEQ != null and SYS_AUTHORITY_SEQ != '' ">
+          AND tamm.SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+    </if>
+    WHERE 1 = 1
+    <if test=" MANAGE_CD != 1 ">
+      AND SYSTEM_GB = 'N'
+      </if>
+    GROUP BY vm.SYS_MENU_SEQ
+    ORDER BY vm.MENU_SORT
+  </select>
+</mapper>

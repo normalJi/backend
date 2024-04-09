@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scrapYessinMapper">
+
+  <!-- 여신 가맹점 키 삭제 -->
+  <delete id="delYessinShopKey">
+    DELETE 
+    FROM SCRP_YESSIN_SHOP_KEY 
+    WHERE SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ};
+  </delete>
+
+  <!-- 여신 가맹점 키 생성 -->
+  <insert id="instYessinShopKey">
+    INSERT INTO SCRP_YESSIN_SHOP_KEY (
+      SCRP_USER_ACCOUNT_SEQ, CD_KEY
+    ) VALUES (
+      ${SCRP_USER_ACCOUNT_SEQ}, #{CD_KEY}
+    );
+  </insert>
+
+
+  <!-- 여신 승인내역 삭제 -->
+  <delete id="delYessinApprovals">
+    DELETE 
+    FROM SCRP_YESSIN_APPR 
+    WHERE 1=1
+      AND AD_STORE_INFO_SEQ = ${AD_STORE_INFO_SEQ}
+      AND SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      AND DT_TRAN BETWEEN #{DT_STR} AND #{DT_END}
+  </delete>
+
+  <!-- 여신 승인내역 생성 -->
+  <insert id="instYessinApprovals">
+    INSERT INTO SCRP_YESSIN_APPR (
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, DT_TRAN, TM_TRAN, NM_CARD
+      , NM_AFFI_CARD, NO_CARD, NO_APRV, CD_PAY, NO_MONTH, AM_TOTAL
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{DT_TRAN}, #{TM_TRAN}, #{NM_CARD}
+      , #{NM_AFFI_CARD}, #{NO_CARD}, #{NO_APRV}, #{CD_PAY}, ${NO_MONTH}, ${AM_TOTAL}
+    );
+  </insert>
+
+
+  <!-- 여신 매입내역 삭제 -->
+  <delete id="delYessinPurchases">
+    DELETE 
+    FROM SCRP_YESSIN_BUY 
+    WHERE 1=1
+      AND AD_STORE_INFO_SEQ = ${AD_STORE_INFO_SEQ}
+      AND SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      AND DT_PUCH BETWEEN #{DT_STR} AND #{DT_END}
+  </delete>
+
+  <!-- 여신 매입내역 생성 -->
+  <insert id="instYessinPurchases">
+    INSERT INTO SCRP_YESSIN_BUY ( 
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, DT_PUCH, DT_TRAN
+      , NM_CARD, NO_CARD, NO_APRV, CD_PAY, AM_TOTAL
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{DT_PUCH}, #{DT_TRAN}
+      , #{NM_CARD}, #{NO_CARD}, #{NO_APRV}, #{CD_PAY}, ${AM_TOTAL}
+    );
+  </insert>
+
+
+  <!-- 여신 입금내역 삭제 -->
+  <delete id="delYessinADeposits">
+    DELETE 
+    FROM SCRP_YESSIN_DEPO 
+    WHERE 1=1
+      AND AD_STORE_INFO_SEQ = ${AD_STORE_INFO_SEQ}
+      AND SCRP_USER_ACCOUNT_SEQ = ${SCRP_USER_ACCOUNT_SEQ}
+      AND DT_DEPOSIT BETWEEN #{DT_STR} AND #{DT_END}
+  </delete>
+
+  <!-- 여신 입금내역 생성 -->
+  <insert id="instYessinDeposits">
+    INSERT INTO SCRP_YESSIN_DEPO (
+      AD_STORE_INFO_SEQ, SCRP_USER_ACCOUNT_SEQ, DT_DEPOSIT, NM_CARD
+      , NM_BANK, NO_ACCOUNT, CNT_SALES, AM_SALES, AM_TOTAL
+    ) VALUES (
+      ${AD_STORE_INFO_SEQ}, ${SCRP_USER_ACCOUNT_SEQ}, #{DT_DEPOSIT}, #{NM_CARD}
+      , #{NM_BANK}, #{NO_ACCOUNT}, ${CNT_SALES}, ${AM_SALES}, ${AM_TOTAL}
+    );
+  </insert>
+
+</mapper>

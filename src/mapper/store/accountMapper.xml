@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accountMapper">
+
+  <!-- 계좌정보 조회 -->
+  <select id="getAccountList">
+    SELECT 
+        aai.AD_ACCOUNT_INFO_SEQ
+      , aai.AD_STORE_INFO_SEQ
+      , aai.ACCOUNT_CD
+      , ccd.DETAIL_NM AS ACCOUNT_CD_NM
+      , aai.BANK_CD
+      , ccd2.DETAIL_NM AS BANK_CD_NM
+      , aai.ACCOUNT_HOLDER
+      , aai.ACCOUNT_NUM
+      , aai.BRANCH_NM
+      , aai.OPEN_DT  
+    FROM AD_ACCOUNT_INFO aai
+      LEFT JOIN COMM_CODE_DETAIL ccd 
+        ON aai.ACCOUNT_CD = ccd.DETAIL_VAL 
+          AND ccd.DETAIL_KEY = 'ACCOUNT_CD'
+      LEFT JOIN COMM_CODE_DETAIL ccd2 
+        ON aai.BANK_CD = ccd2.DETAIL_VAL
+          AND ccd2.DETAIL_KEY = 'BANK_CD'
+    WHERE aai.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+    ORDER BY aai.AD_ACCOUNT_INFO_SEQ DESC
+  </select>
+
+  <!-- 계좌정보 상세조회 -->
+  <select id="getAccountDetails">
+    SELECT 
+        aai.AD_ACCOUNT_INFO_SEQ
+      , aai.AD_STORE_INFO_SEQ
+      , aai.ACCOUNT_CD
+      , ccd.DETAIL_NM AS ACCOUNT_CD_NM
+      , asi.BOSS_NM AS ACCOUNT_HOLDER	
+      , aai.BANK_CD
+      , ccd2.DETAIL_NM AS BANK_CD_NM
+      , aai.ACCOUNT_NUM
+      , aai.BRANCH_NM
+      , aai.OPEN_DT 
+      , aai.ACCOUNT_CONTENT	
+    FROM AD_STORE_INFO asi
+      INNER JOIN AD_ACCOUNT_INFO aai
+        ON asi.AD_STORE_INFO_SEQ = aai.AD_STORE_INFO_SEQ 
+      LEFT JOIN COMM_CODE_DETAIL ccd 
+        ON aai.ACCOUNT_CD = ccd.DETAIL_VAL 
+          AND ccd.DETAIL_KEY = 'ACCOUNT_CD'
+      LEFT JOIN COMM_CODE_DETAIL ccd2 
+        ON aai.BANK_CD = ccd2.DETAIL_VAL
+          AND ccd2.DETAIL_KEY = 'BANK_CD'
+    WHERE 1 = 1    
+      AND AD_ACCOUNT_INFO_SEQ = #{AD_ACCOUNT_INFO_SEQ}    
+  </select>
+
+  <!-- 계좌정보 등록 -->
+  <insert id="instAccountInfo">
+    INSERT INTO AD_ACCOUNT_INFO (
+        AD_STORE_INFO_SEQ
+      , ACCOUNT_CD
+      , BANK_CD
+      , ACCOUNT_HOLDER
+      , ACCOUNT_NUM
+      , BRANCH_NM
+      , OPEN_DT
+      , ACCOUNT_CONTENT
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_STORE_INFO_SEQ}
+      , #{ACCOUNT_CD}
+      , #{BANK_CD}
+      , #{ACCOUNT_HOLDER}
+      , #{ACCOUNT_NUM}
+      , #{BRANCH_NM}
+      , #{OPEN_DT}
+      , #{ACCOUNT_CONTENT}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 계좌정보 수정 -->
+  <update id="updAccountInfo">
+    UPDATE AD_ACCOUNT_INFO 
+    SET ACCOUNT_CD      = #{ACCOUNT_CD}
+      , BANK_CD         = #{BANK_CD}
+      , ACCOUNT_HOLDER  = #{ACCOUNT_HOLDER}
+      , ACCOUNT_NUM     = #{ACCOUNT_NUM}
+      , BRANCH_NM       = #{BRANCH_NM}
+      , OPEN_DT         = #{OPEN_DT}	
+      , ACCOUNT_CONTENT = #{ACCOUNT_CONTENT}
+      , DT_MOD          = SYSDATE() 
+      , ID_MOD_USER     = #{ID_MOD_USER} 
+    WHERE AD_ACCOUNT_INFO_SEQ = #{AD_ACCOUNT_INFO_SEQ}
+  </update>  
+
+  <!-- 계좌정보 삭제 -->
+  <delete id="delAccountInfo">
+    DELETE FROM AD_ACCOUNT_INFO WHERE AD_ACCOUNT_INFO_SEQ = #{AD_ACCOUNT_INFO_SEQ}
+  </delete>  
+
+  
+</mapper>

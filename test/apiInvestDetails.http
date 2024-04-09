@@ -1,0 +1,219 @@
+// 실행 방법 : ctrl + shift + p
+// 투자내역 API 테스트
+### 로그인
+POST http://127.0.0.1:4000/api/v1/login HTTP/1.1
+Content-Type: application/json
+  
+{
+  "USER_ID": "hrji", "USER_PASS": "hrji"
+}
+
+### 투자내역 조회
+POST http://127.0.0.1:4000/api/v1/invest/history/list HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{"AD_STORE_INFO_SEQ": "11"}
+
+### 투자내역 등록 - 사용안함.
+POST http://127.0.0.1:4000/api/v1/invest/history/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{
+  "AD_STORE_INFO_SEQ": "11",
+  "STATUS": "I"
+
+}
+
+### 투자내역 수정
+POST http://127.0.0.1:4000/api/v1/invest/history/save HTTP/1.1
+Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IlVTRVJfSUQiOiJocmppIiwiVVNFUl9OQU1FIjoi7KeA7Zi466OhIiwiTUFOQUdFX0NEIjoxfSwiaWF0IjoxNzA0MTYyNDM3LCJleHAiOjE3MDQxOTEyMzcsImlzcyI6ImZyaWVuZCJ9.5EKl2vRnpggLZZM392H1XSdWL5HE12O_6wroQ8EOzl0
+
+{
+  "list": [{   
+    "AD_INVEST_HISTORY_SEQ": "23", 
+    "PLAN_A": 15,
+    "SUPPLY_COST": 15,
+    "TAX_COST": 1,
+    "TOTAL_COST": 15,
+    "DIFF_COST": 12,
+    "MENO_1": "Y",
+    "MENO_2": "월세 100만원(후불)(수정)" 
+  }, {  
+    "AD_INVEST_HISTORY_SEQ": "24",  
+    "PLAN_A": 1,
+    "SUPPLY_COST": 2,
+    "TAX_COST": 3,
+    "TOTAL_COST": 4,
+    "DIFF_COST": 5,
+    "MENO_1": "N",
+    "MENO_2": "굳"    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "25",
+    "PLAN_A": 1870000,
+    "SUPPLY_COST": 1000000,
+    "TAX_COST": 100000,
+    "TOTAL_COST": 1100000,
+    "DIFF_COST": -770000,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "26",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": "표준가맹비 770만원" 
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "27",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": "표준가맹비 330만원" 
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "28",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": "표준가맹비 30만원"
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "29",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": "011/2021"
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "30",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "31",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "32",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "33",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "34",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "35",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "36",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "37",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "38",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "39",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""    
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "40",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "41",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""
+  }, {
+    "AD_INVEST_HISTORY_SEQ": "42",
+    "PLAN_A": 0,
+    "SUPPLY_COST": 0,
+    "TAX_COST": 0,
+    "TOTAL_COST": 0,
+    "DIFF_COST": 0,
+    "MENO_1": "",
+    "MENO_2": ""
+  }],
+  "STATUS": "U"
+
+}
+

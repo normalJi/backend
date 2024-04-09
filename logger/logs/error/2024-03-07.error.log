@@ -1,0 +1,127 @@
+2024-03-07 14:55:26:5526 error: [Database] ======> Error: MAPPER_NULL_ERROR 
+2024-03-07 14:56:40:5640 error: transExec 에러 Field 'START_DT' doesn't have a default value 
+ Error Stack: Error: Field 'START_DT' doesn't have a default value
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at getDocumentsList (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:42:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 14:57:27:5727 error: transExec 에러 Field 'START_DT' doesn't have a default value 
+ Error Stack: Error: Field 'START_DT' doesn't have a default value
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at getDocumentsList (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:42:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 15:42:53:4253 error: transExec 에러 Parameter #{AD_STORE_OWNER_DOC_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_STORE_OWNER_DOC_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:133:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 15:44:14:4414 error: transExec 에러 Parameter #{AD_STORE_OWNER_DOC_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_STORE_OWNER_DOC_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:133:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 15:45:44:4544 error: transExec 에러 Parameter #{AD_DOCUMENTS_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_DOCUMENTS_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:133:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 15:56:49:5649 error: transExec 에러 Parameter #{DYNAMIC_DIVISION} is not converted. 
+ Error Stack: Error: Parameter #{DYNAMIC_DIVISION} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:105:25)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:146:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:03:43:343 error: transExec 에러 Parameter #{DYNAMIC_DIVISION} is not converted. 
+ Error Stack: Error: Parameter #{DYNAMIC_DIVISION} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:105:25)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:146:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:07:09:79 error: transExec 에러 Parameter #{DYNAMIC_DIVISION} is not converted. 
+ Error Stack: Error: Parameter #{DYNAMIC_DIVISION} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:105:25)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:146:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:08:22:822 error: transExec 에러 Parameter #{DYNAMIC_DIVISION} is not converted. 
+ Error Stack: Error: Parameter #{DYNAMIC_DIVISION} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:105:25)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:146:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:11:15:1115 error: transExec 에러 Parameter #{DYNAMIC_DIVISION} is not converted. 
+ Error Stack: Error: Parameter #{DYNAMIC_DIVISION} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:105:25)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:146:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:13:12:1312 error: transExec 에러 Parameter #{DYNAMIC_DIVISION} is not converted. 
+ Error Stack: Error: Parameter #{DYNAMIC_DIVISION} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDynamicDetails (D:\02.project\dev_workspace\sogul_admin_backend\src\store\code.js:105:25)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:146:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:19:01:191 error: transExec 에러 Parameter #{AD_STORE_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_STORE_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:126:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:19:45:1945 error: transExec 에러 Parameter #{AD_STORE_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_STORE_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:126:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:19:58:1958 error: transExec 에러 Parameter #{AD_STORE_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_STORE_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:126:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:20:19:2019 error: transExec 에러 Parameter #{DOC_GB} is not converted. 
+ Error Stack: Error: Parameter #{DOC_GB} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:126:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 16:40:21:4021 error: app exec error(/api/v1/store/doc/save) Cannot create property 'code' on number '10' 
+ Error Stack: TypeError: Cannot create property 'code' on number '10'
+    at ResponseData.setResponseCode (D:\02.project\dev_workspace\sogul_admin_backend\common\ResponseBase.js:30:22)
+    at setDocuments (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:157:20)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-03-07 17:28:05:285 error: transExec 에러 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE
+  AD_DOCUMENTS_SEQ = '1'' at line 3 
+ Error Stack: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE
+  AD_DOCUMENTS_SEQ = '1'' at line 3
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setDocumentsDel (D:\02.project\dev_workspace\sogul_admin_backend\src\store\documents.js:185:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

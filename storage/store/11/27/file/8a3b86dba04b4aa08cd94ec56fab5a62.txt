@@ -1,0 +1,87 @@
+react 재사용 테이블 
+- Object
+headers : 헤더열
+items : 데이터 부분 (배열)
+selectCheck : 앞에 checkbox를 넣을지 말지 (true or false)
+itemKey : 데이터의 키값 (문자열)
+updateSelection : row 선택 시 데이터를 담을 함수 ( rowUpd or rowSelect or 없음 : true or false )
+
+column object
+text: header 명 (필수)
+value: 데이터 컬럼과 매칭 (필수)
+
+hidden: 컬럼 숨김 true or false
+align: 정렬 left, center, right
+width: 넓이 (반응형 %, 고정 px)
+rowUpd: 수정을 위한 modal창 open 항목 (true 또는 false)
+rowSelect: 선택항목의 데이터 가져오기 (true 또는 false)
+rowDetail: 선택항목의 상세화면으로 이동 (true 또는 false)
+rowPopup: 선택항목을 팝업창으로 열기 (true 또는 false)
+format: util 파일안에 uf_formatChange 함수 참조
+btn: 버튼 생성 (버튼 명을 입력) - 필수 항목 : btnKey - PAGE(페이지 이동) , 그 외 구분값으로 modal을 띄울 수 있도록
+
+
+
+
+
+
+내것 : 현재 선택되어있는 브런치
+저장소 : 병합할 저장소
+
+
+
+
+
+설치된 next.js 라이브러리
+
+tailwind
+- npm install -D tailwindcss
+- npx tailwindcss init
+
+twElements
+- npm install tw-elements
+
+axios
+- npm install axios
+
+react form  (사용하지 않음)
+- npm intall react-hook-form
+
+sweetAlert2
+- npm install sweetalert2
+
+nookies
+- npm install nookies
+
+fullcalendar
+- npm install @fullcalendar/daygrid @fullcalendar/timegrid @fullcalendar/interaction @fullcalendar/react
+
+express lib
+http-status-codes
+- npm install http-status-codes --save
+
+body-parser
+- npm install body-parser --save
+
+winston
+- npm install winston --save
+
+winston-daily-rotate-file
+- npm install winston-daily-rotate-file --save
+
+cors
+- npm install cors --save
+
+mysql2
+- npm install mysql2 --save
+
+mybatis-mapper
+- npm install mybatis-mapper --save
+
+jsonwebtoken
+
+date-utils
+
+react-cookies
+
+	   .

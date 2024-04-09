@@ -1,0 +1,35 @@
+2024-02-05 14:33:53:3353 error: transExec 에러 Parameter #{APPROVAL_YN} is not converted. 
+ Error Stack: Error: Parameter #{APPROVAL_YN} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAdminSave (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:325:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-05 14:34:50:3450 error: transExec 에러 Parameter #{AD_USER_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_USER_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAdminSave (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:325:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-05 14:38:14:3814 error: transExec 에러 Parameter #{AD_USER_INFO_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{AD_USER_INFO_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAdminSave (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:325:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-05 14:39:33:3933 error: transExec 에러 Data too long for column 'APPROVAL_YN' at row 1 
+ Error Stack: Error: Data too long for column 'APPROVAL_YN' at row 1
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setAdminSave (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:325:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-05 18:08:31:831 error: transExec 에러 SQL ID [instAdminInfo] not exists 
+ Error Stack: Error: SQL ID [instAdminInfo] not exists
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:90:57)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setAdminSave (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:343:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

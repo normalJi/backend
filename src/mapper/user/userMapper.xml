@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+
+  <!-- 단일 사용자 정보 조회 -->
+  <select id="checkUserAccout">
+    SELECT 
+        tui.AD_USER_INFO_SEQ
+      , tui.USER_ID
+      , tui.USER_PASS
+      , tui.USER_NAME
+      , tui.APPROVAL_YN
+      , tuir.USER_ROLES
+      , tuir.MANAGE_CD
+    FROM AD_USER_INFO tui
+    INNER JOIN AD_USER_INFO_ROLES tuir 
+      ON tui.AD_USER_INFO_SEQ = tuir.AD_USER_INFO_SEQ    
+    WHERE tui.USER_ID = #{USER_ID}    
+    <if test=" USE_YN != null and USE_YN != '' ">
+      AND tui.USE_YN = 'Y'
+    </if>
+  </select>
+
+  <!-- 관리자 사용자 등록 (사용자 가입 및 관리자 직접 등록) -->
+  <insert id="insertUserInfo">
+    INSERT INTO AD_USER_INFO (
+      USER_ID, USER_PASS, USER_NAME, APPROVAL_YN, USE_YN, DT_REG, ID_REG_USER, DT_MOD, ID_MOD_USER
+    ) VALUES (
+      #{USER_ID}, #{USER_PASS}, #{USER_NAME}, #{APPROVAL_YN}, #{USE_YN}, NOW(), #{ID_REG_USER}, NOW(), #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 관리자 Role 저장 -->
+  <insert id="saveUserRoles">
+    INSERT INTO AD_USER_INFO_ROLES(
+      AD_USER_INFO_SEQ, USER_ROLES, MANAGE_CD, DT_MOD, ID_MOD_USER
+    ) VALUES (
+      #{AD_USER_INFO_SEQ}, #{USER_ROLES}, ${manage_cd}, NOW(), #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 관리자 사용자 리스트 -->
+  <select id="getUserList">
+    SELECT 
+        tui.AD_USER_INFO_SEQ
+      , tui.USER_ID
+      , tui.USER_NAME
+      , tuir.USER_ROLES      
+    FROM AD_USER_INFO tui
+    INNER JOIN AD_USER_INFO_ROLES tuir 
+      ON tui.AD_USER_INFO_SEQ = tuir.AD_USER_INFO_SEQ    
+    WHERE 1 = 1
+    <if test=" USER_ID != null and USER_ID != '' ">
+      AND tui.USER_ID = #{USER_ID}
+    </if>
+    <if test=" USE_YN != null and USE_YN != '' ">
+      AND tui.USE_YN = 'Y'
+    </if>
+  </select>
+
+  <!-- 관리자 사용자 정보 -->
+  <select id="getAdminUserInfo">
+    SELECT 
+        tui.AD_USER_INFO_SEQ
+      , tui.USER_ID
+      , tui.USER_NAME
+      , tuir.USER_ROLES      
+    FROM AD_USER_INFO tui
+    INNER JOIN AD_USER_INFO_ROLES tuir 
+      ON tui.AD_USER_INFO_SEQ = tuir.AD_USER_INFO_SEQ    
+    WHERE 1 = 1
+    <if test=" user_id != null and user_id != '' ">
+      AND tui.USER_ID = #{user_id}
+    </if>    
+  </select>
+
+
+  <!-- 관리자 회원 등록 (관리자가 직접 수정) -->
+  <update id="updateAdminInfo">
+    UPDATE AD_USER_INFO 
+    SET USER_ID   = #{USER_ID}
+      , USER_NAME   = #{USER_NAME}
+      , APPROVAL_YN = #{APPROVAL_YN}
+      , USE_YN      = #{USE_YN}
+      , DT_MOD      = NOW()
+      , ID_MOD_USER = #{ID_MOD_USER} 
+    WHERE AD_USER_INFO_SEQ = #{AD_USER_INFO_SEQ}
+  </update>
+
+  <!-- 관리자의 관리 업체 수정 -->
+  <update id="updateAdminRoles">
+    UPDATE AD_USER_INFO_ROLES 
+    SET   MANAGE_CD   = #{MANAGE_CD}
+        , DT_MOD      = NOW()
+        , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE AD_USER_ROLE_SEQ = ${AD_USER_ROLE_SEQ} 
+  </update>
+
+  <!-- 관리자의 나의 회원정보 수정 -->
+  <update id="updateSelectAdminInfo">
+    UPDATE AD_USER_INFO
+    SET USER_NAME   = #{USER_NAME}
+      , DT_MOD      = now()
+      , ID_MOD_USER = #{ID_MOD_USER}
+      <if test=" USER_PASS != null and USER_PASS != '' ">
+      , USER_PASS   = #{USER_PASS}
+      </if>
+      , USER_NAME   = #{USER_NAME}      
+    WHERE AD_USER_INFO_SEQ = ${AD_USER_INFO_SEQ}
+  </update>
+
+  <!-- 관리자 회원 리스트 총갯수 (사용안함) -->
+  <!-- <select id="getAdminListTotalCnt">
+    SELECT 
+      COUNT(*) AS TOTAL_CNT
+    FROM (
+      SELECT 
+        vaui.AD_USER_INFO_SEQ  
+        , vaui.USER_ID 
+        , vaui.USER_NAME 
+        , vaui.APPROVAL_YN 
+        , vaui.USE_YN 
+        , vaui.USER_ROLES 
+        , vaui.MANAGE_CD 
+        , vaui.NM_MANAGE_COMP 
+      FROM V_AD_USER_INFO vaui
+      WHERE 1 = 1
+      <if test=" SEARCH_USER_ID != null and SEARCH_USER_ID != '' ">
+        AND vaui.USER_ID LIKE CONCAT('%', #{SEARCH_USER_ID} ,'%')
+      </if>
+      <if test=" SEARCH_USER_NAME != null and SEARCH_USER_NAME != '' ">
+        AND vaui.USER_NAME LIKE CONCAT('%', #{SEARCH_USER_NAME} ,'%')
+      </if>
+      <if test=" SEARCH_APPROVAL_YN != null and SEARCH_APPROVAL_YN != '' ">
+        AND vaui.APPROVAL_YN = #{SEARCH_APPROVAL_YN}
+      </if>
+      <if test=" SEARCH_USE_YN != null and SEARCH_USE_YN != '' ">
+        AND vaui.USE_YN = #{SEARCH_USE_YN}
+      </if>
+    ) cb_1
+  </select> -->
+
+  <!-- 관리자 회원 리스트 조회 (사용안함) -->
+  <!-- <select id="getAdminList">
+    SELECT 
+        @NO_RNUM := @NO_RNUM - 1 AS NO_RNUM
+      , cb_1.AD_USER_INFO_SEQ  
+      , cb_1.AD_USER_ROLE_SEQ
+      , cb_1.USER_ID 
+      , cb_1.USER_NAME 
+      , cb_1.APPROVAL_YN 
+      , cb_1.USE_YN 
+      , cb_1.USER_ROLES 
+      , cb_1.MANAGE_CD 
+      , cb_1.NM_MANAGE_COMP
+    FROM (
+      SELECT 
+          vaui.AD_USER_INFO_SEQ
+        , vaui.AD_USER_ROLE_SEQ
+        , vaui.USER_ID 
+        , vaui.USER_NAME 
+        , vaui.APPROVAL_YN 
+        , vaui.USE_YN 
+        , vaui.USER_ROLES 
+        , CONCAT(vaui.MANAGE_CD) AS MANAGE_CD
+        , vaui.NM_MANAGE_COMP 
+      FROM V_AD_USER_INFO vaui
+      WHERE 1 = 1
+      <if test=" SEARCH_USER_ID != null and SEARCH_USER_ID != '' ">
+        AND vaui.USER_ID LIKE CONCAT('%', #{SEARCH_USER_ID} ,'%')
+      </if>
+      <if test=" SEARCH_USER_NAME != null and SEARCH_USER_NAME != '' ">
+        AND vaui.USER_NAME LIKE CONCAT('%', #{SEARCH_USER_NAME} ,'%')
+      </if>
+      <if test=" SEARCH_APPROVAL_YN != null and SEARCH_APPROVAL_YN != '' ">
+        AND vaui.APPROVAL_YN = #{SEARCH_APPROVAL_YN}
+      </if>
+      <if test=" SEARCH_USE_YN != null and SEARCH_USE_YN != '' ">
+        AND vaui.USE_YN = #{SEARCH_USE_YN}
+      </if>
+      <if test=" SEARCH_TEXT != null and SEARCH_TEXT != '' ">
+        AND ( vaui.USER_ID LIKE CONCAT('%', #{SEARCH_TEXT} ,'%') OR vaui.USER_NAME LIKE CONCAT('%', #{SEARCH_TEXT} ,'%') )
+      </if>
+      ORDER BY vaui.AD_USER_INFO_SEQ DESC
+    ) cb_1
+    , ( SELECT @NO_RNUM := (${TOTAL_CNT} - ${PAGE_NO} + 1) ) R
+  </select> -->
+
+  <!-- 관리자 비밀번호 초기화 -->
+  <update id="updateAdminPassword">
+    UPDATE AD_USER_INFO
+    SET USER_PASS = #{USER_PASS}
+    WHERE AD_USER_INFO_SEQ = ${AD_USER_INFO_SEQ}
+  </update>
+
+  <!-- 관리 업체 리스트 조회 -->
+  <select id="getManageCompList">
+    SELECT 
+      CONCAT(amc.MANAGE_CD) AS 'value', amc.NM_MANAGE_COMP AS `text`
+    FROM AD_MANAGE_COMP amc
+    WHERE 1 = 1
+      AND amc.USE_YN = 'Y'
+  </select>
+
+  <!-- 고객 회원 총 갯수 -->
+  <select id="getMemberListTotalCnt">
+    SELECT 
+      COUNT(*) AS TOTAL_CNT
+    FROM (
+      SELECT 
+          vsui.SOGUL_USER_INFO_SEQ, vsui.SOGUL_USER_COMP_INFO_SEQ, vsui.SOGUL_USER_SNS_SEQ
+        , vsui.NO_BIZ, vsui.NM_USER, vsui.CD_GUBUN , vsui.CD_TOKEN
+      FROM V_SOGUL_USER_INFO vsui
+      WHERE 1 = 1
+        AND vsui.MANAGE_CD = ${MANAGE_CD}
+      <if test=" SEARCH_NO_BIZ != null and SEARCH_NO_BIZ != '' ">
+        AND vsui.NO_BIZ LIKE CONCAT('%', #{SEARCH_NO_BIZ} ,'%')
+      </if>
+      <if test=" SEARCH_NM_COMP != null and SEARCH_NM_COMP != '' ">
+        AND vsui.NM_COMP LIKE CONCAT('%', #{SEARCH_NM_COMP} ,'%')
+      </if>
+      <if test=" SEARCH_NM_USER != null and SEARCH_NM_USER != '' ">
+        AND vsui.NM_USER LIKE CONCAT('%', #{SEARCH_NM_USER} ,'%')
+      </if>
+      <if test=" SEARCH_ADDR != null and SEARCH_ADDR != '' ">
+        AND vsui.ADDR_ROAD LIKE CONCAT('%', #{SEARCH_ADDR} ,'%')
+      </if>
+    ) cb_1
+  </select>
+
+  <!-- LIMIT ${PAGE_NO} , ${PAGE_SIZE}  -->
+  <!-- 고객 회원 리스트 조회 -->
+  <select id="getMemberList">
+    SELECT 
+      @NO_RNUM := @NO_RNUM - 1 AS NO_RNUM
+      , cv_1.SOGUL_USER_INFO_SEQ
+      , cv_1.SOGUL_USER_COMP_INFO_SEQ
+      , cv_1.SOGUL_USER_SNS_SEQ      
+      , cv_1.NO_BIZ
+      , cv_1.NM_COMP
+      , cv_1.NM_USER
+      , cv_1.CD_GUBUN
+      , cv_1.CD_TOKEN
+    FROM (
+      SELECT 
+          vsui.SOGUL_USER_INFO_SEQ, vsui.SOGUL_USER_COMP_INFO_SEQ, vsui.SOGUL_USER_SNS_SEQ
+        , vsui.NO_BIZ, vsui.NM_COMP, vsui.NM_USER, vsui.CD_GUBUN , vsui.CD_TOKEN
+      FROM V_SOGUL_USER_INFO vsui
+      WHERE 1 = 1
+        AND vsui.MANAGE_CD = ${MANAGE_CD}
+      <if test=" SEARCH_NO_BIZ != null and SEARCH_NO_BIZ != '' ">
+        AND vsui.NO_BIZ LIKE CONCAT('%', #{SEARCH_NO_BIZ} ,'%')
+      </if>
+      <if test=" SEARCH_NM_COMP != null and SEARCH_NM_COMP != '' ">
+        AND vsui.NM_COMP LIKE CONCAT('%', #{SEARCH_NM_COMP} ,'%')
+      </if>
+      <if test=" SEARCH_NM_USER != null and SEARCH_NM_USER != '' ">
+        AND vsui.NM_USER LIKE CONCAT('%', #{SEARCH_NM_USER} ,'%')
+      </if>
+      <if test=" SEARCH_ADDR != null and SEARCH_ADDR != '' ">
+        AND vsui.ADDR_ROAD LIKE CONCAT('%', #{SEARCH_ADDR} ,'%')
+      </if>
+      
+    ) cv_1
+    , ( SELECT @NO_RNUM := (${TOTAL_CNT} - ${PAGE_NO} + 1) ) R
+  </select>
+
+  <!-- 사용자 상세 정보 정보 -->
+  <select id="getMemberDetail">
+    SELECT 
+        SOGUL_USER_COMP_INFO_SEQ
+      , SOGUL_USER_INFO_SEQ
+      , NO_BIZ
+      , NM_COMP
+      , ADDR_LOCAL
+      , ADDR_ROAD
+      , NM_INDUSTRY
+      , NM_INDUSTRY_SUB
+      , CONCAT(NM_INDUSTRY , ' / ', NM_INDUSTRY_SUB ) AS NM_INDUSTRY_CONCAT
+      , DT_OPEN
+      , QTY_EMP
+      , AM_DEPO
+      , AM_MON
+      , AM_MANAGE
+     	, BD_SIZE
+      , AM_ALERADY_ENTI
+      , AM_FACIL_ENTI
+      , AM_FLOOR_ENTI
+      , DATE_FORMAT(DT_REG , '%Y.%m.%d %H:%m') AS DT_REG
+      , DATE_FORMAT(DT_MOD, '%Y.%m.%d %H:%m') AS DT_MOD
+    FROM SOGUL_USER_COMP_INFO
+    WHERE SOGUL_USER_COMP_INFO_SEQ = #{SOGUL_USER_COMP_INFO_SEQ}
+  </select>  
+  
+  <!-- 관리자 사용자 리스트 조회 -->
+  <select id="getAdminList">
+    SELECT 
+        tui.AD_USER_INFO_SEQ
+      , tui.USER_ID
+      , tui.USER_NAME
+      , tui.APPROVAL_YN
+      , ccd.DETAIL_NM AS APPROVAL_YN_NM
+      , tui.USE_YN
+      , ccd2.DETAIL_NM AS USE_YN_NM
+      , tuir.USER_ROLES      
+    FROM AD_USER_INFO tui
+    INNER JOIN AD_USER_INFO_ROLES tuir 
+      ON tui.AD_USER_INFO_SEQ = tuir.AD_USER_INFO_SEQ    
+    LEFT JOIN COMM_CODE_DETAIL ccd 
+      ON ccd.DETAIL_VAL = tui.APPROVAL_YN
+        AND ccd.DETAIL_KEY = 'USE_YN'
+    LEFT JOIN COMM_CODE_DETAIL ccd2 
+      ON ccd2.DETAIL_VAL = tui.USE_YN
+        AND ccd2.DETAIL_KEY = 'USE_YN'
+    WHERE 1 = 1
+    <if test=" SEARCH_USER_ID != null and SEARCH_USER_ID != '' ">
+      AND tui.USER_ID = #{USER_ID}
+    </if>
+    <if test=" SEARCH_USE_YN != null and SEARCH_USE_YN != '' ">
+      AND tui.USE_YN = 'Y'
+    </if>
+    <if test=" SEARCH_TEXT != null and SEARCH_TEXT != '' ">
+      AND ( tui.USER_ID LIKE CONCAT('%', #{SEARCH_TEXT} ,'%') OR tui.USER_NAME LIKE CONCAT('%', #{SEARCH_TEXT} ,'%') )
+    </if>
+    ORDER BY tui.AD_USER_INFO_SEQ DESC
+  </select>
+
+  <!-- 관리자 비밀번호 초기화 -->
+  <update id="updAdminPasswordReset">
+    UPDATE AD_USER_INFO
+    SET USER_PASS   = #{USER_PASS}
+      , DT_MOD      = NOW()
+      , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE AD_USER_INFO_SEQ = ${AD_USER_INFO_SEQ}
+  </update>
+
+  <!-- 관리자 정보 등록 -->
+  <select id="instAdminInfo">
+    INSERT INTO AD_USER_INFO (
+        USER_ID
+      , USER_PASS
+      , USER_NAME
+      , APPROVAL_YN
+      , USE_YN      
+      , ID_REG_USER      
+      , ID_MOD_USER
+    ) VALUES (
+        #{USER_ID}
+      , #{USER_PASS}
+      , #{USER_NAME}
+      , #{APPROVAL_YN}
+      , #{USE_YN}      
+      , #{ID_REG_USER}      
+      , #{ID_MOD_USER}
+    )
+  </select>
+
+  <!-- 관리자 정보의 롤 등록 -->
+  <select id="instAdminRoles">
+    INSERT INTO AD_USER_INFO_ROLES(
+        AD_USER_INFO_SEQ
+      , USER_ROLES
+      , MANAGE_CD
+      , ID_MOD_USER
+    ) VALUES (
+      #{AD_USER_INFO_SEQ}
+      , #{USER_ROLES}
+      , '0'
+      , #{ID_MOD_USER}
+    )
+  </select>
+
+  <!-- 관리자 정보 수정 -->
+  <update id="updAdminInfo">
+    UPDATE AD_USER_INFO 
+    SET USER_ID     = #{USER_ID}
+      , USER_NAME   = #{USER_NAME}
+      , APPROVAL_YN = #{APPROVAL_YN}
+      , USE_YN      = #{USE_YN}
+      , DT_MOD      = NOW()
+      , ID_MOD_USER = #{ID_MOD_USER} 
+    WHERE AD_USER_INFO_SEQ = #{AD_USER_INFO_SEQ}
+  </update>
+
+  <!-- 스크래핑 사이트 계정 등록 -->
+  <insert id="instStieAccount">
+    INSERT INTO SCRP_USER_ACCOUNT (
+        AD_STORE_INFO_SEQ
+      , TP_SITE
+      , ID_LOGIN
+      , PW_LOGIN
+      , ID_REG_USER
+      , ID_MOD_USER
+    ) VALUES (
+        ${AD_STORE_INFO_SEQ}
+      , #{TP_SITE}
+      , #{ID_LOGIN}
+      , #{PW_LOGIN_ENC}
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+    ON DUPLICATE KEY UPDATE
+        PW_LOGIN    = #{PW_LOGIN_ENC}
+      , DT_MOD      = NOW()
+      , ID_MOD_USER = #{ID_MOD_USER} 
+  </insert>
+
+  <!-- 스크래핑 사이트 계정 조회 -->
+  <select id="getSiteAccountList">
+    SELECT
+        tp_site.TP_SITE
+      , tb.SCRP_USER_ACCOUNT_SEQ
+      , tb.AD_STORE_INFO_SEQ		
+      , tb.ID_LOGIN
+      , tb.PW_LOGIN
+    FROM ( 
+      SELECT 'yessin' AS TP_SITE
+      union all
+      SELECT 'baemin' AS TP_SITE
+      union all
+      SELECT 'yogiyo' AS TP_SITE
+      union all
+      SELECT 'coupang' AS TP_SITE
+    ) AS tp_site
+    LEFT JOIN
+      (
+        SELECT 
+            sua.SCRP_USER_ACCOUNT_SEQ
+          , sua.AD_STORE_INFO_SEQ
+          , sua.TP_SITE
+          , sua.ID_LOGIN
+          , sua.PW_LOGIN 
+        FROM SCRP_USER_ACCOUNT sua
+        , ( 
+          SELECT 
+              MAX(SCRP_USER_ACCOUNT_SEQ) AS SCRP_USER_ACCOUNT_SEQ 
+            , AD_STORE_INFO_SEQ
+            , TP_SITE, max(DT_REG) AS DT_REG 
+          FROM SCRP_USER_ACCOUNT 
+          WHERE AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+          GROUP BY TP_SITE 
+        ) AS gr_sua
+        WHERE sua.SCRP_USER_ACCOUNT_SEQ = gr_sua.SCRP_USER_ACCOUNT_SEQ 
+          AND sua.AD_STORE_INFO_SEQ = gr_sua.AD_STORE_INFO_SEQ
+      ) AS tb
+      ON tp_site.TP_SITE = tb.TP_SITE
+  </select>
+
+  <!-- 로그인한 관리자 계정의 업체 코드 가져오기 -->
+  <select id="getManage">
+    SELECT 
+      AD_USER_INFO_SEQ, USER_ID, USER_NAME, APPROVAL_YN, USE_YN, USER_ROLES, MANAGE_CD, NM_MANAGE_COMP, SYS_AUTHORITY_SEQ, AUTHORITY_NAME 
+    FROM V_AD_USER_INFO
+    WHERE USER_ID = #{USER_ID}
+  </select>
+  
+  <!-- 매장관리 - 사용자 정보 조회 -->
+  <select id="getStoreUserInfo">
+    SELECT 
+        asi.AD_STORE_INFO_SEQ
+      , asi.NO_BIZ
+      , asi.STORE_NM
+      , asi.STORE_ADDR
+      , asi.STORE_ADDR_DETAIL
+      , asi.BOSS_NM
+      , asi.INDUSTRY_CD
+      , asi.BOSS_HP
+      , asi.OPEN_DT
+      , asi.CLOSE_DT
+      , asi.AREA_NM
+      , asi.AREA_TRANSPORT
+      , asi.FIRE_INSURANCE
+      , asi.LIABILITY_INSURANCE
+      , asi.FRANCHISE_GB
+      , asi.MENO AS STORE_MEMO
+      , asi.LATITUDE
+      , asi.LONGITUDE
+      , asi.OPER_STATUS
+      , ali.AD_LEASE_INFO_SEQ
+      , ali.DEPOSIT
+      , ali.PREMIUM
+      , ali.MONTH_RENT
+      , ali.MAINT_COST
+      , ali.STORE_SUM_COST
+      , ali.ACTUAL_AREA_M
+      , ali.ACTUAL_AREA_P	
+      , asii.AD_STORE_INVEST_INFO_SEQ	
+      , asii.TOTAL_INVEST_COST
+      , asii.TOTAL_INVEST_COST_RATE
+      , asii.INVEST_ASSETS
+      , asii.INVEST_ASSETS_RATE
+      , asii.INVEST_BOSS
+      , asii.INVEST_BOSS_RATE
+      , asii.RANTAL
+      , asii.RANTAL_RATE
+      , asii.INVEST_SUM_COST
+      , asii.INVEST_SUM_COST_RATE
+      , asii.FR_HQ_DEPOSIT
+      , asii.MEMBER_COST
+      , asii.EDU_COST
+      , asii.INTERIOR_COST
+      , asii.MENO AS INVEST_MENO	
+    FROM AD_STORE_INFO asi
+      INNER JOIN AD_LEASE_INFO ali 
+        ON asi.AD_STORE_INFO_SEQ = ali.AD_STORE_INFO_SEQ 
+      INNER JOIN AD_STORE_INVEST_INFO asii 
+        ON asi.AD_STORE_INFO_SEQ = asii.AD_STORE_INFO_SEQ 
+    WHERE asi.AD_STORE_INFO_SEQ = #{AD_STORE_INFO_SEQ}
+  </select>
+</mapper>

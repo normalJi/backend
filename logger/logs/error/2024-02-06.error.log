@@ -1,0 +1,46 @@
+2024-02-06 17:27:15:2715 error: transExec 에러 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DT_MOD = NOW() ID_MOD_USER = 'hrji'' at line 19 
+ Error Stack: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DT_MOD = NOW() ID_MOD_USER = 'hrji'' at line 19
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setSiteAccount (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:399:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-06 18:05:00:50 error: transExec 에러 Parameter #{SCRP_USER_ACCOUNT_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{SCRP_USER_ACCOUNT_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setSiteAccount (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:399:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-06 18:10:01:101 error: transExec 에러 Parameter #{SCRP_USER_ACCOUNT_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{SCRP_USER_ACCOUNT_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setSiteAccount (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:399:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-06 18:11:21:1121 error: transExec 에러 Parameter #{SCRP_USER_ACCOUNT_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{SCRP_USER_ACCOUNT_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setSiteAccount (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:399:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-06 18:12:35:1235 error: transExec 에러 Parameter #{SCRP_USER_ACCOUNT_SEQ} is not converted. 
+ Error Stack: Error: Parameter #{SCRP_USER_ACCOUNT_SEQ} is not converted.
+    at MybatisMapper.getStatement (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mybatis-mapper\index.js:105:15)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:142:33)
+    at setSiteAccount (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:399:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7
+2024-02-06 18:13:01:131 error: transExec 에러 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MERGE INTO SCRP_USER_ACCOUNT asi USING DUAL ON (
+  SCRP_USER_ACCOUNT_SEQ = '24'
+' at line 1 
+ Error Stack: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MERGE INTO SCRP_USER_ACCOUNT asi USING DUAL ON (
+  SCRP_USER_ACCOUNT_SEQ = '24'
+' at line 1
+    at PromisePoolConnection.query (D:\02.project\dev_workspace\sogul_admin_backend\node_modules\mysql2\promise.js:94:22)
+    at Object.transExec (D:\02.project\dev_workspace\sogul_admin_backend\config\dbInfo.js:144:31)
+    at setSiteAccount (D:\02.project\dev_workspace\sogul_admin_backend\src\user\User.js:399:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async D:\02.project\dev_workspace\sogul_admin_backend\routes\routerHandler.js:16:7

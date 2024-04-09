@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="commMapper">
+
+  <!-- 공통코드 리스트 조회 -->
+  <select id="getCommonCodeList">  
+    SELECT 
+      DETAIL_VAL AS CODE_VALUE, DETAIL_NM AS CODE_TEXT
+    FROM COMM_CODE_DETAIL ccd 
+    WHERE USE_YN = 'Y'
+      AND DETAIL_KEY = #{DETAIL_KEY}      
+    ORDER BY SORT_ORDER 
+  </select>
+
+  <!-- 첨부파일 저장 -->
+  <insert id="instAttachments">
+    INSERT INTO AD_ATTACHMENTS (
+        SEQ
+      , FILE_TYPE_CD
+      , ORI_FILE_NM	
+      , FILE_NM
+      , FILE_SIZE	
+      , ID_REG_USER	
+      , ID_MOD_USER
+    ) VALUES(
+        #{AD_INFO_SEQ}
+      , #{FILE_TYPE_CD}
+      , #{ORI_FILE_NM}
+      , #{FILE_NM}
+      , #{FILE_SIZE}	
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    )
+  </insert>
+  
+  <!-- 첨부파일 조회 -->
+  <select id="getAttachments">
+    SELECT 
+      AD_ATTACHMENTS_SEQ, SEQ, FILE_TYPE_CD, ORI_FILE_NM AS name, FILE_PATH, FILE_NM, FILE_SIZE 
+    FROM AD_ATTACHMENTS
+    WHERE SEQ          = #{FILE_SEQ}
+      AND FILE_TYPE_CD = #{FILE_TYPE_CD}
+  </select>
+
+  <!-- 첨부파일 건별 삭제 -->
+  <delete id="delFileDelete">
+    DELETE FROM AD_ATTACHMENTS WHERE AD_ATTACHMENTS_SEQ = #{AD_ATTACHMENTS_SEQ}
+  </delete>
+
+  <!-- 첨부파일 해당 시퀀스에 맞는 전체 항목 삭제 -->
+  <delete id="delAllFileDelete">
+    DELETE FROM AD_ATTACHMENTS WHERE SEQ = #{AD_USE_SEQ}
+  </delete>
+  
+
+  <!-- 카테고리 조회 -->
+  <select id="getCategoryList"> 
+    SELECT 
+      CATE_GB, AD_CATEGORY_SEQ AS CODE_VALUE, CATE_NM AS CODE_TEXT FROM AD_CATEGORY
+    WHERE CATE_GB = #{DETAIL_KEY}
+    	AND USE_YN = 'Y'
+    ORDER BY SORT_ORD
+  </select>
+
+  <!-- 개설프로세스 카테고리 조회 -->
+  <select id="getOpenCateList">
+    SELECT 
+        AD_OPEN_PROCESS_CATEGORY_SEQ AS CODE_VALUE
+      , CATE_NM AS CODE_TEXT 
+    FROM AD_OPEN_PROCESS_CATEGORY aopc
+    WHERE USE_YN = 'Y'
+    ORDER BY SORT_ORDER
+  </select>
+
+</mapper>

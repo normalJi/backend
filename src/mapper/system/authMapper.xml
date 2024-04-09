@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="authMapper">
+
+  <!-- 권한그룹 조회 -->
+  <select id="getAuthList">  
+    SELECT 
+        sa.SYS_AUTHORITY_SEQ
+      , sa.MANAGE_CD
+      , sa.AUTHORITY_NAME
+      , ccd.DETAIL_NM AS USE_YN
+    FROM SYS_AUTHORITY sa
+      LEFT JOIN COMM_CODE_DETAIL ccd
+        ON ccd.DETAIL_KEY = 'USE_YN'
+          AND ccd.DETAIL_VAL = sa.USE_YN
+    WHERE 1 = 1
+      AND sa.MANAGE_CD = ${MANAGE_CD}        
+    <if test=" USE_YN != null and USE_YN != '' ">
+      AND sa.USE_YN = #{USE_YN}
+    </if>
+    <if test=" SYS_AUTHORITY_SEQ != null and SYS_AUTHORITY_SEQ != '' ">
+      AND sa.SYS_AUTHORITY_SEQ = #{SYS_AUTHORITY_SEQ}
+    </if>
+    ORDER BY sa.SYS_AUTHORITY_SEQ
+  </select>
+
+  <!-- 이미 등록되어 메뉴 제외한 나머지 전체를 저장 -->
+  <select id="instTotalAuthMenu">
+    INSERT INTO SYS_AUTHORITY_MENU_MAP (SYS_MENU_SEQ, SYS_AUTHORITY_SEQ, SELECT_YN, SAVE_YN, DELETE_YN, ID_REG_USER, ID_MOD_USER)
+    SELECT 
+        SYS_MENU_SEQ
+      , #{SYS_AUTHORITY_SEQ}
+      , 'N'
+      , 'N'
+      , 'N'
+      , #{ID_REG_USER}
+      , #{ID_MOD_USER}
+    FROM SYS_MENU
+    WHERE SYS_MENU_SEQ NOT IN (SELECT SYS_MENU_SEQ  FROM SYS_AUTHORITY_MENU_MAP WHERE SYS_AUTHORITY_SEQ = #{SYS_AUTHORITY_SEQ})
+  </select>
+
+  <!-- 체크된 메뉴의 SELECT_YN = Y로 수정 -->
+  <update id="updAuthMenu">
+    UPDATE SYS_AUTHORITY_MENU_MAP
+    SET SELECT_YN   = #{SELECT_YN}
+      , DT_MOD      = NOW()
+      , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE SYS_AUTHORITY_SEQ = #{SYS_AUTHORITY_SEQ}
+    <if test=" SYS_MENU_SEQ != null and SYS_MENU_SEQ != '' ">
+      AND SYS_MENU_SEQ = #{SYS_MENU_SEQ}
+    </if>
+  </update>
+
+  <!-- 권한에 매핑된 사용자 조회 -->
+  <select id="getAuthUserList">
+    SELECT 
+        sa.SYS_AUTHORITY_SEQ, sa.AUTHORITY_NAME, sa.USE_YN 
+      , saum.SYS_AUTHORITY_USER_MAP_SEQ
+      , aui.AD_USER_INFO_SEQ , aui.USER_ID, aui.USER_NAME
+    FROM SYS_AUTHORITY sa
+      INNER JOIN SYS_AUTHORITY_USER_MAP saum
+        ON sa.SYS_AUTHORITY_SEQ = saum.SYS_AUTHORITY_SEQ
+      INNER JOIN AD_USER_INFO aui
+        ON saum.AD_USER_INFO_SEQ = aui.AD_USER_INFO_SEQ 
+    WHERE sa.SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+      AND sa.MANAGE_CD = ${MANAGE_CD}
+  </select>
+
+
+  <!-- 권한그룹 저장 -->
+  <insert id="instAuthority">
+    INSERT INTO SYS_AUTHORITY (
+      MANAGE_CD, AUTHORITY_NAME, USE_YN, DT_REG, ID_REG_USER, DT_MOD, ID_MOD_USER
+    ) VALUES(
+      ${MANAGE_CD}, #{AUTHORITY_NAME}, #{USE_YN}, NOW(), #{ID_REG_USER}, NOW(), #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 권한그룹 수정 -->
+  <update id="updAuthority">
+    UPDATE SYS_AUTHORITY 
+    SET AUTHORITY_NAME = #{AUTHORITY_NAME}
+      , USE_YN         = #{USE_YN}	
+      , DT_MOD         = NOW()
+      , ID_MOD_USER    = #{ID_MOD_USER} 
+    WHERE SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+  </update>
+
+  <!-- 권한그룹 삭제 -->
+  <update id="delAuthority">
+    DELETE FROM SYS_AUTHORITY WHERE SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+  </update>
+
+
+  <!-- 권한에 매핑되지 않은 사용자 조회 -->
+  <select id="getNonAuthUserList">
+    SELECT 
+      aui.AD_USER_INFO_SEQ , aui.USER_ID, aui.USER_NAME
+    FROM V_AD_USER_INFO aui
+    WHERE 1 = 1
+      AND aui.MANAGE_CD = ${MANAGE_CD}
+      AND NOT EXISTS ( SELECT * FROM SYS_AUTHORITY_USER_MAP saum WHERE saum.AD_USER_INFO_SEQ = aui.AD_USER_INFO_SEQ  )
+      AND aui.APPROVAL_YN = 'Y'
+      AND aui.USE_YN      = 'Y'
+  </select>
+
+  <!-- 권한에 사용자 매핑 저장 -->
+  <insert id="instAuthUserMap">
+    INSERT INTO SYS_AUTHORITY_USER_MAP (
+      SYS_AUTHORITY_SEQ, AD_USER_INFO_SEQ, ID_REG_USER, ID_MOD_USER
+    ) VALUES (
+      ${SYS_AUTHORITY_SEQ}, ${AD_USER_INFO_SEQ}, #{ID_REG_USER}, #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 권한에 매핑된 사용자 삭제 -->
+  <delete id="delAuthUserMap">
+    DELETE FROM SYS_AUTHORITY_USER_MAP WHERE SYS_AUTHORITY_USER_MAP_SEQ = ${SYS_AUTHORITY_USER_MAP_SEQ}
+  </delete>
+
+  <!-- 아래는 이전 쿼리 (사용안함) -->
+  
+
+  <!-- 권한 - 메뉴 매핑 저장 -->
+  <insert id="insertAuthMenuMapping">
+    INSERT INTO SYS_AUTHORITY_MENU_MAP (
+        SYS_MENU_SEQ
+      , SYS_AUTHORITY_SEQ
+      , SELECT_YN
+      , SAVE_YN      
+      , DELETE_YN
+      , DT_REG
+      , ID_REG_USER
+      , DT_MOD
+      , ID_MOD_USER
+    ) VALUES(
+        #{SYS_MENU_SEQ}
+      , #{SYS_AUTHORITY_SEQ}
+      , #{SELECT_YN}
+      , #{SAVE_YN}
+      , #{DELETE_YN}
+      , NOW()
+      , #{ID_REG_USER}
+      , NOW()
+      , #{ID_MOD_USER}
+    )
+    ON DUPLICATE KEY UPDATE
+        SELECT_YN   = #{SELECT_YN}
+      , SAVE_YN     = #{SAVE_YN}
+      , DELETE_YN   = #{DELETE_YN}
+      , DT_MOD      = now()
+      , ID_MOD_USER = #{ID_MOD_USER}
+  </insert>
+
+  <update id="updateAuthMenuMapping">
+    UPDATE SYS_AUTHORITY_MENU_MAP
+    SET SELECT_YN = 'N'
+      , DT_MOD = NOW()
+      , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE 1 = 1    
+      AND SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+  </update>
+
+  <!-- 매핑 테이블에 데이터 존재하는지 확인 -->
+  <select id="selectAuthMenuNoting">
+    SELECT 
+      COUNT(*) AS CNT from SYS_AUTHORITY_MENU_MAP
+    WHERE SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+      AND SYS_MENU_SEQ = ${SYS_MENU_SEQ}
+  </select>
+
+  <!-- 매핑 테이블에 존재하지 않는 데이터 insert -->
+  <insert id="insertAuthMenuNoting">
+    INSERT INTO SYS_AUTHORITY_MENU_MAP (
+        SYS_MENU_SEQ
+      , SYS_AUTHORITY_SEQ
+      , SELECT_YN
+      , SAVE_YN
+      , DELETE_YN
+      , DT_REG
+      , ID_REG_USER
+      , DT_MOD
+      , ID_MOD_USER
+    ) VALUES(
+        #{SYS_MENU_SEQ}
+      , #{SYS_AUTHORITY_SEQ}
+      , 'N'
+      , 'N'
+      , 'N'
+      , NOW()
+      , #{ID_REG_USER}
+      , NOW()
+      , #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 2depth 1이면 1depth를 Y, 0이면 N 수정 -->
+  <update id="updateTopMenuY">
+    UPDATE 
+      SYS_AUTHORITY_MENU_MAP A,
+      (
+      SELECT 
+        samm.SYS_MENU_SEQ , sm.PRT_MENU_SEQ , sm.MENU_NM, samm.SELECT_YN 
+        , (
+          SELECT 
+            count(0) 
+          FROM SYS_AUTHORITY_MENU_MAP samm2 
+            INNER JOIN SYS_MENU sm2 
+              ON samm2.SYS_MENU_SEQ = sm2.SYS_MENU_SEQ  
+          WHERE samm2.SELECT_YN = 'Y'
+            AND samm2.SYS_AUTHORITY_SEQ = samm.SYS_AUTHORITY_SEQ 
+            AND sm2.PRT_MENU_SEQ = samm.SYS_MENU_SEQ 
+        ) SUB_MENU_CNT
+      FROM SYS_AUTHORITY_MENU_MAP samm 
+        INNER JOIN SYS_MENU sm 
+          ON samm.SYS_MENU_SEQ = sm.SYS_MENU_SEQ 
+      WHERE SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+      ) B
+    SET A.SELECT_YN = CASE WHEN B.SUB_MENU_CNT <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END
+    WHERE B.PRT_MENU_SEQ = 0
+      AND A.SYS_MENU_SEQ = B.SYS_MENU_SEQ
+      AND A.SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+  </update>
+
+  <!-- 권한에 매핑된 사용자 조회 -->
+  <select id="getAuthUserMapList">
+    SELECT 
+        sa.SYS_AUTHORITY_SEQ, sa.AUTHORITY_NAME, sa.USE_YN 
+      , saum.SYS_AUTHORITY_USER_MAP_SEQ
+      , aui.AD_USER_INFO_SEQ , aui.USER_ID, aui.USER_NAME
+    FROM SYS_AUTHORITY sa
+      INNER JOIN SYS_AUTHORITY_USER_MAP saum
+        ON sa.SYS_AUTHORITY_SEQ = saum.SYS_AUTHORITY_SEQ
+      INNER JOIN AD_USER_INFO aui
+        ON saum.AD_USER_INFO_SEQ = aui.AD_USER_INFO_SEQ 
+    WHERE sa.SYS_AUTHORITY_SEQ = ${SYS_AUTHORITY_SEQ}
+      AND sa.MANAGE_CD = ${manage_cd}
+
+  </select>
+
+  <!-- 권한에 사용자 매핑 저장 -->
+  <!-- <insert id="insertAuthUserMapping">
+    INSERT INTO SYS_AUTHORITY_USER_MAP (
+      SYS_AUTHORITY_SEQ, AD_USER_INFO_SEQ, DT_REG, ID_REG_USER, DT_MOD, ID_MOD_USER
+    ) VALUES (
+      ${SYS_AUTHORITY_SEQ}, ${AD_USER_INFO_SEQ}, NOW(), #{ID_REG_USER}, NOW(), #{ID_MOD_USER}
+    )
+  </insert> -->
+
+
+
+  <!-- 권한에 매핑된 사용자 삭제 -->
+  <!-- <delete id="deleteAuthUserMapping">
+    DELETE FROM SYS_AUTHORITY_USER_MAP WHERE SYS_AUTHORITY_USER_MAP = ${SYS_AUTHORITY_USER_MAP}
+  </delete> -->
+
+
+  <!-- 인증제외 API 총 갯수 -->
+  <select id="getAuthExceptListTotalCnt">
+    SELECT
+      COUNT(*) AS TOTAL_CNT
+    FROM(
+      SELECT 
+          aae.SYS_AUTH_EXCEPT_SEQ 
+        , aae.EXCEPT_METHOD 
+        , aae.EXCEPT_URL 
+        , aae.NOTE 
+        , aae.USE_YN 
+        , DATE_FORMAT(aae.DT_REG, '%Y.%m.%d') AS DT_REG 
+        , aae.ID_REG_USER	
+        , DATE_FORMAT(aae.DT_MOD, '%Y.%m.%d') AS DT_MOD
+        , aae.ID_MOD_USER
+        , IFNULL(aui.USER_NAME,'시스템') AS ID_REG_USER_NM
+        , IFNULL(aui2.USER_NAME,'시스템') AS ID_MOD_USER_NM
+      FROM SYS_AUTH_EXCEPT aae
+        LEFT JOIN AD_USER_INFO aui 
+          ON aae.ID_REG_USER = aui.USER_ID
+        LEFT JOIN AD_USER_INFO aui2  
+          ON aae.ID_MOD_USER = aui2.USER_ID
+        INNER JOIN COMM_CODE_DETAIL ccd 		
+          ON ccd.DETAIL_KEY = 'METHOD_GB'
+            AND aae.EXCEPT_METHOD = ccd.DETAIL_VAL
+    ) cb_1
+  </select>
+
+  <!-- 인증제외 API 조회 -->
+  <select id="getAuthExceptList">
+    SELECT 
+        aae.SYS_AUTH_EXCEPT_SEQ 
+      , aae.EXCEPT_METHOD 
+      , aae.EXCEPT_URL 
+      , aae.NOTE 
+      , aae.USE_YN 
+      , DATE_FORMAT(aae.DT_REG, '%Y.%m.%d') AS DT_REG 
+      , aae.ID_REG_USER	
+      , DATE_FORMAT(aae.DT_MOD, '%Y.%m.%d') AS DT_MOD
+      , aae.ID_MOD_USER
+      , IFNULL(aui.USER_NAME,'시스템') AS ID_REG_USER_NM
+      , IFNULL(aui2.USER_NAME,'시스템') AS ID_MOD_USER_NM
+    FROM SYS_AUTH_EXCEPT aae
+      LEFT JOIN AD_USER_INFO aui 
+        ON aae.ID_REG_USER = aui.USER_ID
+      LEFT JOIN AD_USER_INFO aui2  
+        ON aae.ID_MOD_USER = aui2.USER_ID
+      INNER JOIN COMM_CODE_DETAIL ccd 		
+        ON ccd.DETAIL_KEY = 'METHOD_GB'
+          AND aae.EXCEPT_METHOD = ccd.DETAIL_VAL
+    WHERE 1 = 1
+    <if test=" USE_YN != null and USE_YN != '' ">
+      AND aae.USE_YN = #{USE_YN}
+    </if>
+  </select>
+
+  <!-- 인증제외 등록 -->
+  <insert id="insertAuthExcept">
+    INSERT INTO SYS_AUTH_EXCEPT (
+      EXCEPT_METHOD, EXCEPT_URL, NOTE, USE_YN, DT_REG, ID_REG_USER, DT_MOD, ID_MOD_USER
+    ) VALUES(
+      #{EXCEPT_METHOD}, #{EXCEPT_URL}, #{NOTE}, #{USE_YN}, NOW(), #{ID_REG_USER}, NOW(), #{ID_MOD_USER}
+    )
+  </insert>
+
+  <!-- 인증제외 수정 -->
+  <update id="updateAuthExcept">
+    UPDATE SYS_AUTH_EXCEPT 
+    SET   EXCEPT_METHOD = #{EXCEPT_METHOD}
+      , EXCEPT_URL  = #{EXCEPT_URL}
+      , NOTE        = #{NOTE}
+      , USE_YN      = #{USE_YN}
+      , DT_MOD      = NOW()
+      , ID_MOD_USER = #{ID_MOD_USER}
+    WHERE SYS_AUTH_EXCEPT_SEQ = ${SYS_AUTH_EXCEPT_SEQ}
+  </update>
+</mapper>
